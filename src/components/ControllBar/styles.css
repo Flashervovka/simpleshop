@@ -1,0 +1,14 @@
+.menu-item:hover{
+    cursor: pointer;
+    background-color: #3d4454;
+}
+.menu-item__info{
+    display: flex;
+}
+.menu-item__label{
+    color: #fff;
+    margin-left: 10px;
+}
+.menu-item__icon{
+    color: #fff;
+}
