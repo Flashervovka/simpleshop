@@ -1,18 +1,18 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import './styles.css';
 import {makeStyles, Theme} from "@material-ui/core/styles";
 import TabPanel from "./TabPanel";
-
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import SettingsIcon from '@material-ui/icons/Settings';
+import ControllBarTab from "./ControllBarTab";
+import {ITabsPanelsData} from "./types";
 
 
-type ControlBarProps = {}
+interface ControlBarProps {
+    onSendFile(file: Blob): void
+    tabsPanelsData: ITabsPanelsData
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -20,64 +20,48 @@ const useStyles = makeStyles((theme: Theme) => ({
         width: '100%',
         backgroundColor: "#2d323e",
     },
-    indicator:{
-        backgroundColor:"#039be5",
-        height:"3px"
+    indicator: {
+        backgroundColor: "#039be5",
+        height: "3px"
     },
-    scrollButtons:{
-        color:"#ffffff"
+    scrollButtons: {
+        color: "#ffffff"
     }
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
+    const {onSendFile, tabsPanelsData} = props;
+
     const classes = useStyles();
     const [value, setValue] = useState(0);
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+    const onSelectTab = ( selectedTabIndex: number) => {
+        setValue(selectedTabIndex);
     };
 
     return (
         <div>
             <AppBar position="static" color="default" className={classes.root}>
                 <Tabs classes={classes}
-                    value={value}
-                    onChange={handleChange}
-                    variant="scrollable"
-                    scrollButtons="on"
-                    textColor="primary"
-                    aria-label="scrollable force tabs example"
+                      value={value}
+                      variant="scrollable"
+                      scrollButtons="on"
+                      textColor="primary"
+                      aria-label="scrollable force tabs example"
                 >
-                    <Tab className="menu-item" label={
-                        <div className="menu-item__info">
-                            <FastfoodIcon className="menu-item__icon"/>
-                            <div className="menu-item__label">Продукты</div>
-                        </div>
-
-                    } />
-                    <Tab className="menu-item" label={
-                        <div className="menu-item__info">
-                            <FormatListNumberedIcon className="menu-item__icon"/>
-                            <div className="menu-item__label">Заказы</div>
-                        </div>
-                    } />
-                    <Tab className="menu-item" label={
-                        <div className="menu-item__info">
-                            <SettingsIcon className="menu-item__icon"/>
-                            <div className="menu-item__label">Настройки</div>
-                        </div>
-                    } />
-
+                    {
+                        tabsPanelsData.tabs.map((tab, index) =>
+                            <ControllBarTab {...tab} key={`admin_tabs_${index}`} index={index} onSelect={onSelectTab}/>
+                        )
+                    }
                 </Tabs>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                Продукты
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                Заказы
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Настройки
-            </TabPanel>
+            {
+                tabsPanelsData.panels.map((Panel, index) =>
+                    <TabPanel value={value} index={index}  key={`admin_tab_panel_${index}`}>
+                        <Panel onSendFile={onSendFile} name="sssssssssss" />
+                    </TabPanel>
+                )
+            }
         </div>
 
     )

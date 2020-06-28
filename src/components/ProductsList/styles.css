@@ -1,0 +1,9 @@
+.products-list{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    margin-right: 200px;
+    margin-left: 200px;
+    height: 90vh;
+}

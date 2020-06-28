@@ -10,6 +10,7 @@ import {getProductsListAction} from "../../store/products/actions";
 
 import './styles.css';
 import ControllBar from "../../components/ControllBar";
+import {adminTabsAndPanels} from "../../config";
 
 const mapStateToProps = (state: RootStateType) => ({})
 
@@ -27,14 +28,14 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {/*onSendFile,*/ onGetProductsList} = props;
+    const {onSendFile, onGetProductsList} = props;
     useEffect(()=>{
         onGetProductsList();
     })
 
     return (
         <div>
-            <ControllBar/>
+            <ControllBar onSendFile={onSendFile} tabsPanelsData={adminTabsAndPanels}/>
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
         </div>
 
