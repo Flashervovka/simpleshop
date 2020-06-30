@@ -4,6 +4,8 @@ export const ON_GET_PRODUCTS_REQUEST_COMPLETED = "products.ON_GET_PRODUCTS_REQUE
 export const ON_ADD_NEW_PRODUCT_REQUEST = "products.ON_ADD_NEW_PRODUCT_REQUEST";
 export const ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED = "products.ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED";
 
+export const ON_SELECT_PRODUCT = "products.ON_SELECT_PRODUCT";
+
 export interface IProduct {
     id?: string
     name: string
@@ -16,6 +18,7 @@ export interface IProductsState {
     productsList: IProduct[]
     isLoading: boolean
     isLoaded: boolean
+    selectedProduct: IProduct | null
 }
 
 interface GetProductRequestAction {
@@ -36,9 +39,15 @@ interface AddNewProductRequestCompletedAction {
     newProduct: IProduct
 }
 
+interface SelectProductAction {
+    type: typeof ON_SELECT_PRODUCT
+    selectedProduct: IProduct
+}
+
 
 export type ProductsActionTypes =
     GetProductRequestAction
     | GetProductRequestCompletedAction
     | AddNewProductRequestAction
     | AddNewProductRequestCompletedAction
+    | SelectProductAction

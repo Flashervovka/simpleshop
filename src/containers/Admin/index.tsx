@@ -7,14 +7,14 @@ import {sendFileAction} from "../../store/fileStorage/actions";
 import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
-import {addNewProductAction, getProductsListAction} from "../../store/products/actions";
+import {addNewProductAction, getProductsListAction, selectProductAction} from "../../store/products/actions";
 import {getProductListSelector} from "../../store/products/reducer"
 
 import './styles.css';
 import ControllBar from "../../components/ControllBar";
 import {adminTabsAndPanels} from "../../config";
 import {getLastUploadedSelector} from "../../store/fileStorage/reducer";
-import NewProductDialog from "../../components/NewProductDialog/NewProductDialog";
+import ProductDialog from '../../components/ProductDialog';
 
 const mapStateToProps = (state: RootStateType) => ({
     productsListProp: getProductListSelector(state),
@@ -31,6 +31,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onAddNewProduct: (product: IProduct): void => {
             dispatch(addNewProductAction(product))
+        },
+        onSelectProduct: (product: IProduct) => {
+            dispatch(selectProductAction(product))
         }
     }
 }
@@ -38,11 +41,12 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp} = props;
+    const {onGetProductsList, productsListProp, onSelectProduct} = props;
     const [openAddProductDialog, setOpenAddProductDialog] = useState<boolean>(false);
 
-    const onOpenAddProductDialog = (isOpen:boolean): void => {console.log("isOpen",isOpen);
+    const onOpenProductDialog = (isOpen:boolean, product?:IProduct): void => {
         setOpenAddProductDialog(isOpen);
+        if(product)onSelectProduct(product);
     }
 
     return (
@@ -51,9 +55,9 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 tabsPanelsData={adminTabsAndPanels}
                 onGetProductsList={onGetProductsList}
                 productsList={productsListProp}
-                onCreateNewProduct={onOpenAddProductDialog}/>
+                onOpenProductDialog={onOpenProductDialog}/>
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
-            <NewProductDialog open={openAddProductDialog} onOpenAddProductDialog={onOpenAddProductDialog}/>
+            <ProductDialog open={openAddProductDialog} onOpenProductDialog={onOpenProductDialog}/>
         </div>
 
     )

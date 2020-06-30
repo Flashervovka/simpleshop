@@ -2,9 +2,10 @@ import {ThunkAction} from "redux-thunk";
 import {RootStateType} from "../index";
 import {
     IProduct,
-    ON_ADD_NEW_PRODUCT_REQUEST, ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED,
+    ON_ADD_NEW_PRODUCT_REQUEST,
     ON_GET_PRODUCTS_REQUEST,
     ON_GET_PRODUCTS_REQUEST_COMPLETED,
+    ON_SELECT_PRODUCT,
     ProductsActionTypes
 } from "./types";
 import productService from '../../services/ProductsService';
@@ -19,4 +20,11 @@ export const addNewProductAction = (product:IProduct): ThunkAction<void, RootSta
     dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST});
     /*const newProduct:IProduct= */await productService.addNewProduct(product);
   //  dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct});
+}
+
+export const selectProductAction = (product:IProduct):ProductsActionTypes => {
+    return {
+        type:ON_SELECT_PRODUCT,
+        selectedProduct:product
+    }
 }

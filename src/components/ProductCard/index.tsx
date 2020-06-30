@@ -11,12 +11,18 @@ import {IProduct} from "../../store/products/types";
 
 interface ProductCardProps {
     productData:IProduct
+    onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct):void
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
-    const {productData} = props;
+    const {productData, onOpenProduct} = props;
+
+    const onOpen = (): void => {
+        onOpenProduct(true, productData);
+    }
+
     return (
-        <Card className="product-card">
+        <Card className="product-card" onClick={onOpen}>
             <CardActionArea>
                 <CardMedia
                     className="product-card__media"

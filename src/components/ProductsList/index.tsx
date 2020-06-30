@@ -8,18 +8,18 @@ import NewProduct from "../NewProduct";
 
 interface ProductsListProps {
     productsList:IProduct[]
-    onCreateNewProduct(isOpenDialogCreate:boolean):void
+    onOpenProductDialog(isOpenDialogCreate:boolean,  product?:IProduct):void
 }
 
 
 const ProductsList: React.FC<ProductsListProps> = (props: ProductsListProps) => {
-    const {productsList, onCreateNewProduct} = props;
+    const {productsList, onOpenProductDialog} = props;
     return (
         <PerfectScrollbar>
             <div className="products-list">
-                <NewProduct onCreateNewProduct={onCreateNewProduct}/>
+                <NewProduct onOpenProduct={onOpenProductDialog}/>
                 {
-                    productsList.map((product, index) => <ProductCard key={`product_${index}`} productData={product}/>)
+                    productsList.map((product, index) => <ProductCard key={`product_${index}`} productData={product} onOpenProduct={onOpenProductDialog}/>)
                 }
             </div>
         </PerfectScrollbar>

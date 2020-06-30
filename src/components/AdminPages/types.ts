@@ -2,7 +2,7 @@ import {IProduct} from "../../store/products/types";
 
 export interface AdminProductsPageProps {
     productsList:IProduct[]
-    onCreateNewProduct(isOpenDialogCreate:boolean):void
+    onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct):void
 }
 
 export interface AdminProductOrdersPageProps {

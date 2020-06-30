@@ -11,21 +11,22 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import './styles.css';
+import {IProduct} from "../../store/products/types";
 
-interface NewProductDialogProps {
+interface ProductDialogProps {
     open:boolean
-    onOpenAddProductDialog(isOpen:boolean):void
+    onOpenProductDialog(isOpen:boolean, product?:IProduct):void
 }
 
-const NewProductDialog: React.FC<NewProductDialogProps> = (props: NewProductDialogProps) => {
-    const {open, onOpenAddProductDialog} = props;
+const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) => {
+    const {open, onOpenProductDialog} = props;
     const [productPhoto, setProductPhoto] = useState<string>(addSvg);
     const [imageFile, setImageFile] = useState<Blob>();
 
     const [category, setCategory] = useState<string>('');
 
     const onCloseDialog = ():void => {
-        onOpenAddProductDialog(false);
+        onOpenProductDialog(false);
     }
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -84,4 +85,4 @@ const NewProductDialog: React.FC<NewProductDialogProps> = (props: NewProductDial
     );
 }
 
-export default NewProductDialog;
+export default ProductDialog;

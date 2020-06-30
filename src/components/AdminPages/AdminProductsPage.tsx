@@ -5,9 +5,9 @@ import ProductsList from "../ProductsList";
 
 
 const AdminProductsPage: React.FC<AdminProductsPageProps> = (props: AdminProductsPageProps) => {
-    const {productsList, onCreateNewProduct} = props;
+    const {productsList, onOpenProductDialog} = props;
     return (
-        <ProductsList productsList={productsList}  onCreateNewProduct={onCreateNewProduct}/>
+        <ProductsList productsList={productsList}  onOpenProductDialog={onOpenProductDialog}/>
         /*  <ProductCreatePanel onSendFile={onSendFile}/>*/
     );
 }
