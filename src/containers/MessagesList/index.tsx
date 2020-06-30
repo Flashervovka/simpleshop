@@ -7,7 +7,7 @@ import {RootStateType} from "../../store";
 import {IMessage} from "../../store/messages/types";
 
 const mapStateToProps = (state: RootStateType) => ({
-    messages: state.chatState.messages
+    //messages: state.chatState.messages
 })
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, LoadMessagesAction>) => {
     return {
@@ -48,7 +48,7 @@ const MessagesList:React.FC<ReduxType> = (props: ReduxType) => {
     return (
         <div>
             {
-                props.messages.map((message) => <MessageItem messageData={message} setEditMessage={setMessage} key={message.id}/>)
+              /*  props.messages.map((message) => <MessageItem messageData={message} setEditMessage={setMessage} key={message.id}/>)*/
             }
             <div>
                 <input placeholder="введите сообщение" onChange={onInputMessage} value={message.name}/>

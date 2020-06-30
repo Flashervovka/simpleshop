@@ -5,6 +5,7 @@ export interface IFileStorageState {
     uploadedFilesData:Object[]
     isFileSending:boolean
     isFileSendCompleted:boolean
+    lastUploaded:Object | null
 }
 
 interface SendFileRequestAction {

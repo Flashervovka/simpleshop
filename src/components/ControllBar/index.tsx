@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import './styles.css';
@@ -7,11 +6,14 @@ import {makeStyles, Theme} from "@material-ui/core/styles";
 import TabPanel from "./TabPanel";
 import ControllBarTab from "./ControllBarTab";
 import {ITabsPanelsData} from "./types";
+import {IProduct} from "../../store/products/types";
 
 
 interface ControlBarProps {
-    onSendFile(file: Blob): void
     tabsPanelsData: ITabsPanelsData
+    onGetProductsList(): void
+    productsList: IProduct[]
+    onCreateNewProduct(isOpenDialogCreate:boolean):void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -30,11 +32,16 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {onSendFile, tabsPanelsData} = props;
+    const {tabsPanelsData, onGetProductsList, productsList, onCreateNewProduct } = props;
+
+    useEffect(() => {
+        onGetProductsList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const classes = useStyles();
     const [value, setValue] = useState(0);
-    const onSelectTab = ( selectedTabIndex: number) => {
+    const onSelectTab = (selectedTabIndex: number) => {
         setValue(selectedTabIndex);
     };
 
@@ -57,8 +64,8 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
             </AppBar>
             {
                 tabsPanelsData.panels.map((Panel, index) =>
-                    <TabPanel value={value} index={index}  key={`admin_tab_panel_${index}`}>
-                        <Panel onSendFile={onSendFile} name="sssssssssss" />
+                    <TabPanel value={value} index={index} key={`admin_tab_panel_${index}`}>
+                        <Panel name="sssssssssssdd" productsList={productsList} onCreateNewProduct={onCreateNewProduct}/>
                     </TabPanel>
                 )
             }

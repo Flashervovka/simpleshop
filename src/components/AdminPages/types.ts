@@ -1,5 +1,8 @@
+import {IProduct} from "../../store/products/types";
+
 export interface AdminProductsPageProps {
-    onSendFile(file:Blob):void
+    productsList:IProduct[]
+    onCreateNewProduct(isOpenDialogCreate:boolean):void
 }
 
 export interface AdminProductOrdersPageProps {

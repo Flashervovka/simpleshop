@@ -1,0 +1,11 @@
+.add-dialog__product-image{
+    height: 150px;
+    cursor: pointer;
+}
+.add-dialog__image-input{
+    display: none;
+}
+.add-dialog__product-image-wrapper{
+    display: flex;
+    justify-content: center;
+}

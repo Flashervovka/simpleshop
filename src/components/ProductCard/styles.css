@@ -8,3 +8,8 @@
 .product-card__media{
     height: 100px;
 }
+.new-product-card__media-content{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}

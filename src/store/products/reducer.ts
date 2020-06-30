@@ -1,4 +1,10 @@
-import {IProductsState, ON_GET_PRODUCTS_REQUEST, ON_GET_PRODUCTS_REQUEST_COMPLETED, ProductsActionTypes} from "./types";
+import {
+    IProductsState,
+    ON_GET_PRODUCTS_REQUEST,
+    ON_GET_PRODUCTS_REQUEST_COMPLETED,
+    ProductsActionTypes
+} from "./types";
+import {RootStateType} from "../index";
 
 
 const init: IProductsState = {
@@ -7,7 +13,7 @@ const init: IProductsState = {
     isLoading:false
 };
 
-export function fileStorage(state: IProductsState = init, action: ProductsActionTypes): IProductsState {
+export function productsListState(state: IProductsState = init, action: ProductsActionTypes): IProductsState {
     switch (action.type) {
         case ON_GET_PRODUCTS_REQUEST:
             return {
@@ -25,4 +31,12 @@ export function fileStorage(state: IProductsState = init, action: ProductsAction
         default:
             return state;
     }
+}
+
+const getProductListSelector = (state:RootStateType) => {
+    return state.productsListState.productsList
+}
+
+export {
+    getProductListSelector
 }

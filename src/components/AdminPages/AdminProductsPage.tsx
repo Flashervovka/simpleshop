@@ -5,10 +5,10 @@ import ProductsList from "../ProductsList";
 
 
 const AdminProductsPage: React.FC<AdminProductsPageProps> = (props: AdminProductsPageProps) => {
-    //const {onSendFile} = props;
+    const {productsList, onCreateNewProduct} = props;
     return (
-       <ProductsList/>
-      /*  <ProductCreatePanel onSendFile={onSendFile}/>*/
+        <ProductsList productsList={productsList}  onCreateNewProduct={onCreateNewProduct}/>
+        /*  <ProductCreatePanel onSendFile={onSendFile}/>*/
     );
 }
 

@@ -1,0 +1,26 @@
+.new-product-card{
+    width: 300px;
+    height: 300px;
+    margin-right:5px;
+    margin-left:5px;
+    margin-bottom: 10px;
+    display: flex;
+}
+.new-product-card__media{
+    height: 100%;
+    margin-bottom: 10px;
+}
+.new-product-card__media-content{
+    cursor: default;
+}
+.new-product-card__media label{
+    cursor: pointer;
+}
+
+.media-content__image{
+    height: 100px;
+    cursor: pointer;
+}
+.media-content__product-photo{
+    display: none;
+}
