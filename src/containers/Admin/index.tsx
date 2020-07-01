@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
 //import ProductCreatePanel from "../../components/ProductCreatePanel";
-import {sendFileAction} from "../../store/fileStorage/actions";
 import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
@@ -13,20 +12,15 @@ import {getProductListSelector, getSelectedProductSelector} from "../../store/pr
 import './styles.css';
 import ControllBar from "../../components/ControllBar";
 import {adminTabsAndPanels} from "../../config";
-//import {getLastUploadedSelector} from "../../store/fileStorage/reducer";
 import ProductDialog from '../../components/ProductDialog';
 
 const mapStateToProps = (state: RootStateType) => ({
     productsListProp: getProductListSelector(state),
-   // productUploadedImageUrl: getLastUploadedSelector(state),
     selectedProductProp: getSelectedProductSelector(state),
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes>) => {
     return {
-        onSendFile: (file: Blob): void => {
-            dispatch(sendFileAction(file));
-        },
         onGetProductsList: (): void => {
             dispatch(getProductsListAction());
         },
@@ -42,7 +36,7 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp, onSendFile,onAddNewProduct} = props;
+    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct} = props;
     const [openAddProductDialog, setOpenAddProductDialog] = useState<boolean>(false);
 
     const onOpenProductDialog = (isOpen:boolean, product?:IProduct): void => {
