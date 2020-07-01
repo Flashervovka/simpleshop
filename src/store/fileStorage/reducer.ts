@@ -1,4 +1,10 @@
-import {FileStorageActionTypes, IFileStorageState, ON_SEND_FILE_REQUEST, ON_SEND_FILE_REQUEST_COMPLETED} from "./types";
+import {
+    FileStorageActionTypes,
+    IFile,
+    IFileStorageState,
+    ON_SEND_FILE_REQUEST,
+    ON_SEND_FILE_REQUEST_COMPLETED
+} from "./types";
 import {RootStateType} from "../index";
 
 
@@ -30,7 +36,7 @@ export function fileStorage(state: IFileStorageState = init, action: FileStorage
     }
 }
 
-const getLastUploadedSelector = (state:RootStateType) => {
+const getLastUploadedSelector = (state:RootStateType):IFile | null => {
     return state.fileStorage.lastUploaded
 }
 

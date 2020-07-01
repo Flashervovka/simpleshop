@@ -8,17 +8,18 @@ import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
 import {addNewProductAction, getProductsListAction, selectProductAction} from "../../store/products/actions";
-import {getProductListSelector} from "../../store/products/reducer"
+import {getProductListSelector, getSelectedProductSelector} from "../../store/products/reducer"
 
 import './styles.css';
 import ControllBar from "../../components/ControllBar";
 import {adminTabsAndPanels} from "../../config";
-import {getLastUploadedSelector} from "../../store/fileStorage/reducer";
+//import {getLastUploadedSelector} from "../../store/fileStorage/reducer";
 import ProductDialog from '../../components/ProductDialog';
 
 const mapStateToProps = (state: RootStateType) => ({
     productsListProp: getProductListSelector(state),
-    productUploadedImageUrl: getLastUploadedSelector(state)
+   // productUploadedImageUrl: getLastUploadedSelector(state),
+    selectedProductProp: getSelectedProductSelector(state),
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes>) => {
@@ -29,10 +30,10 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onGetProductsList: (): void => {
             dispatch(getProductsListAction());
         },
-        onAddNewProduct: (product: IProduct): void => {
-            dispatch(addNewProductAction(product))
+        onAddNewProduct: (product: IProduct, productImgFile: Blob): void => {
+            dispatch(addNewProductAction(product, productImgFile))
         },
-        onSelectProduct: (product: IProduct) => {
+        onSelectProduct: (product: IProduct | null) => {
             dispatch(selectProductAction(product))
         }
     }
@@ -41,12 +42,12 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp, onSelectProduct} = props;
+    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp, onSendFile,onAddNewProduct} = props;
     const [openAddProductDialog, setOpenAddProductDialog] = useState<boolean>(false);
 
     const onOpenProductDialog = (isOpen:boolean, product?:IProduct): void => {
         setOpenAddProductDialog(isOpen);
-        if(product)onSelectProduct(product);
+        onSelectProduct(product ? product : null);
     }
 
     return (
@@ -57,7 +58,11 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 productsList={productsListProp}
                 onOpenProductDialog={onOpenProductDialog}/>
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
-            <ProductDialog open={openAddProductDialog} onOpenProductDialog={onOpenProductDialog}/>
+            <ProductDialog
+                open={openAddProductDialog}
+                onOpenProductDialog={onOpenProductDialog}
+                selectedProduct={selectedProductProp}
+                onAddNewProduct={onAddNewProduct}/>
         </div>
 
     )

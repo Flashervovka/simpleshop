@@ -20,21 +20,16 @@ class ProductsService {
         return result;
     }
 
-    async addNewProduct(newProductData: IProduct) {
-        const responce: Object = await http({
+    async addNewProduct(newProductData: IProduct):Promise<IProduct> {
+        const responce: IProduct = await http({
             url: `${basePath}/product`,
             init: {
                 method: "post",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    name: newProductData.name,
-                    url: newProductData.url,
-                    price: newProductData.price,
-                    description: newProductData.description
-                })
+                body: JSON.stringify(newProductData)
             }
         });
-        console.log("responce",responce);
+        return responce;
     }
 }
 export default new ProductsService();

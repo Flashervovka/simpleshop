@@ -12,6 +12,7 @@ export interface IProduct {
     price: string
     description: string
     url: string
+    category:string
 }
 
 export interface IProductsState {
@@ -19,6 +20,7 @@ export interface IProductsState {
     isLoading: boolean
     isLoaded: boolean
     selectedProduct: IProduct | null
+    savingNewProduct:boolean
 }
 
 interface GetProductRequestAction {
@@ -41,7 +43,7 @@ interface AddNewProductRequestCompletedAction {
 
 interface SelectProductAction {
     type: typeof ON_SELECT_PRODUCT
-    selectedProduct: IProduct
+    selectedProduct: IProduct | null
 }
 
 
