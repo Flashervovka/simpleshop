@@ -8,7 +8,7 @@ import NewProduct from "../NewProduct";
 
 interface ProductsListProps {
     productsList:IProduct[]
-    onOpenProductDialog(isOpenDialogCreate:boolean,  product?:IProduct):void
+    onOpenProductDialog(isOpenDialogCreate:boolean,  product?:IProduct,  dialogStatus?:string):void
 }
 
 

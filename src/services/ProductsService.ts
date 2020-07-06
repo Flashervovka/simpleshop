@@ -31,5 +31,18 @@ class ProductsService {
         });
         return responce;
     }
+
+    async updateProduct(updatedProductData: IProduct):Promise<IProduct> {
+        console.log("updatedProductData",updatedProductData);
+        const responce: IProduct = await http({
+            url: `${basePath}/product/${updatedProductData.id}`,
+            init: {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedProductData)
+            }
+        });
+        return responce;
+    }
 }
 export default new ProductsService();

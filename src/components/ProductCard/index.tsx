@@ -11,19 +11,22 @@ import {IProduct} from "../../store/products/types";
 
 interface ProductCardProps {
     productData:IProduct
-    onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct):void
+    onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct, dialogStatus?:string):void
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
     const {productData, onOpenProduct} = props;
 
-    const onOpen = (): void => {
+    const onView = (): void => {
         onOpenProduct(true, productData);
+    }
+    const onEdit = (): void => {
+        onOpenProduct(true, productData, 'edit');
     }
 
     return (
-        <Card className="product-card" onClick={onOpen}>
-            <CardActionArea>
+        <Card className="product-card">
+            <CardActionArea onClick={onView}>
                 <CardMedia
                     className="product-card__media"
                     image={`../images/${productData.url}`}
@@ -42,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={onEdit}>
                     Редактировать
                 </Button>
                 <Button size="small" color="primary">

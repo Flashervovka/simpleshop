@@ -5,6 +5,8 @@ import {
     ON_GET_PRODUCTS_REQUEST,
     ON_GET_PRODUCTS_REQUEST_COMPLETED,
     ON_SELECT_PRODUCT,
+    ON_UPDATE_PRODUCT_REQUEST,
+    ON_UPDATE_PRODUCT_REQUEST_COMPLETED,
     ProductsActionTypes
 } from "./types";
 import {RootStateType} from "../index";
@@ -48,6 +50,25 @@ export function productsListState(state: IProductsState = init, action: Products
                 ...state,
                 savingNewProduct:false,
                 productsList:[...state.productsList, action.newProduct]
+            };
+        case ON_UPDATE_PRODUCT_REQUEST:
+            return {
+                ...state,
+                isLoaded:false,
+                isLoading:true
+            };
+        case ON_UPDATE_PRODUCT_REQUEST_COMPLETED:
+            return {
+                ...state,
+                isLoaded:true,
+                isLoading:false,
+                productsList:state.productsList.map((product) => {
+                    if(product.id!== action.updatedProduct.id){
+                        return product;
+                    }else{
+                        return action.updatedProduct;
+                    }
+                })
             };
         default:
             return state;

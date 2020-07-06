@@ -13,7 +13,7 @@ interface ControlBarProps {
     tabsPanelsData: ITabsPanelsData
     onGetProductsList(): void
     productsList: IProduct[]
-    onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct):void
+    onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({

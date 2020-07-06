@@ -6,7 +6,12 @@ import {RootStateType} from "../../store";
 import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
-import {addNewProductAction, getProductsListAction, selectProductAction} from "../../store/products/actions";
+import {
+    addNewProductAction,
+    getProductsListAction,
+    selectProductAction,
+    updateProductAction
+} from "../../store/products/actions";
 import {getProductListSelector, getSelectedProductSelector} from "../../store/products/reducer"
 
 import './styles.css';
@@ -29,6 +34,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onSelectProduct: (product: IProduct | null) => {
             dispatch(selectProductAction(product))
+        },
+        onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
+            dispatch(updateProductAction(product, productImgFile))
         }
     }
 }
@@ -36,11 +44,13 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct} = props;
-    const [openAddProductDialog, setOpenAddProductDialog] = useState<boolean>(false);
+    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct, onUpdateProduct} = props;
+    const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
+    const [productDialogStatus, setProductDialogStatus] = useState<string>('');
 
-    const onOpenProductDialog = (isOpen:boolean, product?:IProduct): void => {
-        setOpenAddProductDialog(isOpen);
+    const onOpenProductDialog = (isOpen:boolean, product?:IProduct,  dialogStatus:string = ""): void => {
+        setOpenProductDialog(isOpen);
+        setProductDialogStatus(dialogStatus);
         onSelectProduct(product ? product : null);
     }
 
@@ -53,10 +63,12 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 onOpenProductDialog={onOpenProductDialog}/>
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
             <ProductDialog
-                open={openAddProductDialog}
+                open={openProductDialog}
                 onOpenProductDialog={onOpenProductDialog}
                 selectedProduct={selectedProductProp}
-                onAddNewProduct={onAddNewProduct}/>
+                onAddNewProduct={onAddNewProduct}
+                dialogStatus={productDialogStatus}
+                onUpdateProduct={onUpdateProduct}/>
         </div>
 
     )
