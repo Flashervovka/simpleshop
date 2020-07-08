@@ -4,6 +4,8 @@ import {
     ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED,
     ON_GET_PRODUCTS_REQUEST,
     ON_GET_PRODUCTS_REQUEST_COMPLETED,
+    ON_REMOVE_PRODUCT_REQUEST,
+    ON_REMOVE_PRODUCT_REQUEST_COMPLETED,
     ON_SELECT_PRODUCT,
     ON_UPDATE_PRODUCT_REQUEST,
     ON_UPDATE_PRODUCT_REQUEST_COMPLETED,
@@ -69,6 +71,19 @@ export function productsListState(state: IProductsState = init, action: Products
                         return action.updatedProduct;
                     }
                 })
+            };
+        case ON_REMOVE_PRODUCT_REQUEST:
+            return {
+                ...state,
+                isLoaded:false,
+                isLoading:true
+            };
+        case ON_REMOVE_PRODUCT_REQUEST_COMPLETED:
+            return {
+                ...state,
+                isLoaded:true,
+                isLoading:false,
+                productsList:state.productsList.filter((product) => product.id!== action.removed)
             };
         default:
             return state;

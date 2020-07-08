@@ -8,7 +8,7 @@ import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
 import {
     addNewProductAction,
-    getProductsListAction,
+    getProductsListAction, removeProductAction,
     selectProductAction,
     updateProductAction
 } from "../../store/products/actions";
@@ -37,6 +37,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
             dispatch(updateProductAction(product, productImgFile))
+        },
+        onRemoveProduct: (product: IProduct): void => {
+            dispatch(removeProductAction(product))
         }
     }
 }
@@ -44,7 +47,7 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct, onUpdateProduct} = props;
+    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct, onUpdateProduct, onRemoveProduct} = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
 
@@ -60,7 +63,8 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 tabsPanelsData={adminTabsAndPanels}
                 onGetProductsList={onGetProductsList}
                 productsList={productsListProp}
-                onOpenProductDialog={onOpenProductDialog}/>
+                onOpenProductDialog={onOpenProductDialog}
+                onRemoveProduct={onRemoveProduct}/>
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
             <ProductDialog
                 open={openProductDialog}

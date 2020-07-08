@@ -14,6 +14,7 @@ interface ControlBarProps {
     onGetProductsList(): void
     productsList: IProduct[]
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
+    onRemoveProduct(product:IProduct):void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog } = props;
+    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct } = props;
 
     useEffect(() => {
         onGetProductsList();
@@ -65,7 +66,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
             {
                 tabsPanelsData.panels.map((Panel, index) =>
                     <TabPanel value={value} index={index} key={`admin_tab_panel_${index}`}>
-                        <Panel name="sssssssssssdd" productsList={productsList} onOpenProductDialog={onOpenProductDialog}/>
+                        <Panel name="panel" productsList={productsList} onOpenProductDialog={onOpenProductDialog} onRemoveProduct={onRemoveProduct}/>
                     </TabPanel>
                 )
             }

@@ -12,16 +12,21 @@ import {IProduct} from "../../store/products/types";
 interface ProductCardProps {
     productData:IProduct
     onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct, dialogStatus?:string):void
+    onRemoveProduct(product:IProduct):void
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
-    const {productData, onOpenProduct} = props;
+    const {productData, onOpenProduct, onRemoveProduct} = props;
 
     const onView = (): void => {
         onOpenProduct(true, productData);
     }
     const onEdit = (): void => {
         onOpenProduct(true, productData, 'edit');
+    }
+
+    const onRemove = (): void => {
+        onRemoveProduct(productData);
     }
 
     return (
@@ -48,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
                 <Button size="small" color="primary" onClick={onEdit}>
                     Редактировать
                 </Button>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={onRemove}>
                     Удалить
                 </Button>
             </CardActions>

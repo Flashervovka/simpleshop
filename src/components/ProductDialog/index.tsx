@@ -20,15 +20,20 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
         onOpenProductDialog(false);
     }
 
-    const onSaveProduct = (product: IProduct, productImgFile: Blob): void => {
+    const onSave = (product: IProduct, productImgFile: Blob): void => {
         onAddNewProduct(product, productImgFile);
     }
+
+    const onUpdate = (product: IProduct, productImgFile: Blob): void => {
+        onUpdateProduct(product, productImgFile);
+    }
+
 
     return (
         <Dialog open={open} onClose={onCloseDialog} aria-labelledby="form-dialog-title" fullWidth>
             {selectedProduct ?
-                <EditAndViewProductDialog onCloseDialog={onCloseDialog} selectedProduct={selectedProduct} dialogStatus={dialogStatus} onUpdateProduct={onUpdateProduct}/> :
-                <CreateProductDialog onCloseDialog={onCloseDialog} onSaveProduct={onSaveProduct}/>}
+                <EditAndViewProductDialog onCloseDialog={onCloseDialog} selectedProduct={selectedProduct} dialogStatus={dialogStatus} onUpdateProduct={onUpdate}/> :
+                <CreateProductDialog onCloseDialog={onCloseDialog} onSaveProduct={onSave}/>}
         </Dialog>
     );
 }

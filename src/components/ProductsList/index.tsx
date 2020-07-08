@@ -7,19 +7,26 @@ import {IProduct} from "../../store/products/types";
 import NewProduct from "../NewProduct";
 
 interface ProductsListProps {
-    productsList:IProduct[]
-    onOpenProductDialog(isOpenDialogCreate:boolean,  product?:IProduct,  dialogStatus?:string):void
+    productsList: IProduct[]
+    onOpenProductDialog(isOpenDialogCreate: boolean, product?: IProduct, dialogStatus?: string): void
+    onRemoveProduct(product: IProduct): void
 }
 
 
 const ProductsList: React.FC<ProductsListProps> = (props: ProductsListProps) => {
-    const {productsList, onOpenProductDialog} = props;
+    const {productsList, onOpenProductDialog, onRemoveProduct} = props;
     return (
         <PerfectScrollbar>
             <div className="products-list">
                 <NewProduct onOpenProduct={onOpenProductDialog}/>
                 {
-                    productsList.map((product, index) => <ProductCard key={`product_${index}`} productData={product} onOpenProduct={onOpenProductDialog}/>)
+                    productsList.map((product, index) =>
+                        <ProductCard
+                            key={`product_${index}`}
+                            productData={product}
+                            onOpenProduct={onOpenProductDialog}
+                            onRemoveProduct={onRemoveProduct}/>
+                    )
                 }
             </div>
         </PerfectScrollbar>

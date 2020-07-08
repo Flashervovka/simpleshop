@@ -44,5 +44,17 @@ class ProductsService {
         });
         return responce;
     }
+
+    async removeProduct(product: IProduct):Promise<string> {
+        const responce: string = await http({
+            url: `${basePath}/product/${product.id}`,
+            init: {
+                method: "DELETE",
+                headers: {'Content-Type': 'application/json'},
+                body:JSON.stringify(product)
+            }
+        });
+        return responce;
+    }
 }
 export default new ProductsService();

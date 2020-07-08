@@ -15,7 +15,7 @@ interface EditAndViewProductDialogProps {
     onCloseDialog():void
     selectedProduct: IProduct
     dialogStatus:string
-    onUpdateProduct(product: IProduct, productImgFile: Blob | undefined): void
+    onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
