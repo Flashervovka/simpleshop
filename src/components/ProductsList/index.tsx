@@ -16,7 +16,7 @@ interface ProductsListProps {
 const ProductsList: React.FC<ProductsListProps> = (props: ProductsListProps) => {
     const {productsList, onOpenProductDialog, onRemoveProduct} = props;
     return (
-        <PerfectScrollbar>
+        <PerfectScrollbar className="product-list-wrapper">
             <div className="products-list">
                 <NewProduct onOpenProduct={onOpenProductDialog}/>
                 {

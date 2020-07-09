@@ -147,7 +147,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                         </Button> : ''
                 }
                 <Button onClick={onCloseDialog} color="primary">
-                    Отменить
+                    {isEditStatus ? 'Отменить' : 'Закрыть'}
                 </Button>
             </DialogActions>
         </div>

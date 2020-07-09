@@ -48,7 +48,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
 
     return (
         <div>
-            <AppBar position="static" color="default" className={classes.root}>
+            <AppBar position="fixed" color="default" className={classes.root}>
                 <Tabs classes={classes}
                       value={value}
                       variant="scrollable"
