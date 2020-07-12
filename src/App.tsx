@@ -1,12 +1,14 @@
 import React from 'react';
 import AdminPage from "./containers/Admin";
 import './App.css';
-//import MessagesList from "./containers/MessagesList";
+import {Route, Switch} from "react-router";
 
 function App() {
   return (
     <div className="App">
-      <AdminPage/>
+        <Switch>
+            <Route path="/admin" component={AdminPage}/>
+        </Switch>
     </div>
   );
 }

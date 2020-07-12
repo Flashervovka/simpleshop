@@ -3,19 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { rootReducer } from './store';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-
-
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+import {ConnectedRouter} from 'connected-react-router';
+import {store, history} from "./store";
 
 
 ReactDOM.render(
   <React.Fragment>
       <Provider store={store}>
-          <App />
+          <ConnectedRouter history={history}>
+              <App />
+          </ConnectedRouter>
       </Provider>
   </React.Fragment>,
   document.getElementById('root')
