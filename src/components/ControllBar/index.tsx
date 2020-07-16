@@ -7,6 +7,7 @@ import TabPanel from "./TabPanel";
 import ControllBarTab from "./ControllBarTab";
 import {ITabsPanelsData} from "./types";
 import {IProduct} from "../../store/products/types";
+import {ICategory} from "../Settings/types";
 
 
 interface ControlBarProps {
@@ -14,7 +15,8 @@ interface ControlBarProps {
     onGetProductsList(): void
     productsList: IProduct[]
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
-    onRemoveProduct(product:IProduct):void
+    onRemoveProduct(product:IProduct):void,
+    categories:ICategory[]
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct } = props;
+    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct, categories } = props;
 
     useEffect(() => {
         onGetProductsList();
@@ -66,7 +68,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
             {
                 tabsPanelsData.panels.map((Panel, index) =>
                     <TabPanel value={value} index={index} key={`admin_tab_panel_${index}`}>
-                        <Panel name="panel" productsList={productsList} onOpenProductDialog={onOpenProductDialog} onRemoveProduct={onRemoveProduct}/>
+                        <Panel name="panel" productsList={productsList} onOpenProductDialog={onOpenProductDialog} onRemoveProduct={onRemoveProduct} categories={categories}/>
                     </TabPanel>
                 )
             }

@@ -3,35 +3,34 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AdminProductsPage from "../components/AdminPages/AdminProductsPage";
 import AdminProductOrdersPage from "../components/AdminPages/AdminProductOrdersPage";
+import AdminSettingsPage from "../components/AdminPages/AdminSettingsPage";
 import {ITabsPanelsData} from "../components/ControllBar/types";
 
 
-const basePath:String = "http://localhost:8080";
+const basePath: String = "http://localhost:8080";
 
 
-const adminTabsAndPanels:ITabsPanelsData = {
-    panels:[
+const adminTabsAndPanels: ITabsPanelsData = {
+    panels: [
         AdminProductsPage,
-        AdminProductOrdersPage
-        ],
-    tabs:[
+        AdminProductOrdersPage,
+        AdminSettingsPage
+    ],
+    tabs: [
         {
-            Icon:FastfoodIcon,
-            label:"продукты"
+            Icon: FastfoodIcon,
+            label: "продукты"
         },
         {
-            Icon:FormatListNumberedIcon,
-            label:"заказы"
+            Icon: FormatListNumberedIcon,
+            label: "заказы"
         },
         {
-            Icon:SettingsIcon,
-            label:"настройки"
+            Icon: SettingsIcon,
+            label: "настройки"
         }
     ]
 }
-
-
-
 
 
 export {
