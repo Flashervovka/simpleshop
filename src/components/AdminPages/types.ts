@@ -1,5 +1,5 @@
 import {IProduct} from "../../store/products/types";
-import {ICategory} from "../Settings/types";
+import {ICategory} from "../../store/categories/types";
 
 export interface AdminProductsPageProps {
     productsList:IProduct[]
@@ -9,8 +9,4 @@ export interface AdminProductsPageProps {
 
 export interface AdminProductOrdersPageProps {
     name:string
-}
-
-export interface AdminSettingsPageProps {
-    categories:ICategory[]
 }

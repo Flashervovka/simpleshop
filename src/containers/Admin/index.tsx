@@ -18,14 +18,14 @@ import './styles.css';
 import ControllBar from "../../components/ControllBar";
 import {adminTabsAndPanels} from "../../config";
 import ProductDialog from '../../components/ProductDialog';
-import {ICategory} from "../../components/Settings/types";
+import {CategoriesActionTypes} from "../../store/categories/types";
 
 const mapStateToProps = (state: RootStateType) => ({
     productsListProp: getProductListSelector(state),
     selectedProductProp: getSelectedProductSelector(state),
 })
 
-const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes>) => {
+const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes>) => {
     return {
         onGetProductsList: (): void => {
             dispatch(getProductsListAction());
@@ -48,7 +48,15 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
 type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
-    const {onGetProductsList, productsListProp, onSelectProduct, selectedProductProp,onAddNewProduct, onUpdateProduct, onRemoveProduct} = props;
+    const {
+        onGetProductsList,
+        productsListProp,
+        onSelectProduct,
+        selectedProductProp,
+        onAddNewProduct,
+        onUpdateProduct,
+        onRemoveProduct
+    } = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
 
@@ -58,13 +66,6 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
         onSelectProduct(product ? product : null);
     }
 
-    const categories:ICategory[] = [
-        {name: 'sushi', label: 'Суши', id: 0},
-        {name: 'grill', label: 'Гриль меню', id: 0},
-        {name: 'drinks', label: 'Напитки', id: 0},
-        {name: 'pizza', label: 'Пицца', id: 0}
-    ]
-
     return (
         <div>
             <ControllBar
@@ -73,7 +74,7 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 productsList={productsListProp}
                 onOpenProductDialog={onOpenProductDialog}
                 onRemoveProduct={onRemoveProduct}
-                categories={categories}/>
+            />
             {/*  <ProductCreatePanel onSendFile={onSendFile}/>*/}
             <ProductDialog
                 open={openProductDialog}

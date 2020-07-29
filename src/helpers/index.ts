@@ -1,4 +1,7 @@
 import {HttpRequestData} from "../types/types";
+import CyrillicToTranslit from "cyrillic-to-translit-js";
+
+export const cyrToLat = new CyrillicToTranslit();
 
 export async function http(
     request: HttpRequestData
@@ -7,3 +10,4 @@ export async function http(
     const body = await response.json();
     return body;
 }
+

@@ -1,0 +1,21 @@
+import {ThunkAction} from "redux-thunk";
+import {RootStateType} from "../index";
+import categoryService from "../../services/CategoriesService";
+import {
+    CategoriesActionTypes, ICategory,
+    ON_ADD_NEW_CATEGORY_REQUEST, ON_ADD_NEW_CATEGORY_REQUEST_COMPLETED,
+    ON_GET_CATEGORIES_REQUEST,
+    ON_GET_CATEGORIES_REQUEST_COMPLETED
+} from "./types";
+
+export const addNewCategoryAction = (category:ICategory): ThunkAction<void, RootStateType, unknown, CategoriesActionTypes> => async (dispatch, state) => {
+    dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST});
+    const newCategory:ICategory = await categoryService.addNew(category);
+    dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST_COMPLETED, newCategory});
+}
+
+export const getCategoriesListAction = (): ThunkAction<void, RootStateType, unknown, CategoriesActionTypes> => async (dispatch, state) => {
+    dispatch({type:ON_GET_CATEGORIES_REQUEST});
+    const categories:ICategory[] = await categoryService.getCategoriesList();
+    dispatch({type:ON_GET_CATEGORIES_REQUEST_COMPLETED, categories});
+}

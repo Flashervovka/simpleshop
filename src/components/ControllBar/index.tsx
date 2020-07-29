@@ -2,13 +2,11 @@ import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import './styles.css';
-import {makeStyles, Theme} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import TabPanel from "./TabPanel";
 import ControllBarTab from "./ControllBarTab";
 import {ITabsPanelsData} from "./types";
 import {IProduct} from "../../store/products/types";
-import {ICategory} from "../Settings/types";
-
 
 interface ControlBarProps {
     tabsPanelsData: ITabsPanelsData
@@ -16,10 +14,9 @@ interface ControlBarProps {
     productsList: IProduct[]
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
     onRemoveProduct(product:IProduct):void,
-    categories:ICategory[]
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
         width: '100%',
@@ -35,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct, categories } = props;
+    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct} = props;
 
     useEffect(() => {
         onGetProductsList();
@@ -60,7 +57,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
                 >
                     {
                         tabsPanelsData.tabs.map((tab, index) =>
-                            <ControllBarTab {...tab} key={`admin_tabs_${index}`} index={index} onSelect={onSelectTab}/>
+                            tab.access ? <ControllBarTab {...tab} key={`admin_tabs_${index}`} index={index} onSelect={onSelectTab}/> : null
                         )
                     }
                 </Tabs>
@@ -68,7 +65,12 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
             {
                 tabsPanelsData.panels.map((Panel, index) =>
                     <TabPanel value={value} index={index} key={`admin_tab_panel_${index}`}>
-                        <Panel name="panel" productsList={productsList} onOpenProductDialog={onOpenProductDialog} onRemoveProduct={onRemoveProduct} categories={categories}/>
+                        <Panel
+                            name="panel"
+                            productsList={productsList}
+                            onOpenProductDialog={onOpenProductDialog}
+                            onRemoveProduct={onRemoveProduct}
+                        />
                     </TabPanel>
                 )
             }

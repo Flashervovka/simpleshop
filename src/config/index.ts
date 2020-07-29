@@ -19,15 +19,18 @@ const adminTabsAndPanels: ITabsPanelsData = {
     tabs: [
         {
             Icon: FastfoodIcon,
-            label: "продукты"
+            label: "продукты",
+            access:true
         },
         {
             Icon: FormatListNumberedIcon,
-            label: "заказы"
+            label: "заказы",
+            access:true
         },
         {
             Icon: SettingsIcon,
-            label: "настройки"
+            label: "настройки",
+            access:true
         }
     ]
 }

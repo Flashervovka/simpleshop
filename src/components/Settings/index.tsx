@@ -5,25 +5,35 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './styles.css';
 import CategorySettings from "./CategorySettings";
-import {ICategory} from "./types";
+import {ICategory} from "../../store/categories/types";
 
 interface AdminSettingsProps {
     categories:ICategory[]
+    onAddNewCategory(category:ICategory):void
 }
 
 const AdminSettings: React.FC<AdminSettingsProps> = (props: AdminSettingsProps) => {
-    const {categories} = props;
+    const {categories, onAddNewCategory} = props;
     return (
         <div className="settings-wrapper">
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
-                    id="panel1a-header"
                 >
                     <Typography>Категории</Typography>
                 </AccordionSummary>
-                <CategorySettings categories={categories}/>
+                <CategorySettings categories={categories} onAddNewCategory={onAddNewCategory}/>
+            </Accordion>
+
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon/>}
+                    aria-controls="panel1a-content"
+                >
+                    <Typography>Пользователи</Typography>
+                </AccordionSummary>
+                <div>Здесь будут создаваться, удаляться пользователи</div>
             </Accordion>
         </div>
     );
