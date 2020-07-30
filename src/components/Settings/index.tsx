@@ -10,10 +10,11 @@ import {ICategory} from "../../store/categories/types";
 interface AdminSettingsProps {
     categories:ICategory[]
     onAddNewCategory(category:ICategory):void
+    onRemoveCategory(category:ICategory):void
 }
 
 const AdminSettings: React.FC<AdminSettingsProps> = (props: AdminSettingsProps) => {
-    const {categories, onAddNewCategory} = props;
+    const {categories, onAddNewCategory, onRemoveCategory} = props;
     return (
         <div className="settings-wrapper">
             <Accordion>
@@ -23,7 +24,7 @@ const AdminSettings: React.FC<AdminSettingsProps> = (props: AdminSettingsProps) 
                 >
                     <Typography>Категории</Typography>
                 </AccordionSummary>
-                <CategorySettings categories={categories} onAddNewCategory={onAddNewCategory}/>
+                <CategorySettings categories={categories} onAddNewCategory={onAddNewCategory} onRemoveCategory={onRemoveCategory}/>
             </Accordion>
 
             <Accordion>

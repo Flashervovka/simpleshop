@@ -20,10 +20,11 @@ interface CategorySettingsProps {
     categories: ICategory[]
 
     onAddNewCategory(category: ICategory): void
+    onRemoveCategory(category: ICategory): void
 }
 
 const CategorySettings: React.FC<CategorySettingsProps> = (props: CategorySettingsProps) => {
-    const {categories, onAddNewCategory} = props;
+    const {categories, onAddNewCategory, onRemoveCategory} = props;
 
     const [newCategoryLabel, setNewCategoryLabel] = useState<string>('');
 
@@ -33,6 +34,10 @@ const CategorySettings: React.FC<CategorySettingsProps> = (props: CategorySettin
 
     const onChange = (event: React.ChangeEvent<{ value: string }>): void => {
         setNewCategoryLabel(event.target.value as string);
+    }
+
+    const onRemove = (category:ICategory) => ():void => {
+        onRemoveCategory(category);
     }
 
     return (
@@ -69,7 +74,7 @@ const CategorySettings: React.FC<CategorySettingsProps> = (props: CategorySettin
                                 primary={category.label}
                             />
                             <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete">
+                                <IconButton edge="end" aria-label="delete" onClick={onRemove(category)}>
                                     <DeleteIcon/>
                                 </IconButton>
                             </ListItemSecondaryAction>

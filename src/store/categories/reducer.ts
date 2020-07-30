@@ -54,7 +54,8 @@ export function categoriesState(state: ICategoriesState = init, action: Categori
             return {
                 ...state,
                 isLoaded:true,
-                isLoading:false
+                isLoading:false,
+                categories:state.categories.filter((category) => category.id !== action.categoryId)
             };
         default:
             return state;

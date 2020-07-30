@@ -24,30 +24,16 @@ class CategoriesService {
         });
         return responce;
     }
-/*
-    async updateProduct(updatedProductData: IProduct):Promise<IProduct> {
-        console.log("updatedProductData",updatedProductData);
-        const responce: IProduct = await http({
-            url: `${basePath}/product/${updatedProductData.id}`,
+
+    async remove(category: ICategory):Promise<Number> {
+        const responce: Number = await http({
+            url: `${basePath}/category/${category.id}`,
             init: {
-                method: "PUT",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedProductData)
+                method: "DELETE",
+                headers: {'Content-Type': 'application/json'}
             }
         });
         return responce;
     }
-
-    async removeProduct(product: IProduct):Promise<string> {
-        const responce: string = await http({
-            url: `${basePath}/product/${product.id}`,
-            init: {
-                method: "DELETE",
-                headers: {'Content-Type': 'application/json'},
-                body:JSON.stringify(product)
-            }
-        });
-        return responce;
-    }*/
 }
 export default new CategoriesService();

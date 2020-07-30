@@ -40,6 +40,7 @@ interface RemoveProductRequestAction {
 }
 interface RemoveProductRequestCompletedAction {
     type: typeof ON_REMOVE_CATEGORY_REQUEST_COMPLETED
+    categoryId: Number
 }
 
 export type CategoriesActionTypes =

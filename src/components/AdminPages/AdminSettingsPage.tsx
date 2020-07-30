@@ -5,7 +5,7 @@ import {RootStateType} from "../../store";
 import {ThunkDispatch} from "redux-thunk";
 import {CategoriesActionTypes, ICategory} from "../../store/categories/types";
 import {connect} from "react-redux";
-import {addNewCategoryAction, getCategoriesListAction} from "../../store/categories/actions";
+import {addNewCategoryAction, getCategoriesListAction, removeCategoryAction} from "../../store/categories/actions";
 
 import {getCategoriesListSelector} from "../../store/categories/reducer"
 
@@ -20,6 +20,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Categ
         },
         onGetCategories: (): void => {
             dispatch(getCategoriesListAction());
+        },
+        onRemoveCategory: (category: ICategory): void => {
+            dispatch(removeCategoryAction(category));
         }
     }
 }
@@ -27,14 +30,14 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Categ
 type AdminSettingsPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminSettingsPage: React.FC<AdminSettingsPageProps> = (props: AdminSettingsPageProps) => {
-    const {onAddNewCategory, onGetCategories, categories} = props;
+    const {onAddNewCategory, onGetCategories, onRemoveCategory, categories} = props;
     useEffect(() => {
         onGetCategories();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <AdminSettings categories={categories} onAddNewCategory={onAddNewCategory}/>
+        <AdminSettings categories={categories} onAddNewCategory={onAddNewCategory} onRemoveCategory={onRemoveCategory}/>
     );
 }
 export default connect(mapStateToProps, mapDispatcherToProps)(AdminSettingsPage);
