@@ -1,18 +1,46 @@
-import React from "react";
-//import ProductCreatePanel from "../ProductCreatePanel";
-import {AdminProductsPageProps} from "./types";
+import React, {useEffect} from "react";
+import {IAdminProductsPageProps} from "./types";
 import ProductsList from "../ProductsList";
+import {ThunkDispatch} from "redux-thunk";
+import {RootStateType} from "../../store";
+import {IProduct, ProductsActionTypes} from "../../store/products/types";
+import {getProductListSelector} from "../../store/products/reducer";
+import {
+    getProductsListAction, removeProductAction,
+} from "../../store/products/actions";
+import {connect} from "react-redux";
 
+const mapStateToProps = (state: RootStateType) => ({
+    productsList:getProductListSelector(state),
+})
 
-const AdminProductsPage: React.FC<AdminProductsPageProps> = (props: AdminProductsPageProps) => {
-    const {productsList, onOpenProductDialog, onRemoveProduct} = props;
+const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ProductsActionTypes>) => {
+    return{
+        onGetProductsList: (): void => {
+            dispatch(getProductsListAction());
+        },
+        onRemoveProduct: (product: IProduct): void => {
+            dispatch(removeProductAction(product))
+        }
+    }
+}
+
+type AdminTypeProductsPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
+
+const AdminProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
+    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList} = props;
+
+    useEffect(() => {
+        onGetProductsList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <ProductsList
             productsList={productsList}
             onOpenProductDialog={onOpenProductDialog}
             onRemoveProduct={onRemoveProduct}/>
-        /*  <ProductCreatePanel onSendFile={onSendFile}/>*/
     );
 }
 
-export default AdminProductsPage;
+export default connect(mapStateToProps, mapDispatcherToProps)(AdminProductsPage);

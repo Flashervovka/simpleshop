@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import './styles.css';
@@ -10,10 +10,7 @@ import {IProduct} from "../../store/products/types";
 
 interface ControlBarProps {
     tabsPanelsData: ITabsPanelsData
-    onGetProductsList(): void
-    productsList: IProduct[]
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
-    onRemoveProduct(product:IProduct):void,
 }
 
 const useStyles = makeStyles(() => ({
@@ -32,13 +29,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onGetProductsList, productsList, onOpenProductDialog, onRemoveProduct} = props;
-
-    useEffect(() => {
-        onGetProductsList();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
+    const {tabsPanelsData, onOpenProductDialog} = props;
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const onSelectTab = (selectedTabIndex: number) => {
@@ -67,9 +58,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
                     <TabPanel value={value} index={index} key={`admin_tab_panel_${index}`}>
                         <Panel
                             name="panel"
-                            productsList={productsList}
                             onOpenProductDialog={onOpenProductDialog}
-                            onRemoveProduct={onRemoveProduct}
                         />
                     </TabPanel>
                 )

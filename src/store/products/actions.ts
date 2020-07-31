@@ -18,13 +18,15 @@ import {
 import fileStorage from "../../services/FileStorageService";
 import {getLastUploadedSelector} from "../fileStorage/reducer";
 
-export const getProductsListAction = (): ThunkAction<void, RootStateType, unknown, ProductsActionTypes> => async (dispatch, state) => {
+type TProductAction = ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes>;
+
+export const getProductsListAction = (): TProductAction => async (dispatch, state) => {
     dispatch({type:ON_GET_PRODUCTS_REQUEST});
     const productsList:IProduct[] = await productService.getProductsList();
     dispatch({type:ON_GET_PRODUCTS_REQUEST_COMPLETED, productsList});
 }
 
-export const addNewProductAction = (product:IProduct, productImgFile:Blob): ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes> => async (dispatch, state) => {
+export const addNewProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как сохранить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
     const fileData:IFile = await fileStorage.sendFile(productImgFile);
@@ -35,7 +37,7 @@ export const addNewProductAction = (product:IProduct, productImgFile:Blob): Thun
     dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct});
 }
 
-export const updateProductAction = (product:IProduct, productImgFile:Blob): ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes> => async (dispatch, state) => {
+export const updateProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
     const fileData:IFile = await fileStorage.sendFile(productImgFile);
@@ -46,7 +48,7 @@ export const updateProductAction = (product:IProduct, productImgFile:Blob): Thun
     dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct});
 }
 
-export const removeProductAction = (product:IProduct): ThunkAction<void, RootStateType, unknown, ProductsActionTypes> => async (dispatch, state) => {
+export const removeProductAction = (product:IProduct): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
     dispatch({type:ON_REMOVE_PRODUCT_REQUEST});
     const removed:string = await productService.removeProduct(product);

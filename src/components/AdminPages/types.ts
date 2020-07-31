@@ -1,12 +1,9 @@
 import {IProduct} from "../../store/products/types";
-import {ICategory} from "../../store/categories/types";
 
-export interface AdminProductsPageProps {
-    productsList:IProduct[]
+export interface IAdminProductsPageProps {
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct, dialogStatus?:string):void
-    onRemoveProduct(product:IProduct):void
 }
 
-export interface AdminProductOrdersPageProps {
+export interface IAdminProductOrdersPageProps {
     name:string
 }

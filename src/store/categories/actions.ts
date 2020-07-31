@@ -8,19 +8,21 @@ import {
     ON_GET_CATEGORIES_REQUEST_COMPLETED, ON_REMOVE_CATEGORY_REQUEST, ON_REMOVE_CATEGORY_REQUEST_COMPLETED
 } from "./types";
 
-export const addNewCategoryAction = (category:ICategory): ThunkAction<void, RootStateType, unknown, CategoriesActionTypes> => async (dispatch, state) => {
+type TCategoryAction = ThunkAction<void, RootStateType, unknown, CategoriesActionTypes>;
+
+export const addNewCategoryAction = (category:ICategory): TCategoryAction => async (dispatch, state) => {
     dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST});
     const newCategory:ICategory = await categoryService.addNew(category);
     dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST_COMPLETED, newCategory});
 }
 
-export const getCategoriesListAction = (): ThunkAction<void, RootStateType, unknown, CategoriesActionTypes> => async (dispatch, state) => {
+export const getCategoriesListAction = (): TCategoryAction => async (dispatch, state) => {
     dispatch({type:ON_GET_CATEGORIES_REQUEST});
     const categories:ICategory[] = await categoryService.getCategoriesList();
     dispatch({type:ON_GET_CATEGORIES_REQUEST_COMPLETED, categories});
 }
 
-export const removeCategoryAction = (category:ICategory): ThunkAction<void, RootStateType, unknown, CategoriesActionTypes> => async (dispatch, state) => {
+export const removeCategoryAction = (category:ICategory): TCategoryAction => async (dispatch, state) => {
     dispatch({type:ON_REMOVE_CATEGORY_REQUEST});
     const categoryId:Number = await categoryService.remove(category);
     dispatch({type:ON_REMOVE_CATEGORY_REQUEST_COMPLETED, categoryId});

@@ -1,8 +1,8 @@
 import React from "react";
-import {AdminProductOrdersPageProps} from "./types";
+import {IAdminProductOrdersPageProps} from "./types";
 
 
-const AdminProductOrdersPage: React.FC<AdminProductOrdersPageProps> = (props: AdminProductOrdersPageProps) => {
+const AdminProductOrdersPage: React.FC<IAdminProductOrdersPageProps> = (props: IAdminProductOrdersPageProps) => {
     const {name} = props;
     return (
         <div>{name}</div>
