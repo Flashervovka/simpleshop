@@ -10,14 +10,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import addSvg from "../../static/images/wallpaper-24px.svg";
 import {IProduct} from "../../store/products/types";
+import {ICategory} from "../../store/categories/types";
 
 interface CreateProductDialogProps {
     onCloseDialog():void
     onSaveProduct(product:IProduct, productImgFile:Blob | undefined):void
+    categories:ICategory[]
 }
 
 const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreateProductDialogProps) => {
-    const {onCloseDialog, onSaveProduct} = props;
+    const {onCloseDialog, onSaveProduct, categories} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>(addSvg);
 
@@ -90,15 +92,13 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                     <InputLabel id="demo-simple-select-label">Категория продукта</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
-                        id="demo-simple-select"
                         value={category}
                         onChange={onChange}
                         name="category"
                     >
-                        <MenuItem key="1" value='grill'>Гриль</MenuItem>
-                        <MenuItem key="2" value='sushi'>Суши</MenuItem>
-                        <MenuItem key="3" value='drink'>Напитки</MenuItem>
-                        <MenuItem key="4" value='salat'>Салаты</MenuItem>
+                        {
+                            categories.map((cat, index) => <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>)
+                        }
                     </Select>
                 </FormControl>
                 <TextField

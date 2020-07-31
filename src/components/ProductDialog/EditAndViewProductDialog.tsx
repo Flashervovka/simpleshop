@@ -9,6 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import {IProduct} from "../../store/products/types";
 import './styles.css'
+import {ICategory} from "../../store/categories/types";
 
 
 interface EditAndViewProductDialogProps {
@@ -16,10 +17,11 @@ interface EditAndViewProductDialogProps {
     selectedProduct: IProduct
     dialogStatus:string
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
+    categories:ICategory[]
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
-    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct} = props;
+    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
@@ -115,15 +117,13 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                             <InputLabel>Категория продукта</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
-                                id="demo-simple-select"
                                 value={category}
                                 onChange={onChange}
                                 name="category"
                             >
-                                <MenuItem key="1" value='grill'>Гриль</MenuItem>
-                                <MenuItem key="2" value='sushi'>Суши</MenuItem>
-                                <MenuItem key="3" value='drink'>Напитки</MenuItem>
-                                <MenuItem key="4" value='salat'>Салаты</MenuItem>
+                                {
+                                    categories.map((cat, index) => <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>)
+                                }
                             </Select>
                         </FormControl>
 

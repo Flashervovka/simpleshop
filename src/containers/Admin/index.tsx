@@ -17,9 +17,12 @@ import ControllBar from "../../components/ControllBar";
 import {adminTabsAndPanels} from "../../config";
 import ProductDialog from '../../components/ProductDialog';
 import {CategoriesActionTypes} from "../../store/categories/types";
+import {getCategoriesListSelector} from "../../store/categories/reducer";
+import {getCategoriesListAction} from "../../store/categories/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
+    categories:getCategoriesListSelector(state)
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes>) => {
@@ -32,7 +35,10 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
             dispatch(updateProductAction(product, productImgFile))
-        }
+        },
+        onGetCategories: (): void => {
+            dispatch(getCategoriesListAction());
+        },
     }
 }
 
@@ -44,6 +50,8 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
         selectedProductProp,
         onAddNewProduct,
         onUpdateProduct,
+        onGetCategories,
+        categories
     } = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
@@ -52,6 +60,9 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
         setOpenProductDialog(isOpen);
         setProductDialogStatus(dialogStatus);
         onSelectProduct(product ? product : null);
+        if(isOpen){
+            onGetCategories();
+        }
     }
 
     return (
@@ -66,7 +77,8 @@ const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
                 selectedProduct={selectedProductProp}
                 onAddNewProduct={onAddNewProduct}
                 dialogStatus={productDialogStatus}
-                onUpdateProduct={onUpdateProduct}/>
+                onUpdateProduct={onUpdateProduct}
+                categories={categories}/>
         </div>
 
     )
