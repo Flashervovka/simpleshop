@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import addSvg from "../../static/images/wallpaper-24px.svg";
 import {IProduct} from "../../store/products/types";
 import {ICategory} from "../../store/categories/types";
+import {compressImage} from "../../helpers";
 
 interface CreateProductDialogProps {
     onCloseDialog():void
@@ -35,15 +36,23 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
         const files: Array<File> = Array.prototype.slice.call(event.target.files);
-        setImageFile(files[0]);
-        const reader: FileReader = new FileReader();
-        reader.onload = function (event) {
-            if (event.target) {
-                setProductPhoto(event.target.result as string)
-            }
-        };
-        reader.readAsDataURL(files[0]);
+        compressAndSetPhoto(files[0]);
     }
+
+    const compressAndSetPhoto = (imageFile:File): void => {
+        compressImage(imageFile, (compressedImage:File) => {
+            setImageFile(compressedImage);
+            const reader: FileReader = new FileReader();
+            reader.onload = function (event) {
+                if (event.target) {
+                    setProductPhoto(event.target.result as string)
+                }
+            };
+            reader.readAsDataURL(compressedImage);
+        })
+    }
+
+
     const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
         switch (event.target.name) {
             case 'name':
