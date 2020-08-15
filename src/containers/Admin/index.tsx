@@ -42,9 +42,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
     }
 }
 
-type ReduxType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
+type AdminPageType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
-const AdminPage: React.FC<ReduxType> = (props: ReduxType) => {
+const AdminPage: React.FC<AdminPageType> = (props: AdminPageType) => {
     const {
         onSelectProduct,
         selectedProductProp,
