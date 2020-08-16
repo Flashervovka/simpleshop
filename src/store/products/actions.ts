@@ -17,8 +17,11 @@ import {
 } from "../fileStorage/types";
 import fileStorage from "../../services/FileStorageService";
 import {getLastUploadedSelector} from "../fileStorage/reducer";
+import {IAuthRequestResponce} from "../../types/types";
+import {showAlertAction} from "../errors/actions";
+import {ErrorsActionTypes} from "../errors/types";
 
-type TProductAction = ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes>;
+type TProductAction = ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes | ErrorsActionTypes>;
 
 export const getProductsListAction = (): TProductAction => async (dispatch, state) => {
     dispatch({type:ON_GET_PRODUCTS_REQUEST});
@@ -33,8 +36,13 @@ export const addNewProductAction = (product:IProduct, productImgFile:Blob): TPro
     dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:fileData});
     dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST});
     const img:IFile | null = getLastUploadedSelector(state());
-    const newProduct:IProduct = await productService.addNewProduct({...product, url:img ? img.url : ''});
-    dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct});
+   // const newProduct:IProduct = await productService.addNewProduct({...product, url:img ? img.url : ''});
+    const newProduct:IAuthRequestResponce<IProduct> = await productService.addNewProduct({...product, url:img ? img.url : ''});
+    if(newProduct.user && newProduct.data){
+        dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct:newProduct.data});
+    }else{
+        dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для создания товаров."}))
+    }
 }
 
 export const updateProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {

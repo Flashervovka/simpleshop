@@ -1,6 +1,7 @@
 import {http} from "../helpers";
 import {basePath} from "../config";
 import {IProduct} from "../store/products/types";
+import {IAuthRequestResponce} from "../types/types";
 
 /*
  * service works with products: add, remove, update, get
@@ -20,15 +21,20 @@ class ProductsService {
         return result;
     }
 
-    async addNewProduct(newProductData: IProduct):Promise<IProduct> {
-        const responce: IProduct = await http({
+   // async addNewProduct(newProductData: IProduct):Promise<IProduct> {
+    async addNewProduct(newProductData: IProduct):Promise<IAuthRequestResponce<IProduct>> {
+        const responce: IAuthRequestResponce<IProduct> = await http({
             url: `${basePath}/product`,
             init: {
                 method: "post",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(newProductData)
+                body: JSON.stringify({
+                    data:newProductData,
+                    shopUser:{id:'27fe3cd7-4851-467a-bc73-36b9d17d2ab2'}
+                })
             }
         });
+        console.log("responce",responce);
         return responce;
     }
 

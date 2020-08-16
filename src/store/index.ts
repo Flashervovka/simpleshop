@@ -3,6 +3,7 @@ import {fileStorage} from './fileStorage/reducer';
 import {productsListState} from './products/reducer';
 import {categoriesState} from './categories/reducer';
 import {userState} from './user/reducer';
+import {errorsState} from './errors/reducer';
 import {IFileStorageState} from "./fileStorage/types";
 import {IProductsState} from "./products/types";
 import {createBrowserHistory} from 'history';
@@ -11,6 +12,7 @@ import {connectRouter} from "connected-react-router";
 import thunk from "redux-thunk";
 import {ICategoriesState} from "./categories/types";
 import {IUserState} from "./user/types";
+import {IErrorsSate} from "./errors/types";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
@@ -18,13 +20,15 @@ const rootReducer = combineReducers({
     fileStorage,
     productsListState,
     categoriesState,
-    userState
+    userState,
+    errorsState
 });
 export interface IRootState {
     fileStorage:IFileStorageState
     productsListState:IProductsState
-    categoriesState:ICategoriesState,
+    categoriesState:ICategoriesState
     userState:IUserState
+    errorsState:IErrorsSate
 }
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
