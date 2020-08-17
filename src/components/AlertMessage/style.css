@@ -1,0 +1,12 @@
+.alert-message{
+    margin-top: 50px;
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+}
+
+.alert-message__close-btn{
+    position: absolute!important;
+    right: 20px;
+    top: 10px;
+}

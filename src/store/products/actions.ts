@@ -32,14 +32,17 @@ export const getProductsListAction = (): TProductAction => async (dispatch, stat
 export const addNewProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как сохранить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
-    const fileData:IFile = await fileStorage.sendFile(productImgFile);
-    dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:fileData});
-    dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST});
-    const img:IFile | null = getLastUploadedSelector(state());
-   // const newProduct:IProduct = await productService.addNewProduct({...product, url:img ? img.url : ''});
-    const newProduct:IAuthRequestResponce<IProduct> = await productService.addNewProduct({...product, url:img ? img.url : ''});
-    if(newProduct.user && newProduct.data){
-        dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct:newProduct.data});
+    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile);
+    if(responce.user && responce.data){
+        dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:responce.data});
+        dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST});
+        const img:IFile | null = getLastUploadedSelector(state());
+        const newProduct:IAuthRequestResponce<IProduct> = await productService.addNewProduct({...product, url:img ? img.url : ''});
+        if(newProduct.user && newProduct.data){
+            dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct:newProduct.data});
+        }else{
+            dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для создания товаров."}))
+        }
     }else{
         dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для создания товаров."}))
     }
@@ -48,12 +51,17 @@ export const addNewProductAction = (product:IProduct, productImgFile:Blob): TPro
 export const updateProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
-    const fileData:IFile = await fileStorage.sendFile(productImgFile);
-    dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:fileData});
-    dispatch({type:ON_UPDATE_PRODUCT_REQUEST});
-    const img:IFile | null = getLastUploadedSelector(state());
-    const updatedProduct:IProduct = await productService.updateProduct({...product, url:img ? img.url : ''});
-    dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct});
+    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile);
+    if(responce.user && responce.data){
+        dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:responce.data});
+        dispatch({type:ON_UPDATE_PRODUCT_REQUEST});
+        const img:IFile | null = getLastUploadedSelector(state());
+        const updatedProduct:IProduct = await productService.updateProduct({...product, url:img ? img.url : ''});
+        dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct});
+    }else{
+        dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для изменения товаров."}))
+    }
+
 }
 
 export const removeProductAction = (product:IProduct): TProductAction => async (dispatch, state) => {

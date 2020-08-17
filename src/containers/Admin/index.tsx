@@ -30,7 +30,7 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onAddNewProduct: (product: IProduct, productImgFile: Blob): void => {
             dispatch(addNewProductAction(product, productImgFile))
         },
-        onSelectProduct: (product: IProduct | null) => {
+        onSelectProduct: (product: IProduct | null) :void => {
             dispatch(selectProductAction(product))
         },
         onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
