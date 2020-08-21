@@ -6,6 +6,6 @@ export interface HttpRequestData {
 }
 
 export interface IAuthRequestResponce<T> {
-    user:IUser | null
+    shopUser:IUser | null
     data:T | null
 }

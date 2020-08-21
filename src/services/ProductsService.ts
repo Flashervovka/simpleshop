@@ -22,7 +22,7 @@ class ProductsService {
     }
 
    // async addNewProduct(newProductData: IProduct):Promise<IProduct> {
-    async addNewProduct(newProductData: IProduct):Promise<IAuthRequestResponce<IProduct>> {
+    async addNewProduct(newProductData: IProduct, userId:string):Promise<IAuthRequestResponce<IProduct>> {
         const responce: IAuthRequestResponce<IProduct> = await http({
             url: `${basePath}/product`,
             init: {
@@ -30,34 +30,38 @@ class ProductsService {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data:newProductData,
-                    shopUser:{id:'27fe3cd7-4851-467a-bc73-36b9d17d2ab2'}
+                    shopUser:{id:userId}
                 })
             }
         });
-        console.log("responce",responce);
         return responce;
     }
 
-    async updateProduct(updatedProductData: IProduct):Promise<IProduct> {
-        console.log("updatedProductData",updatedProductData);
-        const responce: IProduct = await http({
+    async updateProduct(updatedProductData: IProduct, userId:string):Promise<IAuthRequestResponce<IProduct>> {
+        const responce: IAuthRequestResponce<IProduct> = await http({
             url: `${basePath}/product/${updatedProductData.id}`,
             init: {
                 method: "PUT",
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(updatedProductData)
+                body:JSON.stringify({
+                    data:updatedProductData,
+                    shopUser:{id:userId}
+                })
             }
         });
         return responce;
     }
 
-    async removeProduct(product: IProduct):Promise<string> {
-        const responce: string = await http({
+    async removeProduct(product: IProduct, userId:string):Promise<IAuthRequestResponce<string>> {
+        const responce: IAuthRequestResponce<string> = await http({
             url: `${basePath}/product/${product.id}`,
             init: {
                 method: "DELETE",
                 headers: {'Content-Type': 'application/json'},
-                body:JSON.stringify(product)
+                body:JSON.stringify({
+                    data:product,
+                    shopUser:{id:userId}
+                })
             }
         });
         return responce;

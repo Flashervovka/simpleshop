@@ -20,6 +20,7 @@ import {getLastUploadedSelector} from "../fileStorage/reducer";
 import {IAuthRequestResponce} from "../../types/types";
 import {showAlertAction} from "../errors/actions";
 import {ErrorsActionTypes} from "../errors/types";
+import {getUserIdSelector} from "../user/reducer";
 
 type TProductAction = ThunkAction<void, RootStateType, unknown, ProductsActionTypes | FileStorageActionTypes | ErrorsActionTypes>;
 
@@ -32,13 +33,14 @@ export const getProductsListAction = (): TProductAction => async (dispatch, stat
 export const addNewProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как сохранить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
-    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile);
-    if(responce.user && responce.data){
+    const userId:string = getUserIdSelector(state());
+    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile, userId);
+    if(responce.shopUser && responce.data){
         dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:responce.data});
         dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST});
         const img:IFile | null = getLastUploadedSelector(state());
-        const newProduct:IAuthRequestResponce<IProduct> = await productService.addNewProduct({...product, url:img ? img.url : ''});
-        if(newProduct.user && newProduct.data){
+        const newProduct:IAuthRequestResponce<IProduct> = await productService.addNewProduct({...product, url:img ? img.url : ''}, userId);
+        if(newProduct.shopUser && newProduct.data){
             dispatch({type:ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED, newProduct:newProduct.data});
         }else{
             dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для создания товаров."}))
@@ -51,13 +53,18 @@ export const addNewProductAction = (product:IProduct, productImgFile:Blob): TPro
 export const updateProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
     dispatch({type:ON_SEND_FILE_REQUEST});
-    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile);
-    if(responce.user && responce.data){
+    const userId:string = getUserIdSelector(state());
+    const responce:IAuthRequestResponce<IFile> = await fileStorage.sendFile(productImgFile, userId);
+    if(responce.shopUser && responce.data){
         dispatch({type:ON_SEND_FILE_REQUEST_COMPLETED, uploadedFileData:responce.data});
         dispatch({type:ON_UPDATE_PRODUCT_REQUEST});
         const img:IFile | null = getLastUploadedSelector(state());
-        const updatedProduct:IProduct = await productService.updateProduct({...product, url:img ? img.url : ''});
-        dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct});
+        const updatedProduct:IAuthRequestResponce<IProduct> = await productService.updateProduct({...product, url:img ? img.url : ''}, userId);
+        if(updatedProduct.shopUser && updatedProduct.data){
+            dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct:updatedProduct.data});
+        }else{
+            dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для изменения товаров."}))
+        }
     }else{
         dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для изменения товаров."}))
     }
@@ -67,8 +74,13 @@ export const updateProductAction = (product:IProduct, productImgFile:Blob): TPro
 export const removeProductAction = (product:IProduct): TProductAction => async (dispatch, state) => {
     /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
     dispatch({type:ON_REMOVE_PRODUCT_REQUEST});
-    const removed:string = await productService.removeProduct(product);
-    dispatch({type:ON_REMOVE_PRODUCT_REQUEST_COMPLETED, removed});
+    const userId:string = getUserIdSelector(state());
+    const removed:IAuthRequestResponce<string> = await productService.removeProduct(product, userId);
+    if(removed.shopUser && removed.data){
+        dispatch({type:ON_REMOVE_PRODUCT_REQUEST_COMPLETED, removed:removed.data});
+    }else{
+        dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для удаления товаров."}))
+    }
 }
 
 

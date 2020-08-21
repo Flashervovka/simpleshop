@@ -1,4 +1,4 @@
-import {IUserState, ON_USER_LOGIN_REQUEST, ON_USER_LOGIN_REQUEST_COMPLETED, UserActionTypes} from "./types";
+import {IUser, IUserState, ON_USER_LOGIN_REQUEST, ON_USER_LOGIN_REQUEST_COMPLETED, UserActionTypes} from "./types";
 import {RootStateType} from "../index";
 
 const init: IUserState = {
@@ -27,10 +27,15 @@ export function userState(state: IUserState = init, action: UserActionTypes): IU
     }
 }
 
-const getUserSelector = (state:RootStateType) => {
+const getUserSelector = (state:RootStateType): IUser | null => {
     return state.userState.user;
 }
 
+const getUserIdSelector = (state:RootStateType):string => {
+    return state.userState.user?.id ? state.userState.user.id : '';
+}
+
 export {
-    getUserSelector
+    getUserSelector,
+    getUserIdSelector
 }

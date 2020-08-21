@@ -12,10 +12,10 @@ class FileStorageService {
     * @param {Array<Blob>} file - file for uploading
     * */
    // async sendFile(file:Blob):Promise<IFile>{
-    async sendFile(file:Blob):Promise<IAuthRequestResponce<IFile>>{
+    async sendFile(file:Blob, userId:string):Promise<IAuthRequestResponce<IFile>>{
         const attachmentFile: FormData = new FormData();
         attachmentFile.append('file', file)
-        attachmentFile.append('userId', "27fe3cd7-4851-467a-bc73-36b9d17d2ab2")
+        attachmentFile.append('userId', userId);
 
         const responce:IAuthRequestResponce<string> = await http({
             url: `${basePath}/uploadFile`,
@@ -28,7 +28,7 @@ class FileStorageService {
             data:{
                 url:responce.data ? responce.data : ""
             },
-            user:responce.user
+            shopUser:responce.shopUser
         }
 
         return result;

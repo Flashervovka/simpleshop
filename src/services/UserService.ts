@@ -20,7 +20,6 @@ class UserService {
                 }
             }
         );
-        console.log(responce);
         return responce;
     }
 }
