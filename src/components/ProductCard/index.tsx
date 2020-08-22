@@ -28,7 +28,6 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
     const onRemove = (): void => {
         onRemoveProduct(productData);
     }
-
     return (
         <Card className="product-card">
             <CardActionArea onClick={onView}>
@@ -43,6 +42,9 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {`Цена: ${productData.price}`}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {`Категория: ${productData.categoryLabel}`}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {productData.description}

@@ -19,6 +19,7 @@ export interface IProduct {
     description: string
     url: string
     category: string
+    categoryLabel: string
 }
 
 export interface IProductsState {

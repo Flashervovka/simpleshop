@@ -11,6 +11,7 @@ import {IProduct} from "../../store/products/types";
 import './styles.css'
 import {ICategory} from "../../store/categories/types";
 import {compressImage} from "../../helpers";
+import {getCategoryByName} from "../../helpers/dataHelper";
 
 
 interface EditAndViewProductDialogProps {
@@ -32,9 +33,10 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     const [name, setName] = useState<string>(selectedProduct.name);
     const [price, setPrice] = useState<string>(selectedProduct.price);
     const [description, setDescription] = useState<string>(selectedProduct.description);
+    const [categoryLabel, setCategoryLabel] = useState<string>(selectedProduct.categoryLabel);
 
     const onSave = () => {
-        onUpdateProduct({name, price, description, url: '', category, id:selectedProduct.id}, imageFile);
+        onUpdateProduct({name, price, description, url: '', category, id:selectedProduct.id, categoryLabel}, imageFile);
     }
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -63,8 +65,10 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             case 'price':
                 setPrice(event.target.value as string);
                 break;
-            case 'category':console.log("event.target.value",event.target.value);
+            case 'category':
                 setCategory(event.target.value as string);
+                const cat:ICategory | null = getCategoryByName(categories, event.target.value as string);
+                setCategoryLabel(cat?.label ? cat.label : '');
                 break;
             case 'description':
                 setDescription(event.target.value as string);
@@ -117,7 +121,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                             required
                             label={isEditStatus ? "Категория" : ''}
                             fullWidth
-                            value={category}
+                            value={categoryLabel}
                             onChange={onChange}
                             name="category"
                             disabled={!isEditStatus}/> :

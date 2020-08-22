@@ -12,6 +12,7 @@ import addSvg from "../../static/images/wallpaper-24px.svg";
 import {IProduct} from "../../store/products/types";
 import {ICategory} from "../../store/categories/types";
 import {compressImage} from "../../helpers";
+import {getCategoryByName} from "../../helpers/dataHelper";
 
 interface CreateProductDialogProps {
     onCloseDialog():void
@@ -29,9 +30,10 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
     const [name, setName] = useState<string>('');
     const [price, setPrice] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [categoryLabel, setCategoryLabel] = useState<string>('');
 
     const onSave = () => {
-        onSaveProduct({name, price, description, url: '', category}, imageFile);
+        onSaveProduct({name, price, description, url: '', category, categoryLabel}, imageFile);
     }
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -53,7 +55,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
     }
 
 
-    const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
+    const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; label?: string | undefined }>) => {
         switch (event.target.name) {
             case 'name':
                 setName(event.target.value as string);
@@ -63,6 +65,8 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                 break;
             case 'category':
                 setCategory(event.target.value as string);
+                const cat:ICategory | null = getCategoryByName(categories, event.target.value as string);
+                setCategoryLabel(cat?.label ? cat.label : '');
                 break;
             case 'description':
                 setDescription(event.target.value as string);

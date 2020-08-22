@@ -28,3 +28,5 @@ export async function compressImage(imageFile:File, callBack:Function):Promise<v
         console.log(error);
     }
 }
+
+

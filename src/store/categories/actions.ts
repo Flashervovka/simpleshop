@@ -7,13 +7,22 @@ import {
     ON_GET_CATEGORIES_REQUEST,
     ON_GET_CATEGORIES_REQUEST_COMPLETED, ON_REMOVE_CATEGORY_REQUEST, ON_REMOVE_CATEGORY_REQUEST_COMPLETED
 } from "./types";
+import {IAuthRequestResponce} from "../../types/types";
+import {showAlertAction} from "../errors/actions";
+import {ErrorsActionTypes} from "../errors/types";
+import {getUserIdSelector} from "../user/reducer";
 
-type TCategoryAction = ThunkAction<void, RootStateType, unknown, CategoriesActionTypes>;
+type TCategoryAction = ThunkAction<void, RootStateType, unknown, CategoriesActionTypes | ErrorsActionTypes>;
 
 export const addNewCategoryAction = (category:ICategory): TCategoryAction => async (dispatch, state) => {
     dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST});
-    const newCategory:ICategory = await categoryService.addNew(category);
-    dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST_COMPLETED, newCategory});
+    const userId:string = getUserIdSelector(state());
+    const newCategory:IAuthRequestResponce<ICategory> = await categoryService.addNew(category, userId);
+    if(newCategory.shopUser && newCategory.data){
+        dispatch({type:ON_ADD_NEW_CATEGORY_REQUEST_COMPLETED, newCategory:newCategory.data});
+    }else{
+        dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для создания категорий."}))
+    }
 }
 
 export const getCategoriesListAction = (): TCategoryAction => async (dispatch, state) => {
@@ -24,6 +33,13 @@ export const getCategoriesListAction = (): TCategoryAction => async (dispatch, s
 
 export const removeCategoryAction = (category:ICategory): TCategoryAction => async (dispatch, state) => {
     dispatch({type:ON_REMOVE_CATEGORY_REQUEST});
-    const categoryId:Number = await categoryService.remove(category);
-    dispatch({type:ON_REMOVE_CATEGORY_REQUEST_COMPLETED, categoryId});
+    const userId:string = getUserIdSelector(state());
+
+    const result:IAuthRequestResponce<Number> = await categoryService.remove(category, userId);
+    if(result.shopUser && result.data){
+        dispatch({type:ON_REMOVE_CATEGORY_REQUEST_COMPLETED, categoryId:result.data});
+    }else{
+        dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для удаления категорий."}))
+    }
+
 }
