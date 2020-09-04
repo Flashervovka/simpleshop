@@ -13,16 +13,19 @@ interface ProductCardProps {
     productData:IProduct
     onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct, dialogStatus?:string):void
     onRemoveProduct(product:IProduct):void
+    readOnly?:boolean
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
-    const {productData, onOpenProduct, onRemoveProduct} = props;
+    const {productData, onOpenProduct, onRemoveProduct, readOnly} = props;
+
+    const dialogStatus:string = readOnly ? '' : 'edit'
 
     const onView = (): void => {
         onOpenProduct(true, productData);
     }
     const onEdit = (): void => {
-        onOpenProduct(true, productData, 'edit');
+        onOpenProduct(true, productData, dialogStatus);
     }
 
     const onRemove = (): void => {
@@ -53,11 +56,15 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
             </CardActionArea>
             <CardActions>
                 <Button size="small" color="primary" onClick={onEdit}>
-                    Редактировать
+                    {!readOnly ? "Редактировать" : "Заказать"}
                 </Button>
-                <Button size="small" color="primary" onClick={onRemove}>
-                    Удалить
-                </Button>
+
+                {
+                    !readOnly &&
+                    <Button size="small" color="primary" onClick={onRemove}>
+                        Удалить
+                    </Button>
+                }
             </CardActions>
         </Card>
     );

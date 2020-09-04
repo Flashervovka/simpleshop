@@ -1,7 +1,7 @@
 import React from 'react';
-import AdminPage from "./containers/Admin";
+import MainPage from "./containers/Pages/MainPage";
 import './App.css';
-import { Switch} from "react-router";
+import {Route, Switch} from "react-router";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminLogin from "./containers/AdminLogin";
 
@@ -13,6 +13,7 @@ import {getAlertErrorSelector} from "./store/errors/reducer";
 import {ThunkDispatch} from "redux-thunk";
 import {ErrorsActionTypes} from "./store/errors/types";
 import {hideAlertAction} from "./store/errors/actions";
+import {adminTabsAndPanels, userTabsAndPanels} from "./config";
 
 const mapStateToProps = (state: RootStateType) => ({
     user:getUserSelector(state),
@@ -36,7 +37,15 @@ const App: React.FC<AppType> = (props: AppType) => {
     <div className="App">
         <AlertMessage onCloseAlert={onCloseAlert} title={alertError?.title} message={alertError?.text} isShow={alertError?.isShow} type={"error"}/>
         <Switch>
-            <PrivateRoute component={AdminLogin} privateComponent={AdminPage} path="/admin" exact={true} condition={user !== null && user.id !== null}/>
+            <PrivateRoute
+                component={AdminLogin}
+                privateComponent={()=> <MainPage pages={adminTabsAndPanels}/>}
+                path="/admin" exact={true}
+                condition={user !== null && user.id !== null}/>
+            <Route
+                path="/"
+                exact={true}
+                component={() => <MainPage pages={userTabsAndPanels} readOnly={true}/>} />
         </Switch>
     </div>
   );

@@ -8,7 +8,7 @@ import './styles.css'
 import {IProduct} from "../../store/products/types";
 
 interface NewProductProps {
-    onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct):void
+    onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct, status?:string):void
 }
 
 
@@ -16,7 +16,7 @@ const NewProduct: React.FC<NewProductProps> = (props: NewProductProps) => {
     const {onOpenProduct} = props
 
     const onAddProductStart = (): void => {
-        onOpenProduct(true);
+        onOpenProduct(true, undefined, "add");
     }
 
 

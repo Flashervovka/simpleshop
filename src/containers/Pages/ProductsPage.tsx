@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {IAdminProductsPageProps} from "./types";
-import ProductsList from "../ProductsList";
+import ProductsList from "../../components/ProductsList";
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
@@ -27,8 +27,8 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
 
 type AdminTypeProductsPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
-const AdminProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
-    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList} = props;
+const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
+    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly} = props;
 
     useEffect(() => {
         onGetProductsList();
@@ -39,8 +39,9 @@ const AdminProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPag
         <ProductsList
             productsList={productsList}
             onOpenProductDialog={onOpenProductDialog}
-            onRemoveProduct={onRemoveProduct}/>
+            onRemoveProduct={onRemoveProduct}
+            readOnly={readOnly}/>
     );
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(AdminProductsPage);
+export default connect(mapStateToProps, mapDispatcherToProps)(ProductsPage);

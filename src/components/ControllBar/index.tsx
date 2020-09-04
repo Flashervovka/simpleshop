@@ -11,6 +11,7 @@ import {IProduct} from "../../store/products/types";
 interface ControlBarProps {
     tabsPanelsData: ITabsPanelsData
     onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
+    readOnly?:boolean
 }
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onOpenProductDialog} = props;
+    const {tabsPanelsData, onOpenProductDialog, readOnly} = props;
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const onSelectTab = (selectedTabIndex: number) => {
@@ -59,6 +60,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
                         <Panel
                             name="panel"
                             onOpenProductDialog={onOpenProductDialog}
+                            readOnly={readOnly}
                         />
                     </TabPanel>
                 )

@@ -134,7 +134,9 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                                 name="category"
                             >
                                 {
-                                    categories.map((cat, index) => <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>)
+                                    categories.map((cat, index) => {
+                                        return <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>
+                                    })
                                 }
                             </Select>
                         </FormControl>

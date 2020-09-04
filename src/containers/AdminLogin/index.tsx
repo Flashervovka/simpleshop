@@ -69,8 +69,8 @@ type AdminLoginType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeo
 const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
 
     const {onLogin} = props;
-    const [login, setLogin] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [login, setLogin] = useState<string>('admin');
+    const [password, setPassword] = useState<string>('admin');
 
     const onChange = (fieldName:string) => (event: React.ChangeEvent<{value: string}>) => {
         switch (fieldName){

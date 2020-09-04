@@ -1,9 +1,9 @@
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import SettingsIcon from '@material-ui/icons/Settings';
-import AdminProductsPage from "../components/AdminPages/AdminProductsPage";
-import AdminProductOrdersPage from "../components/AdminPages/AdminProductOrdersPage";
-import AdminSettingsPage from "../components/AdminPages/AdminSettingsPage";
+import AdminProductsPage from "../containers/Pages/ProductsPage";
+import AdminProductOrdersPage from "../containers/Pages/AdminProductOrdersPage";
+import AdminSettingsPage from "../containers/Pages/AdminSettingsPage";
 import {ITabsPanelsData} from "../components/ControllBar/types";
 
 /*get path to API, maybe in future it will be change*/
@@ -35,8 +35,22 @@ const adminTabsAndPanels: ITabsPanelsData = {
     ]
 }
 
+const userTabsAndPanels: ITabsPanelsData = {
+    panels: [
+        AdminProductsPage
+    ],
+    tabs: [
+        {
+            Icon: FastfoodIcon,
+            label: "продукты",
+            access:true
+        }
+    ]
+}
+
 
 export {
     basePath,
-    adminTabsAndPanels
+    adminTabsAndPanels,
+    userTabsAndPanels
 }

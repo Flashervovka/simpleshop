@@ -14,11 +14,11 @@ import { getSelectedProductSelector} from "../../store/products/reducer"
 
 import './styles.css';
 import ControllBar from "../../components/ControllBar";
-import {adminTabsAndPanels} from "../../config";
 import ProductDialog from '../../components/ProductDialog';
 import {CategoriesActionTypes} from "../../store/categories/types";
 import {getCategoriesListSelector} from "../../store/categories/reducer";
 import {getCategoriesListAction} from "../../store/categories/actions";
+import {ITabsPanelsData} from "../../components/ControllBar/types";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
@@ -42,34 +42,45 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
     }
 }
 
-type AdminPageType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
+interface IProductPageProps{
+    pages:ITabsPanelsData
+    readOnly?:boolean
+}
 
-const AdminPage: React.FC<AdminPageType> = (props: AdminPageType) => {
+type MainPageType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
+
+const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageType & IProductPageProps) => {
     const {
         onSelectProduct,
         selectedProductProp,
         onAddNewProduct,
         onUpdateProduct,
         onGetCategories,
-        categories
+        categories,
+        pages,
+        readOnly
     } = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
 
     const onOpenProductDialog = (isOpen:boolean, product?:IProduct,  dialogStatus:string = ""): void => {
-        setOpenProductDialog(isOpen);
-        setProductDialogStatus(dialogStatus);
-        onSelectProduct(product ? product : null);
         if(isOpen){
-            onGetCategories();
+            setProductDialogStatus(dialogStatus);
+            /** get categories list only for edit and add action*/
+            if(dialogStatus!==""){
+                onGetCategories();
+            }
+            onSelectProduct(product ? product : null);
         }
+        setOpenProductDialog(isOpen);
     }
 
     return (
         <div>
             <ControllBar
-                tabsPanelsData={adminTabsAndPanels}
+                tabsPanelsData={pages}
                 onOpenProductDialog={onOpenProductDialog}
+                readOnly={readOnly}
             />
             <ProductDialog
                 open={openProductDialog}
@@ -83,4 +94,4 @@ const AdminPage: React.FC<AdminPageType> = (props: AdminPageType) => {
 
     )
 }
-export default connect(mapStateToProps, mapDispatcherToProps)(AdminPage);
+export default connect(mapStateToProps, mapDispatcherToProps)(MainPage);
