@@ -10,6 +10,11 @@ import {ITabsPanelsData} from "../components/ControllBar/types";
 const originPath: string[] = window.location.origin.split(":");
 const basePath: String = originPath[0]+":"+originPath[1]+":8080";
 
+const STATUS_EDIT:string = "edit";
+const STATUS_ADD:string = "add";
+const STATUS_CLIENT_VIEW:string = "client_view";
+const STATUS_ADMIN_VIEW:string = "admin_view";
+
 const adminTabsAndPanels: ITabsPanelsData = {
     panels: [
         AdminProductsPage,
@@ -52,5 +57,9 @@ const userTabsAndPanels: ITabsPanelsData = {
 export {
     basePath,
     adminTabsAndPanels,
-    userTabsAndPanels
+    userTabsAndPanels,
+    STATUS_EDIT,
+    STATUS_ADD,
+    STATUS_ADMIN_VIEW,
+    STATUS_CLIENT_VIEW
 }

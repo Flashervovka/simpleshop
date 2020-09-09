@@ -6,7 +6,7 @@ import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
 import {
-    addNewProductAction,
+    addNewProductAction, orderProductAction,
     selectProductAction,
     updateProductAction
 } from "../../store/products/actions";
@@ -19,6 +19,7 @@ import {CategoriesActionTypes} from "../../store/categories/types";
 import {getCategoriesListSelector} from "../../store/categories/reducer";
 import {getCategoriesListAction} from "../../store/categories/actions";
 import {ITabsPanelsData} from "../../components/ControllBar/types";
+import {STATUS_ADD, STATUS_EDIT} from "../../config";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
@@ -39,6 +40,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onGetCategories: (): void => {
             dispatch(getCategoriesListAction());
         },
+        onSendOrder: (product:IProduct, count:string): void => {
+            dispatch(orderProductAction(product, count));
+        },
     }
 }
 
@@ -58,7 +62,8 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         onGetCategories,
         categories,
         pages,
-        readOnly
+        readOnly,
+        onSendOrder
     } = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
@@ -67,7 +72,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         if(isOpen){
             setProductDialogStatus(dialogStatus);
             /** get categories list only for edit and add action*/
-            if(dialogStatus!==""){
+            if(dialogStatus === STATUS_ADD || dialogStatus === STATUS_EDIT){
                 onGetCategories();
             }
             onSelectProduct(product ? product : null);
@@ -83,6 +88,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 readOnly={readOnly}
             />
             <ProductDialog
+                onSendOrder={onSendOrder}
                 open={openProductDialog}
                 onOpenProductDialog={onOpenProductDialog}
                 selectedProduct={selectedProductProp}

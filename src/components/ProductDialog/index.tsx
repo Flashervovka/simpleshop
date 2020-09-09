@@ -13,11 +13,12 @@ interface ProductDialogProps {
     onAddNewProduct(product: IProduct, productImgFile: Blob): void
     dialogStatus: string
     onUpdateProduct(product: IProduct, productImgFile: Blob): void
+    onSendOrder(product: IProduct, count:string): void
     categories:ICategory[]
 }
 
 const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) => {
-    const {open, onOpenProductDialog, selectedProduct, onAddNewProduct, dialogStatus, onUpdateProduct, categories} = props;
+    const {open, onOpenProductDialog, selectedProduct, onAddNewProduct, dialogStatus, onUpdateProduct, categories, onSendOrder} = props;
     const onCloseDialog = (): void => {
         onOpenProductDialog(false);
     }
@@ -40,7 +41,8 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
                     selectedProduct={selectedProduct}
                     dialogStatus={dialogStatus}
                     onUpdateProduct={onUpdate}
-                    categories={categories}/> :
+                    categories={categories}
+                    onSendOrder={onSendOrder}/> :
                 <CreateProductDialog
                     onCloseDialog={onCloseDialog}
                     onSaveProduct={onSave}

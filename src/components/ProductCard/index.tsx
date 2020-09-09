@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import './styles.css';
 import {IProduct} from "../../store/products/types";
+import {STATUS_ADMIN_VIEW, STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 
 interface ProductCardProps {
     productData:IProduct
@@ -19,13 +20,11 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
     const {productData, onOpenProduct, onRemoveProduct, readOnly} = props;
 
-    const dialogStatus:string = readOnly ? '' : 'edit'
-
     const onView = (): void => {
-        onOpenProduct(true, productData);
+        onOpenProduct(true, productData, readOnly ? STATUS_CLIENT_VIEW : STATUS_ADMIN_VIEW);
     }
     const onEdit = (): void => {
-        onOpenProduct(true, productData, dialogStatus);
+        onOpenProduct(true, productData, readOnly ? STATUS_CLIENT_VIEW : STATUS_EDIT);
     }
 
     const onRemove = (): void => {

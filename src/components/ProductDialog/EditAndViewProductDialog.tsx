@@ -12,6 +12,9 @@ import './styles.css'
 import {ICategory} from "../../store/categories/types";
 import {compressImage} from "../../helpers";
 import {getCategoryByName} from "../../helpers/dataHelper";
+import {STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
+import FormHelperText from '@material-ui/core/FormHelperText';
+import addSvg from "../../static/images/wallpaper-24px.svg";
 
 
 interface EditAndViewProductDialogProps {
@@ -19,11 +22,12 @@ interface EditAndViewProductDialogProps {
     selectedProduct: IProduct
     dialogStatus:string
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
-    categories:ICategory[]
+    categories:ICategory[],
+    onSendOrder(product: IProduct, count:string): void
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
-    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories} = props;
+    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories, onSendOrder} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
@@ -34,9 +38,27 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     const [price, setPrice] = useState<string>(selectedProduct.price);
     const [description, setDescription] = useState<string>(selectedProduct.description);
     const [categoryLabel, setCategoryLabel] = useState<string>(selectedProduct.categoryLabel);
+    const [count, setCount] = useState<string>('1');
+    const [savePressed, setSavePressed] = useState<boolean>(false);
 
     const onSave = () => {
-        onUpdateProduct({name, price, description, url: '', category, id:selectedProduct.id, categoryLabel}, imageFile);
+        if (dialogStatus === STATUS_CLIENT_VIEW) {
+            onSendOrder({name, price, description, url: '', category, id: selectedProduct.id, categoryLabel}, count)
+        } else {
+            setSavePressed(true);
+            if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
+                onUpdateProduct({
+                    name,
+                    price,
+                    description,
+                    url: imageFile ? '' : selectedProduct.url,
+                    category,
+                    id: selectedProduct.id,
+                    categoryLabel
+                }, imageFile);
+            }
+        }
+
     }
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -58,6 +80,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     }
 
     const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
+        setSavePressed(true);
         switch (event.target.name) {
             case 'name':
                 setName(event.target.value as string);
@@ -73,12 +96,15 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             case 'description':
                 setDescription(event.target.value as string);
                 break;
+            case 'count':
+                setCount(event.target.value as string);
+                break;
             default:
                 break;
         }
     }
 
-    const isEditStatus:boolean = dialogStatus === "edit";
+    const isEditStatus:boolean = dialogStatus === STATUS_EDIT;
 
     const inputProps:Object = {
         style:{color:"rgba(0, 0, 0, 0.87)"},
@@ -96,7 +122,9 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     <input id="product-photo" className="add-dialog__image-input" type="file"
                            accept="image/*" onChange={onAddPhoto}/>
                 </div>
+                <FormControl fullWidth error={name === "" && savePressed}>
                 <TextField
+                    error={name === "" && savePressed}
                     InputProps={inputProps}
                     required
                     label={isEditStatus ? "Название" : ''}
@@ -105,8 +133,17 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     onChange={onChange}
                     name="name"
                     disabled={!isEditStatus}/>
+                    {name === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
+                </FormControl>
+                <FormControl fullWidth error={price === "" && savePressed}>
                 <TextField
-                    InputProps={inputProps}
+                    error={price === "" && savePressed}
+                    InputProps={{
+                        inputProps: {
+                            ...inputProps,
+                            min:1
+                        }
+                    }}
                     required
                     label={isEditStatus ? "Цена" : ''}
                     type="number"
@@ -114,6 +151,8 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     onChange={onChange}
                     name="price"
                     disabled={!isEditStatus}/>
+                    {price === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
+                </FormControl>
                 {
                     !isEditStatus ?
                         <TextField
@@ -125,7 +164,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                             onChange={onChange}
                             name="category"
                             disabled={!isEditStatus}/> :
-                        <FormControl fullWidth required>
+                        <FormControl fullWidth required error={category === "" && savePressed}>
                             <InputLabel>Категория продукта</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -139,6 +178,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                                     })
                                 }
                             </Select>
+                            {category === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                         </FormControl>
 
                 }
@@ -152,14 +192,30 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     name="description"
                     multiline
                     disabled={!isEditStatus}/>
+                {
+                    dialogStatus === STATUS_CLIENT_VIEW ?
+                        <TextField
+                            className="add-dialog__product-order-count"
+                            variant="outlined"
+                            InputProps={{
+                                inputProps: {
+                                    ...inputProps,
+                                    min:1
+                                }
+                            }}
+                            required
+                            label="Количество"
+                            type="number"
+                            value={count}
+                            onChange={onChange}
+                            name="count"/> :
+                        null
+                }
             </DialogContent>
             <DialogActions>
-                {
-                    isEditStatus ?
-                        <Button onClick={onSave} color="primary">
-                            Сохранить
-                        </Button> : ''
-                }
+                <Button onClick={onSave} color="primary">
+                    {isEditStatus ? "Сохранить" : "Заказать"}
+                </Button>
                 <Button onClick={onCloseDialog} color="primary">
                     {isEditStatus ? 'Отменить' : 'Закрыть'}
                 </Button>

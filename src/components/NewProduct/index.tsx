@@ -6,6 +6,7 @@ import Card from "@material-ui/core/Card";
 import addSvg from '../../static/images/add_circle_outline-24px.svg'
 import './styles.css'
 import {IProduct} from "../../store/products/types";
+import {STATUS_ADD} from "../../config";
 
 interface NewProductProps {
     onOpenProduct(isOpenDialogCreate:boolean, product?:IProduct, status?:string):void
@@ -16,7 +17,7 @@ const NewProduct: React.FC<NewProductProps> = (props: NewProductProps) => {
     const {onOpenProduct} = props
 
     const onAddProductStart = (): void => {
-        onOpenProduct(true, undefined, "add");
+        onOpenProduct(true, undefined, STATUS_ADD);
     }
 
 

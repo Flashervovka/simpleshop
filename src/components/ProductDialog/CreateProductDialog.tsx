@@ -13,11 +13,14 @@ import {IProduct} from "../../store/products/types";
 import {ICategory} from "../../store/categories/types";
 import {compressImage} from "../../helpers";
 import {getCategoryByName} from "../../helpers/dataHelper";
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 interface CreateProductDialogProps {
-    onCloseDialog():void
-    onSaveProduct(product:IProduct, productImgFile:Blob | undefined):void
-    categories:ICategory[]
+    onCloseDialog(): void
+
+    onSaveProduct(product: IProduct, productImgFile: Blob | undefined): void
+
+    categories: ICategory[]
 }
 
 const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreateProductDialogProps) => {
@@ -31,18 +34,24 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
     const [price, setPrice] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [categoryLabel, setCategoryLabel] = useState<string>('');
+    const [savePressed, setSavePressed] = useState<boolean>(false);
 
     const onSave = () => {
-        onSaveProduct({name, price, description, url: '', category, categoryLabel}, imageFile);
+        setSavePressed(true);
+        if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
+            onSaveProduct({name, price, description, url: '', category, categoryLabel}, imageFile);
+        }
+
     }
 
     const onAddPhoto = (event: ChangeEvent<HTMLInputElement>): void => {
+        setSavePressed(false);
         const files: Array<File> = Array.prototype.slice.call(event.target.files);
         compressAndSetPhoto(files[0]);
     }
 
-    const compressAndSetPhoto = (imageFile:File): void => {
-        compressImage(imageFile, (compressedImage:File) => {
+    const compressAndSetPhoto = (imageFile: File): void => {
+        compressImage(imageFile, (compressedImage: File) => {
             setImageFile(compressedImage);
             const reader: FileReader = new FileReader();
             reader.onload = function (event) {
@@ -56,6 +65,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
 
 
     const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown; label?: string | undefined }>) => {
+        setSavePressed(false);
         switch (event.target.name) {
             case 'name':
                 setName(event.target.value as string);
@@ -65,7 +75,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                 break;
             case 'category':
                 setCategory(event.target.value as string);
-                const cat:ICategory | null = getCategoryByName(categories, event.target.value as string);
+                const cat: ICategory | null = getCategoryByName(categories, event.target.value as string);
                 setCategoryLabel(cat?.label ? cat.label : '');
                 break;
             case 'description':
@@ -74,6 +84,10 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
             default:
                 break;
         }
+    }
+    const inputProps:Object = {
+        style:{color:"rgba(0, 0, 0, 0.87)"},
+        // disableUnderline: true
     }
 
     return (
@@ -86,22 +100,39 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                     </label>
                     <input id="product-photo" className="add-dialog__image-input" type="file"
                            accept="image/*" onChange={onAddPhoto}/>
+                    {savePressed && productPhoto === addSvg &&
+                    <div className="add-dialog__product-image-error">Выберите картинку</div>}
                 </div>
-                <TextField
-                    required
-                    label="Название"
-                    fullWidth
-                    value={name}
-                    onChange={onChange}
-                    name="name"/>
-                <TextField
-                    required
-                    label="Цена"
-                    type="number"
-                    fullWidth value={price}
-                    onChange={onChange}
-                    name="price"/>
-                <FormControl fullWidth required>
+                <FormControl fullWidth error={name === "" && savePressed}>
+                    <TextField
+                        InputProps={inputProps}
+                        error={name === "" && savePressed}
+                        required
+                        label="Название"
+                        fullWidth
+                        value={name}
+                        onChange={onChange}
+                        name="name"/>
+                    {name === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
+                </FormControl>
+                <FormControl fullWidth error={price === "" && savePressed}>
+                    <TextField
+                        InputProps={{
+                            inputProps: {
+                                ...inputProps,
+                                min:1
+                            }
+                        }}
+                        error={price === "" && savePressed}
+                        required
+                        label="Цена"
+                        type="number"
+                        fullWidth value={price}
+                        onChange={onChange}
+                        name="price"/>
+                    {price === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
+                </FormControl>
+                <FormControl fullWidth required error={category === "" && savePressed}>
                     <InputLabel id="demo-simple-select-label">Категория продукта</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -110,14 +141,16 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                         name="category"
                     >
                         {
-                            categories.map((cat, index) => <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>)
+                            categories.map((cat, index) => <MenuItem key={`product-category__${index}`}
+                                                                     value={cat.name}>{cat.label}</MenuItem>)
                         }
                     </Select>
+                    {category === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
                 <TextField
+                    InputProps={inputProps}
                     label="Описание"
                     fullWidth
-                    required
                     value={description}
                     onChange={onChange}
                     name="description"

@@ -12,6 +12,9 @@ export const ON_UPDATE_PRODUCT_REQUEST_COMPLETED = "products.ON_UPDATE_PRODUCT_R
 export const ON_REMOVE_PRODUCT_REQUEST = "products.ON_REMOVE_PRODUCT_REQUEST";
 export const ON_REMOVE_PRODUCT_REQUEST_COMPLETED = "products.ON_REMOVE_PRODUCT_REQUEST_COMPLETED";
 
+export const ON_ORDER_PRODUCT_REQUEST = "products.ON_ORDER_PRODUCT_REQUEST";
+export const ON_ORDER_PRODUCT_REQUEST_COMPLETED = "products.ON_ORDER_PRODUCT_REQUEST_COMPLETED";
+
 export interface IProduct {
     id?: string
     name: string
@@ -28,6 +31,14 @@ export interface IProductsState {
     isLoaded: boolean
     selectedProduct: IProduct | null
     savingNewProduct: boolean
+}
+
+interface OrderProductRequestAction {
+    type: typeof ON_ORDER_PRODUCT_REQUEST
+}
+
+interface OrderProductRequestCompletedAction {
+    type: typeof ON_ORDER_PRODUCT_REQUEST_COMPLETED
 }
 
 interface GetProductRequestAction {
@@ -82,3 +93,5 @@ export type ProductsActionTypes =
     | UpdateProductRequestCompletedAction
     | RemoveProductRequestAction
     | RemoveProductRequestCompletedAction
+    | OrderProductRequestAction
+    | OrderProductRequestCompletedAction
