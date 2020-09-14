@@ -6,7 +6,7 @@ import {FileStorageActionTypes} from "../../store/fileStorage/types";
 import {IProduct, ProductsActionTypes} from "../../store/products/types";
 
 import {
-    addNewProductAction, orderProductAction,
+    addNewProductAction,
     selectProductAction,
     updateProductAction
 } from "../../store/products/actions";
@@ -20,6 +20,7 @@ import {getCategoriesListSelector} from "../../store/categories/reducer";
 import {getCategoriesListAction} from "../../store/categories/actions";
 import {ITabsPanelsData} from "../../components/ControllBar/types";
 import {STATUS_ADD, STATUS_EDIT} from "../../config";
+import {orderProductAction} from "../../store/orders/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),

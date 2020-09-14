@@ -16,7 +16,6 @@ import {STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import addSvg from "../../static/images/wallpaper-24px.svg";
 
-
 interface EditAndViewProductDialogProps {
     onCloseDialog():void
     selectedProduct: IProduct
@@ -208,7 +207,8 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                             type="number"
                             value={count}
                             onChange={onChange}
-                            name="count"/> :
+                            name="count"/>
+                         :
                         null
                 }
             </DialogContent>

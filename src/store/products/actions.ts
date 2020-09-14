@@ -6,7 +6,6 @@ import {
     ON_ADD_NEW_PRODUCT_REQUEST_COMPLETED,
     ON_GET_PRODUCTS_REQUEST,
     ON_GET_PRODUCTS_REQUEST_COMPLETED,
-    ON_ORDER_PRODUCT_REQUEST, ON_ORDER_PRODUCT_REQUEST_COMPLETED,
     ON_REMOVE_PRODUCT_REQUEST,
     ON_REMOVE_PRODUCT_REQUEST_COMPLETED,
     ON_SELECT_PRODUCT,
@@ -15,7 +14,6 @@ import {
     ProductsActionTypes
 } from "./types";
 import productService from '../../services/ProductsService';
-import ordersService from '../../services/OrdersService';
 import {
     FileStorageActionTypes,
     IFile,
@@ -96,13 +94,13 @@ export const removeProductAction = (product:IProduct): TProductAction => async (
         dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для удаления товаров."}))
     }
 }
-
+/*
 export const orderProductAction = (product:IProduct, count:string): TProductAction => async (dispatch, state) => {
     dispatch({type:ON_ORDER_PRODUCT_REQUEST});
     //const ordered:IAuthRequestResponce<IProduct> = await ordersService.orderProduct(product);
     await ordersService.orderProduct(product, count);
     dispatch({type:ON_ORDER_PRODUCT_REQUEST_COMPLETED});
-}
+}*/
 
 
 export const selectProductAction = (product:IProduct | null):ProductsActionTypes => {

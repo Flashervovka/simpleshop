@@ -2,6 +2,7 @@ import {IProduct} from "../store/products/types";
 import {IAuthRequestResponce} from "../types/types";
 import {http} from "../helpers";
 import {basePath} from "../config";
+import {IOrder} from "../store/orders/types";
 
 class OrdersService {
 
@@ -14,12 +15,18 @@ class OrdersService {
                 body: JSON.stringify({
                     data:{
                         productId:orderProductData.id,
-                        orderCount:count
+                        orderCount:count,
+                        status:"new"
                     },
                     shopUser:{id:userId}
                 })
             }
         });
+        return responce;
+    }
+
+    async getOrdersList(userId:string):Promise<IAuthRequestResponce<IOrder[]>> {
+        const responce:IAuthRequestResponce<IOrder[]> = await http({url:`${basePath}/orders/${userId}`});
         return responce;
     }
 }

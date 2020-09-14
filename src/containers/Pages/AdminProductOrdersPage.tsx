@@ -1,12 +1,35 @@
-import React from "react";
-import {IAdminProductOrdersPageProps} from "./types";
+import React, {useEffect} from "react";
+import {connect} from "react-redux";
+import {RootStateType} from "../../store";
+import {ThunkDispatch} from "redux-thunk";
+import {OrdersActionTypes} from "../../store/orders/types";
+import {getOrdersListAction} from "../../store/orders/actions";
+import {getOrdersListSelector} from "../../store/orders/reducer";
 
+const mapStateToProps = (state: RootStateType) => ({
+    ordersList:getOrdersListSelector(state)
+})
 
-const AdminProductOrdersPage: React.FC<IAdminProductOrdersPageProps> = (props: IAdminProductOrdersPageProps) => {
-    const {name} = props;
+const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, OrdersActionTypes>) => {
+    return{
+        onGetOrdersList: (): void => {
+            dispatch(getOrdersListAction());
+        }
+    }
+}
+
+type AdminTypeOrdersPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
+
+const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: AdminTypeOrdersPageProps) => {
+    const {onGetOrdersList, ordersList} = props;
+    useEffect(() => {
+        onGetOrdersList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
-        <div>{name}</div>
+        <div>sssssssssss</div>
     );
 }
 
-export default AdminProductOrdersPage;
+export default connect(mapStateToProps, mapDispatcherToProps)(AdminProductOrdersPage);
