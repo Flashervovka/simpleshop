@@ -24,8 +24,8 @@ export const getOrdersListAction = (): TOrdersAction => async (dispatch, state) 
     }
 }
 
-export const orderProductAction = (product:IProduct, count:string): TOrdersAction => async (dispatch, state) => {
+export const orderProductAction = (product:IProduct, count:string, adress:string, phone:string): TOrdersAction => async (dispatch, state) => {
     dispatch({type:ON_GET_ORDERS_REQUEST});
-    await ordersService.orderProduct(product, count);
+    await ordersService.orderProduct(product, count, adress, phone);
     dispatch({type:ON_ORDER_PRODUCT_REQUEST_COMPLETED});
 }

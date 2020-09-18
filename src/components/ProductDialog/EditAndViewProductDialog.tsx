@@ -16,13 +16,15 @@ import {STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import addSvg from "../../static/images/wallpaper-24px.svg";
 
+import MaterialUiPhoneNumber from 'material-ui-phone-number';
+
 interface EditAndViewProductDialogProps {
-    onCloseDialog():void
+    onCloseDialog(): void
     selectedProduct: IProduct
-    dialogStatus:string
+    dialogStatus: string
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
-    categories:ICategory[],
-    onSendOrder(product: IProduct, count:string): void
+    categories: ICategory[],
+    onSendOrder(product: IProduct, count: string, adress:string, phone:string): void
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
@@ -40,9 +42,16 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     const [count, setCount] = useState<string>('1');
     const [savePressed, setSavePressed] = useState<boolean>(false);
 
+    const [phone, setPhone] = useState<string>('');
+    const [adress, setAdress] = useState<string>('');
+
     const onSave = () => {
         if (dialogStatus === STATUS_CLIENT_VIEW) {
-            onSendOrder({name, price, description, url: '', category, id: selectedProduct.id, categoryLabel}, count)
+            setSavePressed(true);
+            if(adress!=="" && phone.length === 18){
+                onSendOrder({name, price, description, url: '', category, id: selectedProduct.id, categoryLabel}, count, adress, phone);
+            }
+
         } else {
             setSavePressed(true);
             if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
@@ -65,8 +74,8 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
         compressAndSetPhoto(files[0]);
     }
 
-    const compressAndSetPhoto = (imageFile:File): void => {
-        compressImage(imageFile, (compressedImage:File) => {
+    const compressAndSetPhoto = (imageFile: File): void => {
+        compressImage(imageFile, (compressedImage: File) => {
             setImageFile(compressedImage);
             const reader: FileReader = new FileReader();
             reader.onload = function (event) {
@@ -79,7 +88,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     }
 
     const onChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
-        setSavePressed(true);
+        setSavePressed(false);
         switch (event.target.name) {
             case 'name':
                 setName(event.target.value as string);
@@ -89,7 +98,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 break;
             case 'category':
                 setCategory(event.target.value as string);
-                const cat:ICategory | null = getCategoryByName(categories, event.target.value as string);
+                const cat: ICategory | null = getCategoryByName(categories, event.target.value as string);
                 setCategoryLabel(cat?.label ? cat.label : '');
                 break;
             case 'description':
@@ -98,16 +107,24 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             case 'count':
                 setCount(event.target.value as string);
                 break;
+            case 'adress':
+                setAdress(event.target.value as string);
+                break;
             default:
                 break;
         }
     }
 
-    const isEditStatus:boolean = dialogStatus === STATUS_EDIT;
+    const onSetPhone = (phoneNumber:string) => {
+        setPhone(phoneNumber);
+        setSavePressed(false);
+    }
 
-    const inputProps:Object = {
-        style:{color:"rgba(0, 0, 0, 0.87)"},
-       // disableUnderline: true
+    const isEditStatus: boolean = dialogStatus === STATUS_EDIT;
+
+    const inputProps: Object = {
+        style: {color: "rgba(0, 0, 0, 0.87)"},
+        // disableUnderline: true
     }
 
     return (
@@ -116,40 +133,41 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             <DialogContent>
                 <div className="add-dialog__product-image-wrapper">
                     <label htmlFor="product-photo">
-                        <img className="add-dialog__product-image" src={productPhoto ? productPhoto : `../images/${selectedProduct.url}`} alt="новый товар"/>
+                        <img className="add-dialog__product-image"
+                             src={productPhoto ? productPhoto : `../images/${selectedProduct.url}`} alt="новый товар"/>
                     </label>
                     <input id="product-photo" className="add-dialog__image-input" type="file"
                            accept="image/*" onChange={onAddPhoto}/>
                 </div>
                 <FormControl fullWidth error={name === "" && savePressed}>
-                <TextField
-                    error={name === "" && savePressed}
-                    InputProps={inputProps}
-                    required
-                    label={isEditStatus ? "Название" : ''}
-                    fullWidth
-                    value={name}
-                    onChange={onChange}
-                    name="name"
-                    disabled={!isEditStatus}/>
+                    <TextField
+                        error={name === "" && savePressed}
+                        InputProps={inputProps}
+                        required
+                        label={isEditStatus ? "Название" : ''}
+                        fullWidth
+                        value={name}
+                        onChange={onChange}
+                        name="name"
+                        disabled={!isEditStatus}/>
                     {name === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth error={price === "" && savePressed}>
-                <TextField
-                    error={price === "" && savePressed}
-                    InputProps={{
-                        inputProps: {
-                            ...inputProps,
-                            min:1
-                        }
-                    }}
-                    required
-                    label={isEditStatus ? "Цена" : ''}
-                    type="number"
-                    fullWidth value={price}
-                    onChange={onChange}
-                    name="price"
-                    disabled={!isEditStatus}/>
+                    <TextField
+                        error={price === "" && savePressed}
+                        InputProps={{
+                            inputProps: {
+                                ...inputProps,
+                                min: 1
+                            }
+                        }}
+                        required
+                        label={isEditStatus ? "Цена" : ''}
+                        type="number"
+                        fullWidth value={price}
+                        onChange={onChange}
+                        name="price"
+                        disabled={!isEditStatus}/>
                     {price === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
                 {
@@ -173,11 +191,13 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                             >
                                 {
                                     categories.map((cat, index) => {
-                                        return <MenuItem key={`product-category__${index}`} value={cat.name}>{cat.label}</MenuItem>
+                                        return <MenuItem key={`product-category__${index}`}
+                                                         value={cat.name}>{cat.label}</MenuItem>
                                     })
                                 }
                             </Select>
-                            {category === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
+                            {category === "" && savePressed &&
+                            <FormHelperText>Поле является обязательным</FormHelperText>}
                         </FormControl>
 
                 }
@@ -193,22 +213,53 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     disabled={!isEditStatus}/>
                 {
                     dialogStatus === STATUS_CLIENT_VIEW ?
-                        <TextField
-                            className="add-dialog__product-order-count"
-                            variant="outlined"
-                            InputProps={{
-                                inputProps: {
-                                    ...inputProps,
-                                    min:1
-                                }
-                            }}
-                            required
-                            label="Количество"
-                            type="number"
-                            value={count}
-                            onChange={onChange}
-                            name="count"/>
-                         :
+                        <div>
+                            <div className="add-dialog__user-phone">
+                                <FormControl fullWidth error={phone.length < 18 && savePressed}>
+                                    <InputLabel required className="add-dialog__user-phone-label">Телефон</InputLabel>
+                                    <MaterialUiPhoneNumber
+                                        error={phone.length < 18 && savePressed}
+                                        value={phone}
+                                        defaultCountry="ru"
+                                        onlyCountries={['ru']}
+                                        onChange={onSetPhone}
+                                    />
+                                    {phone.length < 18 && savePressed &&
+                                    <FormHelperText>Поле является обязательным</FormHelperText>}
+                                </FormControl>
+                            </div>
+                            <FormControl fullWidth error={adress === "" && savePressed}>
+                                <TextField
+                                    error={adress === "" && savePressed}
+                                    InputProps={inputProps}
+                                    label="Адрес доставки"
+                                    fullWidth
+                                    required
+                                    value={adress}
+                                    onChange={onChange}
+                                    name="adress"
+                                    multiline/>
+                                {adress === "" && savePressed &&
+                                <FormHelperText>Поле является обязательным</FormHelperText>}
+                            </FormControl>
+
+                            <TextField
+                                className="add-dialog__product-order-count"
+                                variant="outlined"
+                                InputProps={{
+                                    inputProps: {
+                                        ...inputProps,
+                                        min: 1
+                                    }
+                                }}
+                                required
+                                label="Количество"
+                                type="number"
+                                value={count}
+                                onChange={onChange}
+                                name="count"/>
+                        </div>
+                        :
                         null
                 }
             </DialogContent>

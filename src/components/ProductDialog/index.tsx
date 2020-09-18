@@ -13,7 +13,7 @@ interface ProductDialogProps {
     onAddNewProduct(product: IProduct, productImgFile: Blob): void
     dialogStatus: string
     onUpdateProduct(product: IProduct, productImgFile: Blob): void
-    onSendOrder(product: IProduct, count:string): void
+    onSendOrder(product: IProduct, count:string, adress:string, phone:string): void
     categories:ICategory[]
 }
 
@@ -30,7 +30,6 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
     const onUpdate = (product: IProduct, productImgFile: Blob): void => {
         onUpdateProduct(product, productImgFile);
     }
-
 
     return (
         <Dialog open={open} onClose={onCloseDialog} aria-labelledby="form-dialog-title" fullWidth>

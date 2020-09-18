@@ -41,8 +41,8 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onGetCategories: (): void => {
             dispatch(getCategoriesListAction());
         },
-        onSendOrder: (product:IProduct, count:string): void => {
-            dispatch(orderProductAction(product, count));
+        onSendOrder: (product:IProduct, count:string, adress:string, phone:string): void => {
+            dispatch(orderProductAction(product, count, adress, phone));
         },
     }
 }

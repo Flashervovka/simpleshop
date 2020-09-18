@@ -24,3 +24,10 @@
 .add-dialog__product-image-error{
     color: #f44336;
 }
+.add-dialog__user-phone{
+    margin-top: 32px;
+    margin-bottom: 5px;
+}
+.add-dialog__user-phone-label{
+    margin-top: -40px;
+}

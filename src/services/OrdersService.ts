@@ -6,7 +6,7 @@ import {IOrder} from "../store/orders/types";
 
 class OrdersService {
 
-    async orderProduct(orderProductData: IProduct, count:string, userId?:string):Promise<IAuthRequestResponce<IProduct>> {
+    async orderProduct(orderProductData: IProduct, count:string, adress:string, phone:string, userId?:string):Promise<IAuthRequestResponce<IProduct>> {
         const responce: IAuthRequestResponce<IProduct> = await http({
             url: `${basePath}/orders`,
             init: {
@@ -16,7 +16,9 @@ class OrdersService {
                     data:{
                         productId:orderProductData.id,
                         orderCount:count,
-                        status:"new"
+                        status:"new",
+                        adress,
+                        phone
                     },
                     shopUser:{id:userId}
                 })
