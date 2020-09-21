@@ -21,10 +21,13 @@ import {getCategoriesListAction} from "../../store/categories/actions";
 import {ITabsPanelsData} from "../../components/ControllBar/types";
 import {STATUS_ADD, STATUS_EDIT} from "../../config";
 import {orderProductAction} from "../../store/orders/actions";
+import {addProductToBasketAction} from "../../store/basket/actions";
+import {getBasketOrdersListSelector} from "../../store/basket/reducer";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
-    categories:getCategoriesListSelector(state)
+    categories:getCategoriesListSelector(state),
+    basketOrdersList:getBasketOrdersListSelector(state)
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes>) => {
@@ -44,6 +47,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onSendOrder: (product:IProduct, count:string, adress:string, phone:string): void => {
             dispatch(orderProductAction(product, count, adress, phone));
         },
+        onPutProductToBasket: (product:IProduct, count:number, id:string): void => {
+            dispatch(addProductToBasketAction({product: product, count: count, id: id}));
+        }
     }
 }
 
@@ -64,7 +70,9 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         categories,
         pages,
         readOnly,
-        onSendOrder
+        onSendOrder,
+        onPutProductToBasket,
+        basketOrdersList
     } = props;
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
@@ -87,6 +95,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 tabsPanelsData={pages}
                 onOpenProductDialog={onOpenProductDialog}
                 readOnly={readOnly}
+                ordersCount={basketOrdersList.length}
             />
             <ProductDialog
                 onSendOrder={onSendOrder}
@@ -96,7 +105,8 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 onAddNewProduct={onAddNewProduct}
                 dialogStatus={productDialogStatus}
                 onUpdateProduct={onUpdateProduct}
-                categories={categories}/>
+                categories={categories}
+                onPutProductToBasket={onPutProductToBasket}/>
         </div>
 
     )

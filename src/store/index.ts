@@ -5,6 +5,8 @@ import {categoriesState} from './categories/reducer';
 import {userState} from './user/reducer';
 import {errorsState} from './errors/reducer';
 import {ordersListState} from './orders/reducer';
+import {basketState} from './basket/reducer';
+import {infoMessagesState} from './infoMessages/reducer';
 import {IFileStorageState} from "./fileStorage/types";
 import {IProductsState} from "./products/types";
 import {createBrowserHistory} from 'history';
@@ -15,6 +17,8 @@ import {ICategoriesState} from "./categories/types";
 import {IUserState} from "./user/types";
 import {IErrorsSate} from "./errors/types";
 import {IOrdersState} from "./orders/types";
+import {IBasketState} from "./basket/types";
+import {IInfoMessagesState} from "./infoMessages/types";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
@@ -24,7 +28,9 @@ const rootReducer = combineReducers({
     categoriesState,
     userState,
     errorsState,
-    ordersListState
+    ordersListState,
+    basketState,
+    infoMessagesState
 });
 export interface IRootState {
     fileStorage:IFileStorageState
@@ -33,6 +39,8 @@ export interface IRootState {
     userState:IUserState
     errorsState:IErrorsSate
     ordersListState:IOrdersState
+    basketState:IBasketState,
+    infoMessagesState:IInfoMessagesState
 }
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 

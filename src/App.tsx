@@ -14,6 +14,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {ErrorsActionTypes} from "./store/errors/types";
 import {hideAlertAction} from "./store/errors/actions";
 import {adminTabsAndPanels, userTabsAndPanels} from "./config";
+import InfoMessagesDialog from "./containers/InfoMessageDialog";
 
 const mapStateToProps = (state: RootStateType) => ({
     user:getUserSelector(state),
@@ -36,6 +37,7 @@ const App: React.FC<AppType> = (props: AppType) => {
   return (
     <div className="App">
         <AlertMessage onCloseAlert={onCloseAlert} title={alertError?.title} message={alertError?.text} isShow={alertError?.isShow} type={"error"}/>
+        <InfoMessagesDialog/>
         <Switch>
             <PrivateRoute
                 component={AdminLogin}

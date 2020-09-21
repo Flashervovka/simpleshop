@@ -10,8 +10,9 @@ import {IProduct} from "../../store/products/types";
 
 interface ControlBarProps {
     tabsPanelsData: ITabsPanelsData
-    onOpenProductDialog(isOpenDialogCreate:boolean, product?:IProduct,  dialogStatus?:string):void
-    readOnly?:boolean
+    onOpenProductDialog(isOpenDialogCreate: boolean, product?: IProduct, dialogStatus?: string): void
+    readOnly?: boolean
+    ordersCount?: number
 }
 
 const useStyles = makeStyles(() => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
-    const {tabsPanelsData, onOpenProductDialog, readOnly} = props;
+    const {tabsPanelsData, onOpenProductDialog, readOnly, ordersCount} = props;
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const onSelectTab = (selectedTabIndex: number) => {
@@ -49,7 +50,13 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
                 >
                     {
                         tabsPanelsData.tabs.map((tab, index) =>
-                            tab.access ? <ControllBarTab {...tab} key={`admin_tabs_${index}`} index={index} onSelect={onSelectTab}/> : null
+                            tab.access ?
+                                <ControllBarTab
+                                    {...tab}
+                                    key={`admin_tabs_${index}`}
+                                    index={index}
+                                    onSelect={onSelectTab} ordersCount={ordersCount}/> :
+                                null
                         )
                     }
                 </Tabs>

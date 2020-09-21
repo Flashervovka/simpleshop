@@ -7,6 +7,7 @@ export interface ITabData {
     Icon:OverridableComponent<SvgIconTypeMap<{}, "svg">>
     label: String
     access: boolean
+    showOrdersInfo?: boolean
 }
 type Pages = React.FC<IAdminProductsPageProps> | React.FC<IAdminProductOrdersPageProps>
 

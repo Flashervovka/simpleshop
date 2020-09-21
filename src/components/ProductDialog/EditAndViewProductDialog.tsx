@@ -15,8 +15,8 @@ import {getCategoryByName} from "../../helpers/dataHelper";
 import {STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import addSvg from "../../static/images/wallpaper-24px.svg";
+import { v4 as uuidv4 } from 'uuid';
 
-import MaterialUiPhoneNumber from 'material-ui-phone-number';
 
 interface EditAndViewProductDialogProps {
     onCloseDialog(): void
@@ -25,10 +25,11 @@ interface EditAndViewProductDialogProps {
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
     categories: ICategory[],
     onSendOrder(product: IProduct, count: string, adress:string, phone:string): void
+    onPutProductToBasket(product:IProduct, count:number, id:string): void
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
-    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories, onSendOrder} = props;
+    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories/*, onSendOrder*/, onPutProductToBasket} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
@@ -39,19 +40,18 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     const [price, setPrice] = useState<string>(selectedProduct.price);
     const [description, setDescription] = useState<string>(selectedProduct.description);
     const [categoryLabel, setCategoryLabel] = useState<string>(selectedProduct.categoryLabel);
-    const [count, setCount] = useState<string>('1');
+    const [count, setCount] = useState<number>(1);
     const [savePressed, setSavePressed] = useState<boolean>(false);
 
-    const [phone, setPhone] = useState<string>('');
-    const [adress, setAdress] = useState<string>('');
 
     const onSave = () => {
         if (dialogStatus === STATUS_CLIENT_VIEW) {
-            setSavePressed(true);
-            if(adress!=="" && phone.length === 18){
-                onSendOrder({name, price, description, url: '', category, id: selectedProduct.id, categoryLabel}, count, adress, phone);
-            }
-
+            onPutProductToBasket(
+                {name, price, description, url: selectedProduct.url, category, id: selectedProduct.id, categoryLabel},
+                count,
+                uuidv4()
+            );
+            onCloseDialog()
         } else {
             setSavePressed(true);
             if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
@@ -64,6 +64,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     id: selectedProduct.id,
                     categoryLabel
                 }, imageFile);
+                onCloseDialog();
             }
         }
 
@@ -105,19 +106,14 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 setDescription(event.target.value as string);
                 break;
             case 'count':
-                setCount(event.target.value as string);
+                setCount(event.target.value as number);
                 break;
-            case 'adress':
+           /* case 'adress':
                 setAdress(event.target.value as string);
-                break;
+                break;*/
             default:
                 break;
         }
-    }
-
-    const onSetPhone = (phoneNumber:string) => {
-        setPhone(phoneNumber);
-        setSavePressed(false);
     }
 
     const isEditStatus: boolean = dialogStatus === STATUS_EDIT;
@@ -214,35 +210,6 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 {
                     dialogStatus === STATUS_CLIENT_VIEW ?
                         <div>
-                            <div className="add-dialog__user-phone">
-                                <FormControl fullWidth error={phone.length < 18 && savePressed}>
-                                    <InputLabel required className="add-dialog__user-phone-label">Телефон</InputLabel>
-                                    <MaterialUiPhoneNumber
-                                        error={phone.length < 18 && savePressed}
-                                        value={phone}
-                                        defaultCountry="ru"
-                                        onlyCountries={['ru']}
-                                        onChange={onSetPhone}
-                                    />
-                                    {phone.length < 18 && savePressed &&
-                                    <FormHelperText>Поле является обязательным</FormHelperText>}
-                                </FormControl>
-                            </div>
-                            <FormControl fullWidth error={adress === "" && savePressed}>
-                                <TextField
-                                    error={adress === "" && savePressed}
-                                    InputProps={inputProps}
-                                    label="Адрес доставки"
-                                    fullWidth
-                                    required
-                                    value={adress}
-                                    onChange={onChange}
-                                    name="adress"
-                                    multiline/>
-                                {adress === "" && savePressed &&
-                                <FormHelperText>Поле является обязательным</FormHelperText>}
-                            </FormControl>
-
                             <TextField
                                 className="add-dialog__product-order-count"
                                 variant="outlined"
@@ -265,7 +232,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             </DialogContent>
             <DialogActions>
                 <Button onClick={onSave} color="primary">
-                    {isEditStatus ? "Сохранить" : "Заказать"}
+                    {isEditStatus ? "Сохранить" : "Добавить в корзину"}
                 </Button>
                 <Button onClick={onCloseDialog} color="primary">
                     {isEditStatus ? 'Отменить' : 'Закрыть'}

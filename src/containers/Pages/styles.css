@@ -1,0 +1,18 @@
+.page-content-wrapper{
+    padding: 60px 20px 0px;
+}
+
+.shopping-page__user-phone{
+    margin-top: 32px;
+    margin-bottom: 5px;
+}
+.shopping-page__user-phone-label{
+    margin-top: -40px;
+}
+.shopping-page__orders-send-btn{
+    margin-top: 16px!important;
+}
+.shopping-page__empty-message{
+    text-align: center;
+    font-size: 20px;
+}

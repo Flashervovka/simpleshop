@@ -1,3 +1,6 @@
+import {IProduct} from "../products/types";
+import {IBasketProduct} from "../basket/types";
+
 export const ON_GET_ORDERS_REQUEST = "orders.ON_GET_ORDERS_REQUEST";
 export const ON_GET_ORDERS_REQUEST_COMPLETED = "orders.ON_GET_ORDERS_REQUEST_COMPLETED";
 
@@ -6,9 +9,18 @@ export const ON_ORDER_PRODUCT_REQUEST_COMPLETED = "orders.ON_ORDER_PRODUCT_REQUE
 
 export interface IOrder {
     id?: string
-    productId:string
-    count:number
+    /*productId:string
+    count:number*/
+    orderPositions:IBasketProduct[]
     status:string
+    adress:string
+    phone:string
+}
+
+export interface IFilledOrder {
+    id: string
+    status:string
+    productData:IProduct
 }
 
 export interface IOrdersState {

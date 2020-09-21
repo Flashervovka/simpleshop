@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-//import {AdminSettingsPageProps} from "./types";
 import AdminSettings from "../../components/Settings";
 import {RootStateType} from "../../store";
 import {ThunkDispatch} from "redux-thunk";
