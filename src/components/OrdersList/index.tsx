@@ -8,7 +8,8 @@ import OrdersListItem from "./OrdersListItem";
 
 interface OrdersListProps {
     ordersList:IBasketProduct[][]
-    onChangeOrderStatus(basketProduct:IBasketProduct):void
+    onChangeOrderStatus?(basketProduct:IBasketProduct):void
+    viewStatus?:string
 }
 
 
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const OrdersList: React.FC<OrdersListProps> = (props: OrdersListProps) => {
-    const {ordersList, onChangeOrderStatus} = props;
+    const {ordersList, onChangeOrderStatus, viewStatus} = props;
 
     const classes = useStyles();
     
@@ -34,6 +35,7 @@ const OrdersList: React.FC<OrdersListProps> = (props: OrdersListProps) => {
                 return (
                     <ListItem key={index} button>
                         <OrdersListItem
+                            viewStatus={viewStatus}
                             orderList={basketProductsList}
                             onChangeOrderStatus={onChangeOrderStatus}/>
                     </ListItem>

@@ -6,7 +6,6 @@ import {IBasketProduct} from "../store/basket/types";
 
 class OrdersService {
 
-    //async orderProduct(orderPositions:IBasketProduct[], adress:string, phone:string, userId?:string):Promise<IAuthRequestResponce<IProduct>> {
     async orderProduct(orderPositions:IBasketProduct[], adress:string, phone:string, userId?:string):Promise<IAuthRequestResponce<IOrder>> {
         const responce: Object = await http({
             url: `${basePath}/orders`,
@@ -28,30 +27,29 @@ class OrdersService {
         return responce as IAuthRequestResponce<IOrder>;
     }
 
-    /*async orderProduct(orderProductData: IProduct, count:string, adress:string, phone:string, userId?:string):Promise<IAuthRequestResponce<IProduct>> {
-        const responce: IAuthRequestResponce<IProduct> = await http({
-            url: `${basePath}/orders`,
-            init: {
-                method: "post",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    data:{
-                        productId:orderProductData.id,
-                        orderCount:count,
-                        status:"new",
-                        adress,
-                        phone
-                    },
-                    shopUser:{id:userId}
-                })
-            }
-        });
-        return responce;
-    }*/
 
     async getOrdersList(userId:string):Promise<IAuthRequestResponce<IOrder[]>> {
-        const responce:IAuthRequestResponce<IOrder[]> = await http({url:`${basePath}/orders/${userId}`});
-        return responce;
+        const response:IAuthRequestResponce<Object[]> = await http({url:`${basePath}/orders/${userId}`});
+        if(response.data){
+            /*make serialization fot orderPositions, because we recieved it in JSON format*/
+            const orderPositions:IOrder[] = response.data.map((order)=>{
+                const orderSerialized:IOrder = order as IOrder;
+                return {
+                    ...orderSerialized,
+                    orderParsePositions:JSON.parse(orderSerialized.orderPositions)
+                }
+            })
+            const result:IAuthRequestResponce<IOrder[]> = {
+                data:orderPositions,
+                shopUser:response.shopUser
+            }
+            return result;
+        }else{
+            return {
+                data:null,
+                shopUser:response.shopUser
+            }
+        }
     }
 }
 

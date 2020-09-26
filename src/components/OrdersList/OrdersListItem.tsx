@@ -9,10 +9,12 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {STATUS_ADMIN_VIEW} from "../../config";
 
 interface OrdersListItemProps {
     orderList:IBasketProduct[]
-    onChangeOrderStatus(basketProduct:IBasketProduct):void
+    onChangeOrderStatus?(basketProduct:IBasketProduct):void
+    viewStatus?:string
 }
 
 
@@ -27,12 +29,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const OrdersListItem: React.FC<OrdersListItemProps> = (props: OrdersListItemProps) => {
-    const {orderList, onChangeOrderStatus} = props;
+    const {orderList, onChangeOrderStatus, viewStatus} = props;
 
     const classes = useStyles();
 
     const onChangeStatus = (basketProduct:IBasketProduct) => () => {
-        onChangeOrderStatus(basketProduct)
+        if(onChangeOrderStatus)onChangeOrderStatus(basketProduct)
     }
 
     return (
@@ -48,9 +50,14 @@ const OrdersListItem: React.FC<OrdersListItemProps> = (props: OrdersListItemProp
                         </ListItemAvatar>
                         <ListItemText primary={`${basketProduct.product.name} (${basketProduct.count})`} />
                         <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="delete" onClick={onChangeStatus(basketProduct)}>
-                                <DeleteIcon/>
-                            </IconButton>
+                            {
+                                viewStatus !== STATUS_ADMIN_VIEW ?
+                                    <IconButton edge="end" aria-label="delete" onClick={onChangeStatus(basketProduct)}>
+                                        <DeleteIcon/>
+                                    </IconButton> :
+                                    null
+                            }
+
                         </ListItemSecondaryAction>
                     </ListItem>
                 );

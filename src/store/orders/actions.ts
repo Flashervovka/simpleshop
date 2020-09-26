@@ -23,7 +23,7 @@ export const getOrdersListAction = (): TOrdersAction => async (dispatch, state) 
     const response:IAuthRequestResponce<IOrder[]> = await ordersService.getOrdersList(userId);
     /** access to orders only for administrator*/
     if(response.shopUser?.id!==null && response.data){
-        dispatch({type:ON_GET_ORDERS_REQUEST_COMPLETED, ordersList:response.data});
+        dispatch({type: ON_GET_ORDERS_REQUEST_COMPLETED, ordersList: response.data});
     }
 }
 

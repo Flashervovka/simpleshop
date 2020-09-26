@@ -9,9 +9,8 @@ export const ON_ORDER_PRODUCT_REQUEST_COMPLETED = "orders.ON_ORDER_PRODUCT_REQUE
 
 export interface IOrder {
     id?: string
-    /*productId:string
-    count:number*/
-    orderPositions:IBasketProduct[]
+    orderPositions:string
+    orderParsePositions:IBasketProduct[]
     status:string
     adress:string
     phone:string

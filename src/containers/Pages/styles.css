@@ -1,5 +1,5 @@
 .page-content-wrapper{
-    padding: 60px 20px 0px;
+    padding: 30px 20px 0px;
 }
 
 .shopping-page__user-phone{
@@ -15,4 +15,17 @@
 .shopping-page__empty-message{
     text-align: center;
     font-size: 20px;
+}
+
+.order-controlls-wrapper__info{
+    font-size: 1rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.order-info-wrapper{
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+.order-buttons-group{
+    margin-bottom: 5px;
 }
