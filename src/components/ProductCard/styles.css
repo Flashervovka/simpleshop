@@ -13,3 +13,8 @@
     display: flex;
     justify-content: center;
 }
+.product-card__descripton{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect,Fragment, useState} from "react";
 import {IAdminProductsPageProps} from "./types";
 import ProductsList from "../../components/ProductsList";
 import {ThunkDispatch} from "redux-thunk";
@@ -9,9 +9,13 @@ import {
     getProductsListAction, removeProductAction,
 } from "../../store/products/actions";
 import {connect} from "react-redux";
+import FilterMenu from "../../components/FilterMenu";
+import {getCategoriesListSelector} from "../../store/categories/reducer";
+import {getCategoriesListAction} from "../../store/categories/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     productsList:getProductListSelector(state),
+    categories:getCategoriesListSelector(state)
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ProductsActionTypes>) => {
@@ -21,28 +25,45 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
         },
         onRemoveProduct: (product: IProduct): void => {
             dispatch(removeProductAction(product))
-        }
+        },
+        onGetCategories: (): void => {
+            dispatch(getCategoriesListAction());
+        },
     }
 }
 
 type AdminTypeProductsPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
-    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly} = props;
+    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly, categories, onGetCategories} = props;
+
+    const [categoryFilter, setCategoryFilter] = useState<string>('')
+
+    const onSetFilter = (selectedIndex:number) => {
+        setCategoryFilter(selectedIndex === 0 ? '': categories[selectedIndex-1].name)
+    }
 
     useEffect(() => {
         onGetProductsList();
+        onGetCategories();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="page-content-wrapper">
-            <ProductsList
-                productsList={productsList}
-                onOpenProductDialog={onOpenProductDialog}
-                onRemoveProduct={onRemoveProduct}
-                readOnly={readOnly}/>
-        </div>
+        <Fragment>
+            <FilterMenu
+                categories={categories}
+                onSetFilter={onSetFilter}/>
+            <div className="page-content-wrapper">
+                <ProductsList
+                    categoryNameFilter={categoryFilter}
+                    productsList={productsList}
+                    onOpenProductDialog={onOpenProductDialog}
+                    onRemoveProduct={onRemoveProduct}
+                    readOnly={readOnly}/>
+            </div>
+        </Fragment>
+
 
     );
 }

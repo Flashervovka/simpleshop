@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
                     <Typography variant="body2" color="textSecondary" component="p">
                         {`Категория: ${productData.categoryLabel}`}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="body2" color="textSecondary" component="p" className="product-card__descripton">
                         {productData.description}
                     </Typography>
                 </CardContent>
