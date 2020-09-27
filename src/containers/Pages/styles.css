@@ -22,6 +22,10 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
+.order-controlls-wrapper__info:first-child{
+    margin-bottom: 10px;
+}
+
 .order-info-wrapper{
     margin-bottom: 30px;
     margin-top: 10px;

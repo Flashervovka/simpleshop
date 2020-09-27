@@ -12,7 +12,7 @@ import './styles.css'
 import {ICategory} from "../../store/categories/types";
 import {compressImage} from "../../helpers";
 import {getCategoryByName} from "../../helpers/dataHelper";
-import {STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
+import {STATUS_ADMIN_VIEW, STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import addSvg from "../../static/images/wallpaper-24px.svg";
 import { v4 as uuidv4 } from 'uuid';
@@ -24,12 +24,11 @@ interface EditAndViewProductDialogProps {
     dialogStatus: string
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
     categories: ICategory[],
-    onSendOrder(product: IProduct, count: string, adress:string, phone:string): void
     onPutProductToBasket(product:IProduct, count:number, id:string): void
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
-    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories/*, onSendOrder*/, onPutProductToBasket} = props;
+    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories, onPutProductToBasket} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
@@ -108,9 +107,6 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
             case 'count':
                 setCount(event.target.value as number);
                 break;
-           /* case 'adress':
-                setAdress(event.target.value as string);
-                break;*/
             default:
                 break;
         }
@@ -231,9 +227,14 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 }
             </DialogContent>
             <DialogActions>
-                <Button onClick={onSave} color="primary">
-                    {isEditStatus ? "Сохранить" : "Добавить в корзину"}
-                </Button>
+                {
+                    dialogStatus !== STATUS_ADMIN_VIEW ?
+                        <Button onClick={onSave} color="primary">
+                            {isEditStatus ? "Сохранить" : "Добавить в корзину"}
+                        </Button> :
+                        null
+                }
+
                 <Button onClick={onCloseDialog} color="primary">
                     {isEditStatus ? 'Отменить' : 'Закрыть'}
                 </Button>

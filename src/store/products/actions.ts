@@ -79,8 +79,6 @@ export const updateProductAction = (product:IProduct, productImgFile:Blob): TPro
         dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для изменения товаров."}))
     }
 
-
-
 }
 
 export const removeProductAction = (product:IProduct): TProductAction => async (dispatch, state) => {
@@ -94,13 +92,6 @@ export const removeProductAction = (product:IProduct): TProductAction => async (
         dispatch(showAlertAction({title:"Ошибка", text:"У текущего пользователя не прав для удаления товаров."}))
     }
 }
-/*
-export const orderProductAction = (product:IProduct, count:string): TProductAction => async (dispatch, state) => {
-    dispatch({type:ON_ORDER_PRODUCT_REQUEST});
-    //const ordered:IAuthRequestResponce<IProduct> = await ordersService.orderProduct(product);
-    await ordersService.orderProduct(product, count);
-    dispatch({type:ON_ORDER_PRODUCT_REQUEST_COMPLETED});
-}*/
 
 
 export const selectProductAction = (product:IProduct | null):ProductsActionTypes => {

@@ -13,7 +13,6 @@ interface ProductDialogProps {
     onAddNewProduct(product: IProduct, productImgFile: Blob): void
     dialogStatus: string
     onUpdateProduct(product: IProduct, productImgFile: Blob): void
-    onSendOrder(product: IProduct, count:string, adress:string, phone:string): void
     categories:ICategory[],
     onPutProductToBasket(product:IProduct, count:number, id:string): void
 }
@@ -27,7 +26,6 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
         dialogStatus,
         onUpdateProduct,
         categories,
-        onSendOrder,
         onPutProductToBasket
     } = props;
     const onCloseDialog = (): void => {
@@ -52,7 +50,6 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
                     dialogStatus={dialogStatus}
                     onUpdateProduct={onUpdate}
                     categories={categories}
-                    onSendOrder={onSendOrder}
                     onPutProductToBasket={onPutProductToBasket}/> :
                 <CreateProductDialog
                     onCloseDialog={onCloseDialog}

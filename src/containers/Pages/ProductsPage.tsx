@@ -36,11 +36,14 @@ const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProp
     }, []);
 
     return (
-        <ProductsList
-            productsList={productsList}
-            onOpenProductDialog={onOpenProductDialog}
-            onRemoveProduct={onRemoveProduct}
-            readOnly={readOnly}/>
+        <div className="page-content-wrapper">
+            <ProductsList
+                productsList={productsList}
+                onOpenProductDialog={onOpenProductDialog}
+                onRemoveProduct={onRemoveProduct}
+                readOnly={readOnly}/>
+        </div>
+
     );
 }
 

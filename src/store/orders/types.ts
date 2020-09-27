@@ -7,6 +7,9 @@ export const ON_GET_ORDERS_REQUEST_COMPLETED = "orders.ON_GET_ORDERS_REQUEST_COM
 export const ON_ORDER_PRODUCT_REQUEST = "orders.ON_ORDER_PRODUCT_REQUEST";
 export const ON_ORDER_PRODUCT_REQUEST_COMPLETED = "orders.ON_ORDER_PRODUCT_REQUEST_COMPLETED";
 
+export const ON_ORDER_CONFIRM_REQUEST = "orders.ON_ORDER_CONFIRM_REQUEST";
+export const ON_ORDER_CONFIRM_REQUEST_COMPLETED = "orders.ON_ORDER_CONFIRM_REQUEST_COMPLETED";
+
 export interface IOrder {
     id?: string
     orderPositions:string
@@ -45,7 +48,20 @@ interface GetOrdersRequestCompletedAction {
     ordersList: IOrder[]
 }
 
+interface OrdersConfirmRequestAction {
+    type: typeof ON_ORDER_CONFIRM_REQUEST
+    order: IOrder
+}
+
+interface OrdersConfirmRequestCompletedAction {
+    type: typeof ON_ORDER_CONFIRM_REQUEST_COMPLETED
+    order:IOrder
+}
+
+
 export type OrdersActionTypes = GetOrdersRequestAction
     | GetOrdersRequestCompletedAction
     | OrderProductRequestAction
-    | OrderProductRequestCompletedAction;
+    | OrderProductRequestCompletedAction
+    | OrdersConfirmRequestAction
+    | OrdersConfirmRequestCompletedAction;

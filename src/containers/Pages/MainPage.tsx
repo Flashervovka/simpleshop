@@ -20,7 +20,6 @@ import {getCategoriesListSelector} from "../../store/categories/reducer";
 import {getCategoriesListAction} from "../../store/categories/actions";
 import {ITabsPanelsData} from "../../components/ControllBar/types";
 import {STATUS_ADD, STATUS_EDIT} from "../../config";
-import {orderProductAction} from "../../store/orders/actions";
 import {addProductToBasketAction} from "../../store/basket/actions";
 import {getBasketOrdersListSelector} from "../../store/basket/reducer";
 
@@ -43,9 +42,6 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onGetCategories: (): void => {
             dispatch(getCategoriesListAction());
-        },
-        onSendOrder: (product:IProduct, count:string, adress:string, phone:string): void => {
-            dispatch(orderProductAction(product, count, adress, phone));
         },
         onPutProductToBasket: (product:IProduct, count:number, id:string): void => {
             dispatch(addProductToBasketAction({product: product, count: count, id: id}));
@@ -70,7 +66,6 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         categories,
         pages,
         readOnly,
-        onSendOrder,
         onPutProductToBasket,
         basketOrdersList
     } = props;
@@ -98,7 +93,6 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 ordersCount={basketOrdersList.length}
             />
             <ProductDialog
-                onSendOrder={onSendOrder}
                 open={openProductDialog}
                 onOpenProductDialog={onOpenProductDialog}
                 selectedProduct={selectedProductProp}

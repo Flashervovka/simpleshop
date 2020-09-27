@@ -1,10 +1,34 @@
 import {IAuthRequestResponce} from "../types/types";
 import {http} from "../helpers";
-import {basePath} from "../config";
+import {basePath, ORDER_STATUS_NEW} from "../config";
 import {IOrder} from "../store/orders/types";
 import {IBasketProduct} from "../store/basket/types";
 
 class OrdersService {
+
+    async orderStatusChange(order:IOrder, status:string, userId:string):Promise<IAuthRequestResponce<IOrder>> {
+        const responce: Object = await http({
+            url: `${basePath}/orders`,
+            init: {
+                method: "put",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    data:{
+                        ...order,
+                        status:status,
+                    },
+                    shopUser:{id:userId}
+                })
+            }
+        });
+
+        const result:IAuthRequestResponce<IOrder> = responce as IAuthRequestResponce<IOrder>;
+        if(result.data){
+            result.data.orderParsePositions = JSON.parse(result.data.orderPositions);
+        }
+        return result;
+    }
+
 
     async orderProduct(orderPositions:IBasketProduct[], adress:string, phone:string, userId?:string):Promise<IAuthRequestResponce<IOrder>> {
         const responce: Object = await http({
@@ -15,7 +39,7 @@ class OrdersService {
                 body: JSON.stringify({
                     data:{
                         orderPositions:JSON.stringify(orderPositions),
-                        status:"new",
+                        status:ORDER_STATUS_NEW,
                         adress,
                         phone
                     },

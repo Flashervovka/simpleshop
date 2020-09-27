@@ -16,6 +16,9 @@ const STATUS_EDIT:string = "edit";
 const STATUS_ADD:string = "add";
 const STATUS_CLIENT_VIEW:string = "client_view";
 const STATUS_ADMIN_VIEW:string = "admin_view";
+const ORDER_STATUS_NEW:string = "new";
+const ORDER_STATUS_CONFIRM:string = "confirm";
+const ORDER_STATUS_REJECT:string = "reject";
 
 const adminTabsAndPanels: ITabsPanelsData = {
     panels: [
@@ -70,5 +73,8 @@ export {
     STATUS_EDIT,
     STATUS_ADD,
     STATUS_ADMIN_VIEW,
-    STATUS_CLIENT_VIEW
+    STATUS_CLIENT_VIEW,
+    ORDER_STATUS_NEW,
+    ORDER_STATUS_CONFIRM,
+    ORDER_STATUS_REJECT
 }

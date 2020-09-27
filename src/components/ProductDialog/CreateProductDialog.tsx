@@ -40,6 +40,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
         setSavePressed(true);
         if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
             onSaveProduct({name, price, description, url: '', category, categoryLabel}, imageFile);
+            onCloseDialog();
         }
 
     }
