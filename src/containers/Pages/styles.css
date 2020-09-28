@@ -25,6 +25,10 @@
 .order-controlls-wrapper__info:first-child{
     margin-bottom: 10px;
 }
+.order-controlls-wrapper__info:nth-child(2){
+    font-weight: bold;
+}
+
 
 .order-info-wrapper{
     margin-bottom: 30px;

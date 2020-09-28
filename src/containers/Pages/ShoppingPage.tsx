@@ -18,6 +18,7 @@ import './styles.css';
 import {IBasketProduct} from "../../store/basket/types";
 import {removeProductFrombasketAction} from "../../store/basket/actions";
 import {makeOrderAction} from "../../store/orders/actions";
+import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
 
 const mapStateToProps = (state: RootStateType) => ({
     basketOrdersList: getBasketOrdersListSelector(state)
@@ -72,6 +73,18 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
                         <OrdersList
                             ordersList={[basketOrdersList]}
                             onChangeOrderStatus={onChangeOrderStatus}/>
+                        <FormControl fullWidth>
+                            <TextField
+                                disabled={true}
+                                InputProps={{
+                                    style: {
+                                        color: "rgba(0, 0, 0, 0.87)",
+                                        fontWeight:"bold"
+                                    }
+                                }}
+                                fullWidth
+                                value={`Общая стоимость заказа: ${getClientOrderTotalPrice(basketOrdersList)}`}/>
+                        </FormControl>
                         <div className="shopping-page__user-phone">
                             <FormControl fullWidth error={phone.length < 18 && sendPressed}>
                                 <InputLabel required className="shopping-page__user-phone-label">Телефон</InputLabel>

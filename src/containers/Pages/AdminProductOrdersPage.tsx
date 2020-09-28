@@ -8,9 +8,16 @@ import {getOrdersListSelector} from "../../store/orders/reducer";
 import './styles.css';
 import {getProductListSelector} from "../../store/products/reducer";
 import OrdersList from "../../components/OrdersList";
-import {ORDER_STATUS_CONFIRM, ORDER_STATUS_NEW, ORDER_STATUS_REJECT, STATUS_ADMIN_VIEW} from "../../config";
+import {
+    ORDER_STATUS_CLOSE,
+    ORDER_STATUS_CONFIRM,
+    ORDER_STATUS_NEW,
+    ORDER_STATUS_REJECT,
+    STATUS_ADMIN_VIEW
+} from "../../config";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
+import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
 
 const mapStateToProps = (state: RootStateType) => ({
     ordersList:getOrdersListSelector(state),
@@ -51,14 +58,22 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
             {
                 ordersList.length > 0 ?
                     ordersList.map((order, index) => {
-                        if(order.status!==ORDER_STATUS_REJECT){
+                       // if(order.status!==ORDER_STATUS_REJECT){
                             return (
                                 <Fragment key={`admin-order__${index}`}>
                                     <ButtonGroup className="order-buttons-group" variant="contained" color="primary" aria-label="contained primary button group">
                                         <Button onClick={onChangeOrderStatus(order, ORDER_STATUS_CONFIRM)} disabled={order.status!==ORDER_STATUS_NEW}>
                                             {order.status === ORDER_STATUS_NEW ? "Принять" : "Заказ принят"}
                                         </Button>
-                                        <Button onClick={onChangeOrderStatus(order, ORDER_STATUS_REJECT)}>Отменить</Button>
+                                        {
+                                            order.status === ORDER_STATUS_NEW ?
+                                                <Button onClick={onChangeOrderStatus(order, ORDER_STATUS_REJECT)}>
+                                                    Отменить
+                                                </Button> :
+                                                <Button onClick={onChangeOrderStatus(order, ORDER_STATUS_CLOSE)}>
+                                                    Закрыть
+                                                </Button>
+                                        }
                                     </ButtonGroup>
                                     <OrdersList viewStatus={STATUS_ADMIN_VIEW}
                                                 ordersList={[order.orderParsePositions]}/>
@@ -68,15 +83,16 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
                                                 {`Телефон: ${order.phone}`}
                                             </a>
                                         </div>
+                                        <div className="order-controlls-wrapper__info">{`Общая стоимость заказа: ${getClientOrderTotalPrice(order.orderParsePositions)} руб.`}</div>
                                         <div className="order-controlls-wrapper__info">{`Адрес: ${order.adress}`}</div>
                                     </div>
                                 </Fragment>
                             )
-                        }else{
+                        /*}else{
                             return (
                                 null
                             )
-                        }
+                        }*/
 
                     })
                         :

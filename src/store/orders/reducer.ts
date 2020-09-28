@@ -8,6 +8,7 @@ import {
     OrdersActionTypes
 } from "./types";
 import {RootStateType} from "../index";
+import {ORDER_STATUS_CLOSE, ORDER_STATUS_REJECT} from "../../config";
 
 const init: IOrdersState = {
     ordersList:[],
@@ -46,7 +47,7 @@ export function ordersListState(state: IOrdersState = init, action: OrdersAction
                         return action.order;
                     }
                     return order;
-                })
+                }).filter((order) => order.status !== ORDER_STATUS_REJECT && order.status !== ORDER_STATUS_CLOSE)
             }
         default:
             return state;

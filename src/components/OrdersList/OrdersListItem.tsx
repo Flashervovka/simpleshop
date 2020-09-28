@@ -48,7 +48,7 @@ const OrdersListItem: React.FC<OrdersListItemProps> = (props: OrdersListItemProp
                                 src={`../images/${basketProduct.product.url}`}
                             />
                         </ListItemAvatar>
-                        <ListItemText primary={`${basketProduct.product.name} (${basketProduct.count})`} />
+                        <ListItemText primary={`${basketProduct.product.name} (${basketProduct.count}) Цена: ${basketProduct.count*parseFloat(basketProduct.product.price)} руб.`} />
                         <ListItemSecondaryAction>
                             {
                                 viewStatus !== STATUS_ADMIN_VIEW ?
