@@ -10,9 +10,6 @@ export interface IBasketProduct {
     count:number
     id:string
     status?:string
-    /*maybe no needed*/
-    adress?:string
-    phone?:string
 }
 
 export interface IBasketState {

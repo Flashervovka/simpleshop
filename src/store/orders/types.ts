@@ -17,6 +17,7 @@ export interface IOrder {
     status:string
     adress:string
     phone:string
+    orderDate:string
 }
 
 export interface IFilledOrder {

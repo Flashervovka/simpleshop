@@ -19,6 +19,7 @@ import {IBasketProduct} from "../../store/basket/types";
 import {removeProductFrombasketAction} from "../../store/basket/actions";
 import {makeOrderAction} from "../../store/orders/actions";
 import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
+import moment from 'moment';
 
 const mapStateToProps = (state: RootStateType) => ({
     basketOrdersList: getBasketOrdersListSelector(state)
@@ -29,8 +30,8 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
         onChangeOrderStatus: (basketProduct:IBasketProduct):void => {
             dispatch(removeProductFrombasketAction(basketProduct))
         },
-        onMakeOrder: (order:IBasketProduct[], adress:string, phone:string):void => {
-            dispatch(makeOrderAction(order, adress, phone))
+        onMakeOrder: (order:IBasketProduct[], adress:string, phone:string, orderDate:string):void => {
+            dispatch(makeOrderAction(order, adress, phone, orderDate))
         }
     }
 }
@@ -61,7 +62,8 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
     const onSendOrder = () => {
         setSendPressed(true);
         if(adress !== "" && phone.length === 18){
-            onMakeOrder(basketOrdersList, adress, phone)
+            console.log(moment().format().toString())
+            onMakeOrder(basketOrdersList, adress, phone, moment().format().toString())
         }
     }
 

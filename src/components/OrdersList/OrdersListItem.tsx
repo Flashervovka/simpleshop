@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: '100%',
-            borderRadius:4
+            borderBottomLeftRadius:4,
+            borderBottomRightRadius:4
         },
     }),
 );

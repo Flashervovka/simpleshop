@@ -28,9 +28,9 @@ export const getOrdersListAction = (): TOrdersAction => async (dispatch, state) 
     }
 }
 
-export const makeOrderAction = (order:IBasketProduct[],adress:string, phone:string): TOrdersAction => async (dispatch, state) => {
+export const makeOrderAction = (order:IBasketProduct[],adress:string, phone:string, orderDate:string): TOrdersAction => async (dispatch, state) => {
     dispatch({type:ON_GET_ORDERS_REQUEST});
-    const result:IAuthRequestResponce<IOrder> = await ordersService.orderProduct(order, adress, phone);
+    const result:IAuthRequestResponce<IOrder> = await ordersService.orderProduct(order, adress, phone, orderDate);
     dispatch({type:ON_ORDER_PRODUCT_REQUEST_COMPLETED});
     if(result.data){
         dispatch(showInfoMessageAction('Заказ успешно отправлен!'));

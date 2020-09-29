@@ -17,6 +17,16 @@
     font-size: 20px;
 }
 
+.order-controlls__date{
+    color: #c0c1c5;
+    background: #2d323e;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 1rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 .order-controlls-wrapper__info{
     font-size: 1rem;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
