@@ -1,3 +1,10 @@
 .settings-wrapper{
     padding: 60px 20px 0px;
 }
+
+.main-settings__wrapper{
+    display: flex;
+}
+.main-settings__settings-item{
+    margin-right: 10px;
+}

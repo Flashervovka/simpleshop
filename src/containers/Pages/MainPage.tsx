@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux'
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
@@ -22,14 +22,18 @@ import {ITabsPanelsData} from "../../components/ControllBar/types";
 import {STATUS_ADD, STATUS_EDIT} from "../../config";
 import {addProductToBasketAction} from "../../store/basket/actions";
 import {getBasketOrdersListSelector} from "../../store/basket/reducer";
+import {getSettingsAction} from "../../store/settings/actions";
+import {SettingsActionTypes} from "../../store/settings/types";
+import {getSettingsSelector} from "../../store/settings/reducer";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
     categories:getCategoriesListSelector(state),
-    basketOrdersList:getBasketOrdersListSelector(state)
+    basketOrdersList:getBasketOrdersListSelector(state),
+    settings:getSettingsSelector(state)
 })
 
-const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes>) => {
+const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes | SettingsActionTypes>) => {
     return {
         onAddNewProduct: (product: IProduct, productImgFile: Blob): void => {
             dispatch(addNewProductAction(product, productImgFile))
@@ -45,7 +49,10 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         },
         onPutProductToBasket: (product:IProduct, count:number, id:string): void => {
             dispatch(addProductToBasketAction({product: product, count: count, id: id}));
-        }
+        },
+        onGetSettings: (): void => {
+            dispatch(getSettingsAction());
+        },
     }
 }
 
@@ -67,8 +74,15 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         pages,
         readOnly,
         onPutProductToBasket,
-        basketOrdersList
+        basketOrdersList,
+        onGetSettings,
+        settings
     } = props;
+
+    useEffect(() => {
+        onGetSettings();
+    })
+
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
 
@@ -100,7 +114,8 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 dialogStatus={productDialogStatus}
                 onUpdateProduct={onUpdateProduct}
                 categories={categories}
-                onPutProductToBasket={onPutProductToBasket}/>
+                onPutProductToBasket={onPutProductToBasket}
+                settings={settings}/>
         </div>
 
     )

@@ -15,20 +15,28 @@ import {getCategoryByName} from "../../helpers/dataHelper";
 import {STATUS_ADMIN_VIEW, STATUS_CLIENT_VIEW, STATUS_EDIT} from "../../config";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import addSvg from "../../static/images/wallpaper-24px.svg";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {ISettings} from "../../store/settings/types";
+import Typography from "@material-ui/core/Typography";
 
 
 interface EditAndViewProductDialogProps {
     onCloseDialog(): void
+
     selectedProduct: IProduct
     dialogStatus: string
+
     onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
+
     categories: ICategory[],
-    onPutProductToBasket(product:IProduct, count:number, id:string): void
+
+    onPutProductToBasket(product: IProduct, count: number, id: string): void
+
+    settings: ISettings
 }
 
 const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props: EditAndViewProductDialogProps) => {
-    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories, onPutProductToBasket} = props;
+    const {onCloseDialog, selectedProduct, dialogStatus, onUpdateProduct, categories, onPutProductToBasket, settings} = props;
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
@@ -145,21 +153,24 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     {name === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth error={price === "" && savePressed}>
-                    <TextField
-                        error={price === "" && savePressed}
-                        InputProps={{
-                            inputProps: {
-                                ...inputProps,
-                                min: 1
-                            }
-                        }}
-                        required
-                        label={isEditStatus ? "Цена" : ''}
-                        type="number"
-                        fullWidth value={price}
-                        onChange={onChange}
-                        name="price"
-                        disabled={!isEditStatus}/>
+                    <div className="add-dialog__product-price">
+                        <TextField
+                            error={price === "" && savePressed}
+                            InputProps={{
+                                inputProps: {
+                                    ...inputProps,
+                                    min: 1
+                                }
+                            }}
+                            required
+                            label={isEditStatus ? "Цена" : ''}
+                            type="number"
+                            fullWidth value={`${price}`}
+                            onChange={onChange}
+                            name="price"
+                            disabled={!isEditStatus}/>
+                        <Typography variant="body2" color="textPrimary" component="p">руб.</Typography>
+                    </div>
                     {price === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
                 {
@@ -221,6 +232,12 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                                 value={count}
                                 onChange={onChange}
                                 name="count"/>
+                            {
+                                settings.minOrderCost !== "" && <div className="add-dialog__free-delivery-info">
+                                    {`Бесплатная доставка при заказе от ${settings.minOrderCost} руб.`}
+                                </div>
+                            }
+
                         </div>
                         :
                         null

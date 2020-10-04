@@ -1,0 +1,13 @@
+.filter-menu__list-item-text{
+    text-align: center;
+    background: #2d323e;
+    border-radius: 4px;
+    color: #c0c1c5;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+.filter-menu__list-item-text span{
+    font-size: 20px;
+}

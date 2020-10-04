@@ -27,16 +27,12 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
+
 .order-controlls-wrapper__info{
     font-size: 1rem;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-}
-
-.order-controlls-wrapper__info:first-child{
+    word-break: break-word;
     margin-bottom: 10px;
-}
-.order-controlls-wrapper__info:nth-child(2){
-    font-weight: bold;
 }
 
 

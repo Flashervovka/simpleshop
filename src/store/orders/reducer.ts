@@ -29,7 +29,7 @@ export function ordersListState(state: IOrdersState = init, action: OrdersAction
                 ...state,
                 isLoaded: true,
                 isLoading: false,
-                ordersList:[...action.ordersList]
+                ordersList:[...action.ordersList.reverse()]
             }
         case ON_ORDER_CONFIRM_REQUEST:
             return {

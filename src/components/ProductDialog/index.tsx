@@ -5,6 +5,7 @@ import {IProduct} from "../../store/products/types";
 import CreateProductDialog from "./CreateProductDialog";
 import EditAndViewProductDialog from "./EditAndViewProductDialog";
 import {ICategory} from "../../store/categories/types";
+import {ISettings} from "../../store/settings/types";
 
 interface ProductDialogProps {
     open: boolean
@@ -15,6 +16,7 @@ interface ProductDialogProps {
     onUpdateProduct(product: IProduct, productImgFile: Blob): void
     categories:ICategory[],
     onPutProductToBasket(product:IProduct, count:number, id:string): void
+    settings:ISettings
 }
 
 const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) => {
@@ -26,7 +28,8 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
         dialogStatus,
         onUpdateProduct,
         categories,
-        onPutProductToBasket
+        onPutProductToBasket,
+        settings
     } = props;
     const onCloseDialog = (): void => {
         onOpenProductDialog(false);
@@ -45,6 +48,7 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
             {
                 selectedProduct ?
                 <EditAndViewProductDialog
+                    settings={settings}
                     onCloseDialog={onCloseDialog}
                     selectedProduct={selectedProduct}
                     dialogStatus={dialogStatus}

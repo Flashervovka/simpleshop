@@ -30,7 +30,7 @@ class OrdersService {
     }
 
 
-    async orderProduct(orderPositions:IBasketProduct[], adress:string, phone:string, orderDate:string, userId?:string):Promise<IAuthRequestResponce<IOrder>> {
+    async orderProduct(orderPositions:IBasketProduct[], adress:string, phone:string, orderDate:string, comments:string, userId?:string):Promise<IAuthRequestResponce<IOrder>> {
         console.log("orderDate",orderDate);
         const responce: Object = await http({
             url: `${basePath}/orders`,
@@ -43,7 +43,8 @@ class OrdersService {
                         status:ORDER_STATUS_NEW,
                         adress,
                         phone,
-                        orderDate
+                        orderDate,
+                        comments
                     },
                     shopUser:{id:userId}
                 })

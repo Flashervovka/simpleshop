@@ -24,3 +24,13 @@
 .add-dialog__product-image-error{
     color: #f44336;
 }
+.add-dialog__free-delivery-info{
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 0.875rem;
+    color: #ff0000;
+    margin-top: 10px;
+}
+.add-dialog__product-price{
+    display: flex;
+    align-items: flex-end;
+}

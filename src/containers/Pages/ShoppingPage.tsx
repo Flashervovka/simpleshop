@@ -30,8 +30,8 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
         onChangeOrderStatus: (basketProduct:IBasketProduct):void => {
             dispatch(removeProductFrombasketAction(basketProduct))
         },
-        onMakeOrder: (order:IBasketProduct[], adress:string, phone:string, orderDate:string):void => {
-            dispatch(makeOrderAction(order, adress, phone, orderDate))
+        onMakeOrder: (order:IBasketProduct[], adress:string, phone:string, orderDate:string, comments:string):void => {
+            dispatch(makeOrderAction(order, adress, phone, orderDate, comments))
         }
     }
 }
@@ -47,6 +47,7 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
 
     const [phone, setPhone] = useState<string>('');
     const [adress, setAdress] = useState<string>('');
+    const [comments, setComments] = useState<string>('');
     const [sendPressed, setSendPressed] = useState<boolean>(false);
 
     const onSetPhone = (phoneNumber: string) => {
@@ -59,11 +60,16 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
         setSendPressed(false);
     }
 
+    const onSetComments = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
+        setComments(event.target.value as string);
+        setSendPressed(false);
+    }
+
     const onSendOrder = () => {
         setSendPressed(true);
         if(adress !== "" && phone.length === 18){
             console.log(moment().format().toString())
-            onMakeOrder(basketOrdersList, adress, phone, moment().format().toString())
+            onMakeOrder(basketOrdersList, adress, phone, moment().format().toString(), comments)
         }
     }
 
@@ -114,6 +120,16 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
                                 multiline/>
                             {adress === "" && sendPressed &&
                             <FormHelperText>Поле является обязательным</FormHelperText>}
+                        </FormControl>
+                        <FormControl fullWidth>
+                            <TextField
+                                InputProps={inputProps}
+                                label="Комментарии к заказу"
+                                fullWidth
+                                value={comments}
+                                onChange={onSetComments}
+                                name="comments"
+                                multiline/>
                         </FormControl>
                         <Button
                             //disabled={adress === "" || phone.length < 18}

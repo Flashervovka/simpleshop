@@ -7,6 +7,7 @@ import {errorsState} from './errors/reducer';
 import {ordersListState} from './orders/reducer';
 import {basketState} from './basket/reducer';
 import {infoMessagesState} from './infoMessages/reducer';
+import {settingsState} from './settings/reducer';
 import {IFileStorageState} from "./fileStorage/types";
 import {IProductsState} from "./products/types";
 import {createBrowserHistory} from 'history';
@@ -19,6 +20,7 @@ import {IErrorsSate} from "./errors/types";
 import {IOrdersState} from "./orders/types";
 import {IBasketState} from "./basket/types";
 import {IInfoMessagesState} from "./infoMessages/types";
+import {ISettingsState} from "./settings/types";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
@@ -30,7 +32,8 @@ const rootReducer = combineReducers({
     errorsState,
     ordersListState,
     basketState,
-    infoMessagesState
+    infoMessagesState,
+    settingsState
 });
 export interface IRootState {
     fileStorage:IFileStorageState
@@ -40,7 +43,8 @@ export interface IRootState {
     errorsState:IErrorsSate
     ordersListState:IOrdersState
     basketState:IBasketState,
-    infoMessagesState:IInfoMessagesState
+    infoMessagesState:IInfoMessagesState,
+    settingsState:ISettingsState
 }
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 

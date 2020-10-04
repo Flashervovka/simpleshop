@@ -6,6 +6,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {ICategory} from "../../store/categories/types";
+import './styles.css';
+
 
 interface FilterMenuProps {
     categories:ICategory[]
@@ -15,11 +17,12 @@ interface FilterMenuProps {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: "#ededff",
             top: 48,
             position: "fixed",
             zIndex: 3,
-            width: "100%"
+            width: "100%",
+            height: 60
         },
         paper:{
             width:"100%"
@@ -59,7 +62,7 @@ const FilterMenu: React.FC<FilterMenuProps> =  (props:FilterMenuProps) => {
 
     const filterCategories:string[] = categories.reduce((accumulator, currentValue)=>{
         return [...accumulator, currentValue.label]
-    },["Все"])
+    },["Показывать все"])
 
     return (
         <div className={classes.root}>
@@ -68,7 +71,7 @@ const FilterMenu: React.FC<FilterMenuProps> =  (props:FilterMenuProps) => {
                     button
                     onClick={handleClickListItem}
                 >
-                    <ListItemText primary={filterCategories[selectedIndex]}/>
+                    <ListItemText primary={filterCategories[selectedIndex]} className="filter-menu__list-item-text"/>
                 </ListItem>
             </List>
             <Menu

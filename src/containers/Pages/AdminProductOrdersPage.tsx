@@ -90,9 +90,22 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
                                             {`Телефон: ${order.phone}`}
                                         </a>
                                     </div>
-                                    <div
-                                        className="order-controlls-wrapper__info">{`Общая стоимость заказа: ${getClientOrderTotalPrice(order.orderParsePositions)} руб.`}</div>
-                                    <div className="order-controlls-wrapper__info">{`Адрес: ${order.adress}`}</div>
+                                    <div className="order-controlls-wrapper__info">
+                                        <b>Общая стоимость заказа: </b>
+                                        {`${getClientOrderTotalPrice(order.orderParsePositions)} руб.`}
+                                    </div>
+                                    <div className="order-controlls-wrapper__info">
+                                        <b>Адрес: </b>
+                                        {`${order.adress}`}
+                                    </div>
+                                    {
+                                        order.comments && order.comments !== "" &&
+                                        <div className="order-controlls-wrapper__info">
+                                            <b>Комментарий к заказу: </b>
+                                            {`${order.comments}`}
+                                        </div>
+                                    }
+
                                 </div>
                             </Fragment>
                         )
