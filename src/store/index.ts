@@ -8,6 +8,7 @@ import {ordersListState} from './orders/reducer';
 import {basketState} from './basket/reducer';
 import {infoMessagesState} from './infoMessages/reducer';
 import {settingsState} from './settings/reducer';
+import {archiveOrdersListState} from './ordersArchive/reducer';
 import {IFileStorageState} from "./fileStorage/types";
 import {IProductsState} from "./products/types";
 import {createBrowserHistory} from 'history';
@@ -21,6 +22,7 @@ import {IOrdersState} from "./orders/types";
 import {IBasketState} from "./basket/types";
 import {IInfoMessagesState} from "./infoMessages/types";
 import {ISettingsState} from "./settings/types";
+import {IOrdersArchiveState} from "./ordersArchive/types";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
@@ -33,7 +35,8 @@ const rootReducer = combineReducers({
     ordersListState,
     basketState,
     infoMessagesState,
-    settingsState
+    settingsState,
+    archiveOrdersListState
 });
 export interface IRootState {
     fileStorage:IFileStorageState
@@ -44,7 +47,8 @@ export interface IRootState {
     ordersListState:IOrdersState
     basketState:IBasketState,
     infoMessagesState:IInfoMessagesState,
-    settingsState:ISettingsState
+    settingsState:ISettingsState,
+    archiveOrdersListState:IOrdersArchiveState
 }
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 

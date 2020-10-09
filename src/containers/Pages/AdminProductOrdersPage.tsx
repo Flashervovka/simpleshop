@@ -19,6 +19,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
 import moment from 'moment';
+import {getArchiveOrdersListAction} from "../../store/ordersArchive/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     ordersList: getOrdersListSelector(state),
@@ -29,9 +30,11 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Order
     return {
         onGetOrdersList: (): void => {
             dispatch(getOrdersListAction());
+            dispatch(getArchiveOrdersListAction());
         },
         onChangeAdminOrderStatus: (order: IOrder, status: string): void => {
             dispatch(changeAdminOrderStatusAction(order, status));
+
         }
     }
 }

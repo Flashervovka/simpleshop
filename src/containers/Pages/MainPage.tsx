@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux'
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
@@ -79,9 +79,9 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         settings
     } = props;
 
-    useEffect(() => {
+   /* useEffect(() => {
         onGetSettings();
-    })
+    })*/
 
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
@@ -94,6 +94,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 onGetCategories();
             }
             onSelectProduct(product ? product : null);
+            onGetSettings();
         }
         setOpenProductDialog(isOpen);
     }
