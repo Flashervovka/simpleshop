@@ -78,7 +78,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         onGetSettings,
         settings
     } = props;
-
+    console.log("id",props);
    /* useEffect(() => {
         onGetSettings();
     })*/

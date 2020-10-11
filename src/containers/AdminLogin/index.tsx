@@ -8,26 +8,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-/*import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';*/
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {userLoginAction} from "../../store/user/actions";
-
-/*function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}*/
+import {getUserSelector} from "../../store/user/reducer";
+import { history } from '../../store/';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -53,12 +42,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const mapStateToProps = (state: RootStateType) => ({
+    user:getUserSelector(state)
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ProductsActionTypes>) => {
     return{
-        onLogin: (login:string, passsword:string) => {
-            dispatch(userLoginAction(login, passsword));
+        onLogin: (login:string, passsword:string, beInSystem:boolean) => {
+            dispatch(userLoginAction(login, passsword, beInSystem));
         }
 
     }
@@ -68,11 +58,11 @@ type AdminLoginType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeo
 
 const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
 
-    const {onLogin} = props;
+    const {onLogin, user} = props;
     const [login, setLogin] = useState<string>('admin');
     const [password, setPassword] = useState<string>('admin');
-
-    const onChange = (fieldName:string) => (event: React.ChangeEvent<{value: string}>) => {
+    const [beInSystem, setBeInSystem] = useState<boolean>(localStorage.getItem("beInSystem") === "1");
+    const onChange = (fieldName:string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         switch (fieldName){
             case "login":
                 setLogin(event.target.value);
@@ -80,18 +70,26 @@ const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
             case "password":
                 setPassword(event.target.value);
                 break;
+            case "beInSystem":
+                setBeInSystem(event.target.checked)
+                localStorage.setItem("beInSystem", event.target.checked ? "1" : "0");
+                document.cookie = "username=Vladimir"
+                break;
         }
     }
 
     const classes = useStyles();
 
     const onUserLogin = ():void => {
-        onLogin(login,password);
+        onLogin(login,password, beInSystem);
     }
 
     useEffect(() => {
+        if(user?.id){
+            history.push(`/admin/${user.id}`);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user]);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -138,6 +136,17 @@ const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
                         >
                             Вход
                         </Button>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={beInSystem}
+                                    onChange={onChange("beInSystem")}
+                                    name="checkedB"
+                                    color="primary"
+                                />
+                            }
+                            label="Оставаться в системе"
+                        />
                     </form>
                 </div>
 

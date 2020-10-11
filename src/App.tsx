@@ -1,7 +1,7 @@
 import React from 'react';
 import MainPage from "./containers/Pages/MainPage";
 import './App.css';
-import {Route, Switch} from "react-router";
+import {Route, Switch, Redirect} from "react-router";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminLogin from "./containers/AdminLogin";
 
@@ -41,13 +41,23 @@ const App: React.FC<AppType> = (props: AppType) => {
         <Switch>
             <PrivateRoute
                 component={AdminLogin}
-                privateComponent={()=> <MainPage pages={adminTabsAndPanels}/>}
-                path="/admin" exact={true}
+                privateComponent={(props)=> <MainPage pages={adminTabsAndPanels} {...props}/>}
+                path="/admin/:user" exact={true}
                 condition={user !== null && user.id !== null}/>
+            <Route
+                path="/admin"
+                exact={true}
+                component={AdminLogin} />
             <Route
                 path="/"
                 exact={true}
                 component={() => <MainPage pages={userTabsAndPanels} readOnly={true}/>} />
+            <Redirect
+                to={{
+                    pathname: "/"
+                }}
+            />
+
         </Switch>
     </div>
   );

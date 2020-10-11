@@ -9,13 +9,17 @@ class UserService {
     /*
     * method user login
     * */
-    async login(userLogin: string, userPassword: string): Promise<IUser> {
+    async login(userLogin: string, userPassword: string, beInSystem:boolean): Promise<IUser> {
         const responce: IUser = await http(
             {
                 url: `${basePath}/user/login`,
                 init: {
                     method: "post",
-                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "beinsystem":beInSystem ? "1" : "0",
+                    },
                     body: JSON.stringify({login: userLogin, password: userPassword})
                 }
             }
