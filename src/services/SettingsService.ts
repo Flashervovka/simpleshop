@@ -15,6 +15,7 @@ class SettingsService {
             url: `${basePath}/settings/${settings.id}`,
             init: {
                 method: "PUT",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data:settings,

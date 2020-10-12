@@ -27,10 +27,11 @@ class ProductsService {
             url: `${basePath}/product`,
             init: {
                 method: "post",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data:newProductData,
-                    shopUser:{id:userId}
+                   // shopUser:{id:userId}
                 })
             }
         });
@@ -42,10 +43,11 @@ class ProductsService {
             url: `${basePath}/product/${updatedProductData.id}`,
             init: {
                 method: "PUT",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body:JSON.stringify({
                     data:updatedProductData,
-                    shopUser:{id:userId}
+                   // shopUser:{id:userId}
                 })
             }
         });
@@ -57,10 +59,11 @@ class ProductsService {
             url: `${basePath}/product/${product.id}`,
             init: {
                 method: "DELETE",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body:JSON.stringify({
                     data:product,
-                    shopUser:{id:userId}
+                   // shopUser:{id:userId}
                 })
             }
         });

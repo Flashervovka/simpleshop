@@ -50,7 +50,6 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
         onLogin: (login:string, passsword:string, beInSystem:boolean) => {
             dispatch(userLoginAction(login, passsword, beInSystem));
         }
-
     }
 }
 
@@ -59,8 +58,8 @@ type AdminLoginType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeo
 const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
 
     const {onLogin, user} = props;
-    const [login, setLogin] = useState<string>('admin');
-    const [password, setPassword] = useState<string>('admin');
+    const [login, setLogin] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [beInSystem, setBeInSystem] = useState<boolean>(localStorage.getItem("beInSystem") === "1");
     const onChange = (fieldName:string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         switch (fieldName){
@@ -73,7 +72,6 @@ const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
             case "beInSystem":
                 setBeInSystem(event.target.checked)
                 localStorage.setItem("beInSystem", event.target.checked ? "1" : "0");
-                document.cookie = "username=Vladimir"
                 break;
         }
     }
@@ -85,11 +83,14 @@ const AdminLogin: React.FC<AdminLoginType> = (props: AdminLoginType) => {
     }
 
     useEffect(() => {
+        if(beInSystem){
+            onLogin(login,password, beInSystem);
+        }
         if(user?.id){
-            history.push(`/admin/${user.id}`);
+            history.push(`/dashboard`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, [user?.id]);
 
     return (
         <Container component="main" maxWidth="xs">

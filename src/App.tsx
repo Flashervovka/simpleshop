@@ -42,10 +42,10 @@ const App: React.FC<AppType> = (props: AppType) => {
             <PrivateRoute
                 component={AdminLogin}
                 privateComponent={(props)=> <MainPage pages={adminTabsAndPanels} {...props}/>}
-                path="/admin/:user" exact={true}
+                path="/dashboard" exact={true}
                 condition={user !== null && user.id !== null}/>
             <Route
-                path="/admin"
+                path="/login"
                 exact={true}
                 component={AdminLogin} />
             <Route
@@ -57,7 +57,6 @@ const App: React.FC<AppType> = (props: AppType) => {
                     pathname: "/"
                 }}
             />
-
         </Switch>
     </div>
   );

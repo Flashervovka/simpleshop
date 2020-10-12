@@ -10,6 +10,7 @@ class ArchiveService {
             url: `${basePath}/archive`,
             init: {
                 method: "POST",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({id:userId})
             }

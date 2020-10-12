@@ -15,12 +15,13 @@ class FileStorageService {
     async sendFile(file:Blob, userId:string):Promise<IAuthRequestResponce<IFile>>{
         const attachmentFile: FormData = new FormData();
         attachmentFile.append('file', file)
-        attachmentFile.append('userId', userId);
+       // attachmentFile.append('userId', userId);
 
         const responce:IAuthRequestResponce<string> = await http({
             url: `${basePath}/uploadFile`,
             init: {
                 method: "post",
+                credentials: 'include',
                 body: attachmentFile
             }
         });

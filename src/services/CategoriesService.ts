@@ -19,10 +19,11 @@ class CategoriesService {
             url: `${basePath}/category`,
             init: {
                 method: "post",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data:newCategoryData,
-                    shopUser:{id:userId}
+                  //  shopUser:{id:userId}
                 })
             }
         });
@@ -34,10 +35,11 @@ class CategoriesService {
             url: `${basePath}/category`,
             init: {
                 method: "DELETE",
+                credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data:category,
-                    shopUser:{id:userId}
+                   // shopUser:{id:userId}
                 })
             }
         });
