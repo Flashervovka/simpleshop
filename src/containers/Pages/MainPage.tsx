@@ -30,7 +30,8 @@ const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
     categories:getCategoriesListSelector(state),
     basketOrdersList:getBasketOrdersListSelector(state),
-    settings:getSettingsSelector(state)
+    settings:getSettingsSelector(state),
+    locationPathName:state.router.location.pathname
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes | SettingsActionTypes>) => {
@@ -76,9 +77,9 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         onPutProductToBasket,
         basketOrdersList,
         onGetSettings,
-        settings
+        settings,
+        locationPathName
     } = props;
-    console.log("id",props);
    /* useEffect(() => {
         onGetSettings();
     })*/
@@ -106,6 +107,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
                 onOpenProductDialog={onOpenProductDialog}
                 readOnly={readOnly}
                 ordersCount={basketOrdersList.length}
+                locationPathName={locationPathName}
             />
             <ProductDialog
                 open={openProductDialog}

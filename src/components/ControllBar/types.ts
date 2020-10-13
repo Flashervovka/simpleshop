@@ -8,6 +8,7 @@ export interface ITabData {
     label: String
     access: boolean
     showOrdersInfo?: boolean
+    url:string
 }
 type Pages = React.FC<IAdminProductsPageProps> | React.FC<IAdminProductOrdersPageProps>
 

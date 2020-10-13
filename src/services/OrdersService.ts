@@ -58,7 +58,7 @@ class OrdersService {
     async getOrdersList(userId: string): Promise<IAuthRequestResponce<IOrder[]>> {
         const response: IAuthRequestResponce<Object[]> = await http(
             {
-                url: `${basePath}/orders/${userId}`,
+                url: `${basePath}/orders`,
                 init: {
                     credentials: 'include',
                     method: "GET"

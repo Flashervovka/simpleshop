@@ -17,8 +17,8 @@ import {adminTabsAndPanels, userTabsAndPanels} from "./config";
 import InfoMessagesDialog from "./containers/InfoMessageDialog";
 
 const mapStateToProps = (state: RootStateType) => ({
-    user:getUserSelector(state),
-    alertError:getAlertErrorSelector(state)
+    user: getUserSelector(state),
+    alertError: getAlertErrorSelector(state)
 });
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ErrorsActionTypes>) => {
@@ -32,34 +32,47 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Error
 type AppType = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps> ;
 
 const App: React.FC<AppType> = (props: AppType) => {
-  const {user, alertError, onCloseAlert} = props;
+    const {user, alertError, onCloseAlert} = props;
 
-  return (
-    <div className="App">
-        <AlertMessage onCloseAlert={onCloseAlert} title={alertError?.title} message={alertError?.text} isShow={alertError?.isShow} type={"error"}/>
-        <InfoMessagesDialog/>
-        <Switch>
-            <PrivateRoute
-                component={AdminLogin}
-                privateComponent={(props)=> <MainPage pages={adminTabsAndPanels} {...props}/>}
-                path="/dashboard" exact={true}
-                condition={user !== null && user.id !== null}/>
-            <Route
-                path="/login"
-                exact={true}
-                component={AdminLogin} />
-            <Route
-                path="/"
-                exact={true}
-                component={() => <MainPage pages={userTabsAndPanels} readOnly={true}/>} />
-            <Redirect
-                to={{
-                    pathname: "/"
-                }}
-            />
-        </Switch>
-    </div>
-  );
+    return (
+        <div className="App">
+            <AlertMessage onCloseAlert={onCloseAlert} title={alertError?.title} message={alertError?.text}
+                          isShow={alertError?.isShow} type={"error"}/>
+            <InfoMessagesDialog/>
+            <Switch>
+                <PrivateRoute
+                    component={AdminLogin}
+                    privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
+                    path="/dashboard" exact={true}
+                    condition={user !== null && user.id !== null}/>
+                <PrivateRoute
+                    component={AdminLogin}
+                    privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
+                    path="/dashboard/settings" exact={true}
+                    condition={user !== null && user.id !== null}/>
+                <PrivateRoute
+                    component={AdminLogin}
+                    privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
+                    path="/dashboard/orders" exact={true}
+                    condition={user !== null && user.id !== null}/>
+
+                <Route path="/login" exact={true}>
+                    <AdminLogin/>
+                </Route>
+                <Route path="/basket" exact={true}>
+                    <MainPage pages={userTabsAndPanels} readOnly={true} />
+                </Route>
+                <Route path="/" exact={true}>
+                    <MainPage pages={userTabsAndPanels} readOnly={true}/>
+                </Route>
+                <Redirect
+                    to={{
+                        pathname: "/"
+                    }}
+                />
+            </Switch>
+        </div>
+    );
 }
 
 export default connect(mapStateToProps, mapDispatcherToProps)(App);

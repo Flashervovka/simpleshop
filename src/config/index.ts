@@ -31,17 +31,20 @@ const adminTabsAndPanels: ITabsPanelsData = {
         {
             Icon: FastfoodIcon,
             label: "продукты",
-            access:true
+            access:true,
+            url:"/dashboard"
         },
         {
             Icon: FormatListNumberedIcon,
             label: "заказы",
-            access:true
+            access:true,
+            url:"/dashboard/orders"
         },
         {
             Icon: SettingsIcon,
             label: "настройки",
-            access:true
+            access:true,
+            url:"/dashboard/settings"
         }
     ]
 }
@@ -55,13 +58,15 @@ const userTabsAndPanels: ITabsPanelsData = {
         {
             Icon: FastfoodIcon,
             label: "продукты",
-            access:true
+            access:true,
+            url:"/"
         },
         {
             Icon: ShoppingCartIcon,
             label: "корзина",
             access:true,
-            showOrdersInfo:true
+            showOrdersInfo:true,
+            url:"/basket"
         }
     ]
 }
