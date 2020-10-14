@@ -18,6 +18,7 @@ import addSvg from "../../static/images/wallpaper-24px.svg";
 import {v4 as uuidv4} from 'uuid';
 import {ISettings} from "../../store/settings/types";
 import Typography from "@material-ui/core/Typography";
+import {addUserOrderToLocalStorage} from "../../helpers/localStorageHelper";
 
 
 interface EditAndViewProductDialogProps {
@@ -58,7 +59,13 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 count,
                 uuidv4()
             );
-            onCloseDialog()
+            addUserOrderToLocalStorage({
+                count:count,
+                product:{name, price, description, url: selectedProduct.url, category, id: selectedProduct.id, categoryLabel},
+                id:uuidv4()
+            })
+            onCloseDialog();
+
         } else {
             setSavePressed(true);
             if (name !== "" && price !== "" && category !== "" && productPhoto !== addSvg) {
@@ -205,6 +212,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
 
                 }
                 <TextField
+                    rows={6}
                     InputProps={inputProps}
                     label={isEditStatus ? "Описание" : ''}
                     fullWidth
@@ -216,7 +224,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     disabled={!isEditStatus}/>
                 {
                     dialogStatus === STATUS_CLIENT_VIEW ?
-                        <div>
+                        <div className="add-dialog__footer">
                             <TextField
                                 className="add-dialog__product-order-count"
                                 variant="outlined"
@@ -226,8 +234,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                                         min: 1
                                     }
                                 }}
-                                required
-                                label="Количество"
+                                label="Количество*"
                                 type="number"
                                 value={count}
                                 onChange={onChange}

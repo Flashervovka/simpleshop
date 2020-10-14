@@ -10,6 +10,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {STATUS_ADMIN_VIEW} from "../../config";
+import {removeProductFromLocalStorage} from "../../helpers/localStorageHelper";
 
 interface OrdersListItemProps {
     orderList:IBasketProduct[]
@@ -35,7 +36,10 @@ const OrdersListItem: React.FC<OrdersListItemProps> = (props: OrdersListItemProp
     const classes = useStyles();
 
     const onChangeStatus = (basketProduct:IBasketProduct) => () => {
-        if(onChangeOrderStatus)onChangeOrderStatus(basketProduct)
+        if(onChangeOrderStatus){
+            onChangeOrderStatus(basketProduct);
+            removeProductFromLocalStorage(basketProduct.id);
+        }
     }
 
     return (

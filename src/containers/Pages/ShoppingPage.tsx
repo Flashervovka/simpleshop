@@ -20,9 +20,12 @@ import {removeProductFrombasketAction} from "../../store/basket/actions";
 import {makeOrderAction} from "../../store/orders/actions";
 import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
 import moment from 'moment';
+import {getSettingsSelector} from "../../store/settings/reducer";
+import {getLocalStorageItem} from "../../helpers/localStorageHelper";
 
 const mapStateToProps = (state: RootStateType) => ({
-    basketOrdersList: getBasketOrdersListSelector(state)
+    basketOrdersList: getBasketOrdersListSelector(state),
+    settings:getSettingsSelector(state),
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ProductsActionTypes>) => {
@@ -43,21 +46,23 @@ const inputProps: Object = {
 }
 
 const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = (props: TypeShoppingPageProps) => {
-    const {basketOrdersList, onChangeOrderStatus, onMakeOrder} = props;
+    const {basketOrdersList, onChangeOrderStatus, onMakeOrder, settings} = props;
 
-    const [phone, setPhone] = useState<string>('');
-    const [adress, setAdress] = useState<string>('');
+    const [phone, setPhone] = useState<string>(getLocalStorageItem("userPhone"));
+    const [adress, setAdress] = useState<string>(getLocalStorageItem("userAdress"));
     const [comments, setComments] = useState<string>('');
     const [sendPressed, setSendPressed] = useState<boolean>(false);
 
     const onSetPhone = (phoneNumber: string) => {
         setPhone(phoneNumber);
         setSendPressed(false);
+        localStorage.setItem("userPhone",phoneNumber);
     }
 
     const onSetAdress = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
         setAdress(event.target.value as string);
         setSendPressed(false);
+        localStorage.setItem("userAdress",event.target.value as string);
     }
 
     const onSetComments = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
@@ -68,10 +73,11 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
     const onSendOrder = () => {
         setSendPressed(true);
         if(adress !== "" && phone.length === 18){
-            console.log(moment().format().toString())
-            onMakeOrder(basketOrdersList, adress, phone, moment().format().toString(), comments)
+            onMakeOrder(basketOrdersList, adress, phone, moment().format().toString(), comments);
         }
     }
+
+    const totalPrice:number = getClientOrderTotalPrice(basketOrdersList);
 
     return (
         <div className="page-content-wrapper">
@@ -91,7 +97,7 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
                                     }
                                 }}
                                 fullWidth
-                                value={`Общая стоимость заказа: ${getClientOrderTotalPrice(basketOrdersList)}`}/>
+                                value={`Общая стоимость заказа: ${totalPrice >= parseFloat(settings.minOrderCost) ? `${totalPrice} (беспалтная доставка)` : totalPrice}`}/>
                         </FormControl>
                         <div className="shopping-page__user-phone">
                             <FormControl fullWidth error={phone.length < 18 && sendPressed}>

@@ -17,8 +17,6 @@
 }
 
 .add-dialog__product-order-count{
-    margin-top: 20px!important;
-    width: 20%;
 }
 
 .add-dialog__product-image-error{
@@ -28,9 +26,14 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 0.875rem;
     color: #ff0000;
-    margin-top: 10px;
+    margin-left: 30px;
 }
 .add-dialog__product-price{
     display: flex;
     align-items: flex-end;
+}
+.add-dialog__footer{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
 }

@@ -23,3 +23,4 @@ export function getTabIndex(tabs:ITabData[], url:string):number{
     });
     return tabIndex;
 }
+

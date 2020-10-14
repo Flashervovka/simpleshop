@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux'
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
@@ -20,11 +20,13 @@ import {getCategoriesListSelector} from "../../store/categories/reducer";
 import {getCategoriesListAction} from "../../store/categories/actions";
 import {ITabsPanelsData} from "../../components/ControllBar/types";
 import {STATUS_ADD, STATUS_EDIT} from "../../config";
-import {addProductToBasketAction} from "../../store/basket/actions";
+import {addProductsToBasketAction, addProductToBasketAction} from "../../store/basket/actions";
 import {getBasketOrdersListSelector} from "../../store/basket/reducer";
 import {getSettingsAction} from "../../store/settings/actions";
 import {SettingsActionTypes} from "../../store/settings/types";
 import {getSettingsSelector} from "../../store/settings/reducer";
+import {IBasketProduct} from "../../store/basket/types";
+import {getUserOrderFromLocalStorage} from "../../helpers/localStorageHelper";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
@@ -54,6 +56,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
         onGetSettings: (): void => {
             dispatch(getSettingsAction());
         },
+        onPutUserOrderFromLocalStorageToBasket: (basketProducts:IBasketProduct[]): void => {
+            dispatch(addProductsToBasketAction(basketProducts));
+        },
     }
 }
 
@@ -78,11 +83,16 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
         basketOrdersList,
         onGetSettings,
         settings,
-        locationPathName
+        locationPathName,
+        onPutUserOrderFromLocalStorageToBasket
     } = props;
-   /* useEffect(() => {
-        onGetSettings();
-    })*/
+
+    useEffect(() => {
+        if(locationPathName === "/" || locationPathName === "/basket"){
+            onPutUserOrderFromLocalStorageToBasket(getUserOrderFromLocalStorage())
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');

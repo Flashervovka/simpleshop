@@ -2,7 +2,7 @@ import {
     BasketActionTypes,
     IBasketProduct,
     IBasketState,
-    ON_ADD_PRODUCT_TO_BASKET,
+    ON_ADD_PRODUCT_TO_BASKET, ON_ADD_PRODUCTS_TO_BASKET,
     ON_CLEAR_BASKET,
     ON_REMOVE_PRODUCT_FROM_BASKET
 } from "./types";
@@ -21,6 +21,11 @@ export function basketState(state: IBasketState = init, action: BasketActionType
             return {
                 ...state,
                 order:[...state.order, action.basketProduct]
+            }
+        case ON_ADD_PRODUCTS_TO_BASKET:
+            return {
+                ...state,
+                order:[...state.order, ...action.basketProducts]
             }
         case ON_REMOVE_PRODUCT_FROM_BASKET:
             return {

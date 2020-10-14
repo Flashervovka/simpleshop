@@ -1,6 +1,7 @@
 import {IProduct} from "../products/types";
 
 export const ON_ADD_PRODUCT_TO_BASKET = "basket.ON_ADD_PRODUCT_TO_BASKET";
+export const ON_ADD_PRODUCTS_TO_BASKET = "basket.ON_ADD_PRODUCTS_TO_BASKET";
 export const ON_REMOVE_PRODUCT_FROM_BASKET = "basket.ON_REMOVE_PRODUCT_FROM_BASKET";
 export const ON_CLEAR_BASKET = "basket.ON_CLEAR_BASKET";
 
@@ -28,11 +29,17 @@ interface RemoveProductFromBasketAction {
     basketProduct:IBasketProduct
 }
 
+interface AddProductsToBasketAction {
+    type: typeof ON_ADD_PRODUCTS_TO_BASKET
+    basketProducts:IBasketProduct[]
+}
+
 interface ClearBasketAction {
     type: typeof ON_CLEAR_BASKET
 }
 
 export type BasketActionTypes = AddProductToBasketAction
     | RemoveProductFromBasketAction
-    | ClearBasketAction;
+    | ClearBasketAction
+    | AddProductsToBasketAction;
 

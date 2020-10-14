@@ -20,6 +20,7 @@ const ORDER_STATUS_NEW:string = "new";
 const ORDER_STATUS_CONFIRM:string = "confirm";
 const ORDER_STATUS_REJECT:string = "reject";
 const ORDER_STATUS_CLOSE:string = "close";
+const LOCAL_STORAGE_BASKET:string = "simpleShop__basket";
 
 const adminTabsAndPanels: ITabsPanelsData = {
     panels: [
@@ -71,7 +72,6 @@ const userTabsAndPanels: ITabsPanelsData = {
     ]
 }
 
-
 export {
     basePath,
     adminTabsAndPanels,
@@ -83,5 +83,6 @@ export {
     ORDER_STATUS_NEW,
     ORDER_STATUS_CONFIRM,
     ORDER_STATUS_REJECT,
-    ORDER_STATUS_CLOSE
+    ORDER_STATUS_CLOSE,
+    LOCAL_STORAGE_BASKET
 }

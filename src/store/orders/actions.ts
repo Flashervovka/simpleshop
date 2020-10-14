@@ -15,6 +15,7 @@ import {showInfoMessageAction} from "../infoMessages/actions";
 import {clearBasketAction} from "../basket/actions";
 import {showAlertAction} from "../errors/actions";
 import {ErrorsActionTypes} from "../errors/types";
+import {LOCAL_STORAGE_BASKET} from "../../config";
 
 type TOrdersAction = ThunkAction<void, RootStateType, unknown, OrdersActionTypes | ErrorsActionTypes>;
 
@@ -35,6 +36,7 @@ export const makeOrderAction = (order:IBasketProduct[],adress:string, phone:stri
     if(result.data){
         dispatch(showInfoMessageAction('Заказ успешно отправлен!'));
         dispatch(clearBasketAction());
+        localStorage.removeItem(LOCAL_STORAGE_BASKET);
     }else {
         dispatch(showInfoMessageAction('Произошла ошибка отправки заказа! Попробуйте сдеать заказ еще раз.'))
     }
