@@ -143,8 +143,10 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                         <img className="add-dialog__product-image"
                              src={productPhoto ? productPhoto : `../images/${selectedProduct.url}`} alt="новый товар"/>
                     </label>
-                    <input id="product-photo" className="add-dialog__image-input" type="file"
-                           accept="image/*" onChange={onAddPhoto}/>
+                    {
+                        isEditStatus && <input id="product-photo" className="add-dialog__image-input" type="file"
+                               accept="image/*" onChange={onAddPhoto}/>
+                    }
                 </div>
                 <FormControl fullWidth error={name === "" && savePressed}>
                     <TextField
@@ -212,7 +214,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
 
                 }
                 <TextField
-                    rows={6}
+                    rows={3}
                     InputProps={inputProps}
                     label={isEditStatus ? "Описание" : ''}
                     fullWidth

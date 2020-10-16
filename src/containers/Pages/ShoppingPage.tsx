@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from "react";
+import React, {useState, Fragment, useEffect} from "react";
 import {IAdminProductsPageProps} from "./types";
 import {ThunkDispatch} from "redux-thunk";
 import {RootStateType} from "../../store";
@@ -22,6 +22,7 @@ import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
 import moment from 'moment';
 import {getSettingsSelector} from "../../store/settings/reducer";
 import {getLocalStorageItem} from "../../helpers/localStorageHelper";
+import {getSettingsAction} from "../../store/settings/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     basketOrdersList: getBasketOrdersListSelector(state),
@@ -35,6 +36,9 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
         },
         onMakeOrder: (order:IBasketProduct[], adress:string, phone:string, orderDate:string, comments:string):void => {
             dispatch(makeOrderAction(order, adress, phone, orderDate, comments))
+        },
+        onGetSettings: (): void => {
+            dispatch(getSettingsAction());
         }
     }
 }
@@ -46,12 +50,16 @@ const inputProps: Object = {
 }
 
 const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = (props: TypeShoppingPageProps) => {
-    const {basketOrdersList, onChangeOrderStatus, onMakeOrder, settings} = props;
+    const {basketOrdersList, onChangeOrderStatus, onMakeOrder, settings, onGetSettings} = props;
 
     const [phone, setPhone] = useState<string>(getLocalStorageItem("userPhone"));
     const [adress, setAdress] = useState<string>(getLocalStorageItem("userAdress"));
     const [comments, setComments] = useState<string>('');
     const [sendPressed, setSendPressed] = useState<boolean>(false);
+    useEffect(() => {
+        onGetSettings();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
 
     const onSetPhone = (phoneNumber: string) => {
         setPhone(phoneNumber);
@@ -96,8 +104,9 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
                                         fontWeight:"bold"
                                     }
                                 }}
+                                multiline={true}
                                 fullWidth
-                                value={`Общая стоимость заказа: ${totalPrice >= parseFloat(settings.minOrderCost) ? `${totalPrice} (беспалтная доставка)` : totalPrice}`}/>
+                                value={`Общая стоимость заказа: ${totalPrice >= parseFloat(settings.minOrderCost) ? `${totalPrice} руб. (беспалтная доставка)` : `${totalPrice} руб.`}`}/>
                         </FormControl>
                         <div className="shopping-page__user-phone">
                             <FormControl fullWidth error={phone.length < 18 && sendPressed}>

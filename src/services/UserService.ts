@@ -26,6 +26,24 @@ class UserService {
         );
         return responce;
     }
+    /*
+   * method user login
+   * */
+    async logout(): Promise<IUser> {
+        const responce: IUser = await http(
+            {
+                url: `${basePath}/user/logout`,
+                init: {
+                    method: "post",
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            }
+        );
+        return responce;
+    }
 }
 
 export default new UserService();
