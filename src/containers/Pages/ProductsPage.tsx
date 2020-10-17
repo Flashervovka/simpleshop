@@ -15,7 +15,8 @@ import {getCategoriesListAction} from "../../store/categories/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     productsList:getProductListSelector(state),
-    categories:getCategoriesListSelector(state)
+    categories:getCategoriesListSelector(state),
+    locationPathName:state.router.location.pathname
 })
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, ProductsActionTypes>) => {
@@ -35,23 +36,26 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Produ
 type AdminTypeProductsPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
-    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly, categories, onGetCategories} = props;
-
+    const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly, categories, onGetCategories, locationPathName} = props;
     const [categoryFilter, setCategoryFilter] = useState<string>('')
 
     const onSetFilter = (selectedIndex:number) => {
-        setCategoryFilter(selectedIndex === 0 ? '': categories[selectedIndex-1].name)
+        if(categories.length > 0){
+            const filterName:string = selectedIndex === 0 ? '': categories[selectedIndex-1].name;
+            setCategoryFilter(filterName);
+        }
     }
 
     useEffect(() => {
         onGetProductsList();
         onGetCategories();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [locationPathName]);
 
     return (
         <Fragment>
             <FilterMenu
+                locationPathName={locationPathName}
                 categories={categories}
                 onSetFilter={onSetFilter}/>
             <div className="page-content-wrapper">
@@ -63,8 +67,6 @@ const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProp
                     readOnly={readOnly}/>
             </div>
         </Fragment>
-
-
     );
 }
 

@@ -27,6 +27,8 @@ import {SettingsActionTypes} from "../../store/settings/types";
 import {getSettingsSelector} from "../../store/settings/reducer";
 import {IBasketProduct} from "../../store/basket/types";
 import {getUserOrderFromLocalStorage} from "../../helpers/localStorageHelper";
+import { history } from '../../store/';
+import {BASE} from "../../config/Routes";
 
 const mapStateToProps = (state: RootStateType) => ({
     selectedProductProp: getSelectedProductSelector(state),
@@ -92,7 +94,15 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
             onPutUserOrderFromLocalStorageToBasket(getUserOrderFromLocalStorage())
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[]);
+
+    useEffect(() => {
+        /*close view dialog only if in locatation path exist 'view' substring and dialog is opened*/
+        if(openProductDialog && !locationPathName.includes('view')){
+            setOpenProductDialog(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[locationPathName])
 
     const [openProductDialog, setOpenProductDialog] = useState<boolean>(false);
     const [productDialogStatus, setProductDialogStatus] = useState<string>('');
@@ -106,6 +116,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
             }
             onSelectProduct(product ? product : null);
             onGetSettings();
+            history.push(locationPathName!==BASE ? `${locationPathName}/view` : '/view');
         }
         setOpenProductDialog(isOpen);
     }

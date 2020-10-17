@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,11 +7,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {ICategory} from "../../store/categories/types";
 import './styles.css';
-
+import { history } from '../../store/';
+import {BASE, DASHBOARD} from "../../config/Routes";
 
 interface FilterMenuProps {
     categories:ICategory[]
     onSetFilter(selectedIndex:number):void
+    locationPathName:string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,7 +42,7 @@ const useMenuStyles = makeStyles(() =>
 
 
 const FilterMenu: React.FC<FilterMenuProps> =  (props:FilterMenuProps) => {
-    const {categories, onSetFilter} = props
+    const {categories, onSetFilter, locationPathName} = props
     const classes = useStyles();
     const classesMenu = useMenuStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,6 +55,11 @@ const FilterMenu: React.FC<FilterMenuProps> =  (props:FilterMenuProps) => {
     const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: number) => {
         setSelectedIndex(index);
         setAnchorEl(null);
+        const filterName:string = index === 0 ? '': categories[index-1].name;
+        const basePath:string = locationPathName.includes(DASHBOARD) ? `${DASHBOARD}/` : BASE;
+        if(`${basePath}${filterName}` !== locationPathName){
+            history.push(`${basePath}${filterName}`)
+        }
         onSetFilter(index);
     };
 
@@ -63,6 +70,19 @@ const FilterMenu: React.FC<FilterMenuProps> =  (props:FilterMenuProps) => {
     const filterCategories:string[] = categories.reduce((accumulator, currentValue)=>{
         return [...accumulator, currentValue.label]
     },["Показывать все"])
+
+    useEffect(() => {
+        let categoryIndex:number = 0;
+        const basePath:string = locationPathName.includes(DASHBOARD) ? `${DASHBOARD}/` : BASE;
+        categories.forEach((category, index) => {
+            if(locationPathName.includes(`${basePath}${category.name}`)){
+                categoryIndex = index+1;
+            }
+        });
+        setSelectedIndex(categoryIndex);
+        onSetFilter(categoryIndex);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[locationPathName, categories.length]);
 
     return (
         <div className={classes.root}>

@@ -15,6 +15,7 @@ import {ErrorsActionTypes} from "./store/errors/types";
 import {hideAlertAction} from "./store/errors/actions";
 import {adminTabsAndPanels, userTabsAndPanels} from "./config";
 import InfoMessagesDialog from "./containers/InfoMessageDialog";
+import {BASE, BASKET, DASHBOARD, DASHBOARD_ORDERS, DASHBOARD_SETTINGS, LOGIN} from "./config/Routes";
 
 const mapStateToProps = (state: RootStateType) => ({
     user: getUserSelector(state),
@@ -43,31 +44,47 @@ const App: React.FC<AppType> = (props: AppType) => {
                 <PrivateRoute
                     component={AdminLogin}
                     privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
-                    path="/dashboard" exact={true}
+                    path={DASHBOARD} exact={true}
                     condition={user !== null && user.id !== null}/>
                 <PrivateRoute
                     component={AdminLogin}
                     privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
-                    path="/dashboard/settings" exact={true}
+                    path={`${DASHBOARD}/:category`} exact={true}
                     condition={user !== null && user.id !== null}/>
                 <PrivateRoute
                     component={AdminLogin}
                     privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
-                    path="/dashboard/orders" exact={true}
+                    path={`${DASHBOARD}/:category/:dialog`} exact={true}
+                    condition={user !== null && user.id !== null}/>
+                <PrivateRoute
+                    component={AdminLogin}
+                    privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
+                    path={DASHBOARD_SETTINGS} exact={true}
+                    condition={user !== null && user.id !== null}/>
+                <PrivateRoute
+                    component={AdminLogin}
+                    privateComponent={(props) => <MainPage pages={adminTabsAndPanels} {...props}/>}
+                    path={DASHBOARD_ORDERS} exact={true}
                     condition={user !== null && user.id !== null}/>
 
-                <Route path="/login" exact={true}>
+                <Route path={LOGIN} exact={true}>
                     <AdminLogin/>
                 </Route>
-                <Route path="/basket" exact={true}>
+                <Route path={BASKET} exact={true}>
                     <MainPage pages={userTabsAndPanels} readOnly={true} />
                 </Route>
-                <Route path="/" exact={true}>
+                <Route path={BASE} exact={true}>
+                    <MainPage pages={userTabsAndPanels} readOnly={true}/>
+                </Route>
+                <Route path={`${BASE}:category`} exact={true}>
+                    <MainPage pages={userTabsAndPanels} readOnly={true}/>
+                </Route>
+                <Route path={`${BASE}:category/:dialog`} exact={true}>
                     <MainPage pages={userTabsAndPanels} readOnly={true}/>
                 </Route>
                 <Redirect
                     to={{
-                        pathname: "/"
+                        pathname: BASE
                     }}
                 />
             </Switch>
