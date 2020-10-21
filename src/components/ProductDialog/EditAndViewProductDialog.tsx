@@ -109,7 +109,9 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 setName(event.target.value as string);
                 break;
             case 'price':
-                setPrice(event.target.value as string);
+                if(!isNaN(event.target.value as number)){
+                    setPrice(event.target.value as string);
+                }
                 break;
             case 'category':
                 setCategory(event.target.value as string);
@@ -120,7 +122,9 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 setDescription(event.target.value as string);
                 break;
             case 'count':
-                setCount(event.target.value as number);
+                if(!isNaN(event.target.value as number)){
+                    setCount(event.target.value as number);
+                }
                 break;
             default:
                 break;
@@ -237,7 +241,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                                     }
                                 }}
                                 label="Количество*"
-                                type="number"
+                               // type="number"
                                 value={count}
                                 onChange={onChange}
                                 name="count"/>

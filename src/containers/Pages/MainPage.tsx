@@ -117,6 +117,8 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
             onSelectProduct(product ? product : null);
             onGetSettings();
             history.push(locationPathName!==BASE ? `${locationPathName}/view` : '/view');
+        }else{
+            history.goBack();
         }
         setOpenProductDialog(isOpen);
     }

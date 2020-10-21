@@ -44,10 +44,7 @@ const ControllBar: React.FC<ControlBarProps> = (props: ControlBarProps) => {
 
     useEffect(()=>{
         const tabIndex:number = getTabIndex(tabsPanelsData.tabs,locationPathName);
-       // console.log("tabIndex",tabIndex, "locationPathName",locationPathName);
-        if(tabIndex>=0){
-            setValue(tabIndex);
-        }
+        setValue(tabIndex >=0 ? tabIndex : 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[locationPathName])
 

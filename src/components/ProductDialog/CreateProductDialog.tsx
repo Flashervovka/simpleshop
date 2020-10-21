@@ -72,7 +72,9 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
                 setName(event.target.value as string);
                 break;
             case 'price':
-                setPrice(event.target.value as string);
+                if(!isNaN(event.target.value as number)){
+                    setPrice(event.target.value as string);
+                }
                 break;
             case 'category':
                 setCategory(event.target.value as string);
