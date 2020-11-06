@@ -58,6 +58,7 @@ export const addNewProductAction = (product:IProduct, productImgFile:Blob): TPro
 export const updateProductAction = (product:IProduct, productImgFile:Blob): TProductAction => async (dispatch, state) => {
 
     const userId:string = getUserIdSelector(state());
+    console.log("productImgFile",productImgFile)
     /** если обновляется картинка продукта*/
     if(productImgFile){
         /*сохраняем картинку продукта перед тем как обновить данные о продукте в БД*/
@@ -71,8 +72,10 @@ export const updateProductAction = (product:IProduct, productImgFile:Blob): TPro
     }
 
     dispatch({type:ON_UPDATE_PRODUCT_REQUEST});
+    console.log("product",product);
     const img:IFile | null = getLastUploadedSelector(state());
-    const updatedProduct:IAuthRequestResponce<IProduct> = await productService.updateProduct({...product, url:img ? img.url : product.url}, userId);
+    const updatedProduct:IAuthRequestResponce<IProduct> =
+        await productService.updateProduct({...product, url:img ? img.url : product.url}, productImgFile ? product.url : "0" ,userId);
     if(updatedProduct.shopUser && updatedProduct.data){
         dispatch({type:ON_UPDATE_PRODUCT_REQUEST_COMPLETED, updatedProduct:updatedProduct.data});
     }else{

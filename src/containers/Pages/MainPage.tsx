@@ -47,6 +47,7 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileS
             dispatch(selectProductAction(product))
         },
         onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
+            console.log("onUpdateProduct",product)
             dispatch(updateProductAction(product, productImgFile))
         },
         onGetCategories: (): void => {
@@ -116,7 +117,7 @@ const MainPage: React.FC<MainPageType & IProductPageProps> = (props: MainPageTyp
             }
             onSelectProduct(product ? product : null);
             onGetSettings();
-            history.push(locationPathName!==BASE ? `${locationPathName}/view` : '/view');
+            history.push(locationPathName!==BASE ? `${locationPathName.replace(/\/view/g,"")}/view` : '/view');
         }else{
             history.goBack();
         }

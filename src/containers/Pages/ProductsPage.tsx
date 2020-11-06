@@ -37,7 +37,9 @@ type AdminTypeProductsPageProps = ReturnType<typeof mapDispatcherToProps> & Retu
 
 const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProps> = (props: AdminTypeProductsPageProps & IAdminProductsPageProps) => {
     const {productsList, onOpenProductDialog, onRemoveProduct, onGetProductsList, readOnly, categories, onGetCategories, locationPathName} = props;
-    const [categoryFilter, setCategoryFilter] = useState<string>('')
+    const [categoryFilter, setCategoryFilter] = useState<string>('');
+
+    const [currentLocationPathName, setCurrentLocationPathName] = useState<string>('');
 
     const onSetFilter = (selectedIndex:number) => {
         if(categories.length > 0){
@@ -47,8 +49,12 @@ const ProductsPage: React.FC<AdminTypeProductsPageProps & IAdminProductsPageProp
     }
 
     useEffect(() => {
-        onGetProductsList();
-        onGetCategories();
+        /*если не просматриваем и не редактируем продукт, а также текущий урл не совпадает с предыдущим то делаем запромы на получение категорий и продуктов*/
+        if((!locationPathName.includes("view") && locationPathName!==currentLocationPathName) || currentLocationPathName===''){
+            onGetProductsList();
+            onGetCategories();
+            setCurrentLocationPathName(locationPathName);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locationPathName]);
 

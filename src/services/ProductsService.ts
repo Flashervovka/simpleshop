@@ -38,13 +38,14 @@ class ProductsService {
         return responce;
     }
 
-    async updateProduct(updatedProductData: IProduct, userId:string):Promise<IAuthRequestResponce<IProduct>> {
+    async updateProduct(updatedProductData: IProduct, imageUpdatedUrl:string ,userId:string):Promise<IAuthRequestResponce<IProduct>> {
+        console.log("imageUpdatedUrl",imageUpdatedUrl);
         const responce: IAuthRequestResponce<IProduct> = await http({
             url: `${basePath}/product/${updatedProductData.id}`,
             init: {
                 method: "PUT",
                 credentials: 'include',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', "imageupdatedurl":imageUpdatedUrl},
                 body:JSON.stringify({
                     data:updatedProductData,
                    // shopUser:{id:userId}

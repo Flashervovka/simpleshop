@@ -3,8 +3,8 @@ WORKDIR /app
 COPY . .
 RUN yarn run build
 
-FROM node:12-alpine
-RUN yarn global add serve
-WORKDIR /app
-COPY --from=builder /app/build .
-CMD ["serve", "-p", "80", "-s", "."]
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+COPY /default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

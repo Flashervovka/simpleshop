@@ -73,7 +73,8 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     name,
                     price,
                     description,
-                    url: imageFile ? '' : selectedProduct.url,
+                    //url: imageFile ? '' : selectedProduct.url,
+                    url: selectedProduct.url,
                     category,
                     id: selectedProduct.id,
                     categoryLabel
@@ -136,6 +137,19 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
     const inputProps: Object = {
         style: {color: "rgba(0, 0, 0, 0.87)"},
         // disableUnderline: true
+    }
+
+    const onBlurField = (fieldType:string) => (event: React.FocusEvent<HTMLInputElement>) => {
+        switch (fieldType){
+            case 'count':
+                if(event.target.value === ""){
+                    setCount(1);
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     return (
@@ -232,6 +246,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                     dialogStatus === STATUS_CLIENT_VIEW ?
                         <div className="add-dialog__footer">
                             <TextField
+                                onBlur={onBlurField("count")}
                                 className="add-dialog__product-order-count"
                                 variant="outlined"
                                 InputProps={{
