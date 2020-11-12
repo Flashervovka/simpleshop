@@ -18,7 +18,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 interface CreateProductDialogProps {
     onCloseDialog(): void
 
-    onSaveProduct(product: IProduct, productImgFile: Blob | undefined): void
+    onSaveProduct(product: IProduct, productImgFile: File | undefined): void
 
     categories: ICategory[]
 }
@@ -28,7 +28,7 @@ const CreateProductDialog: React.FC<CreateProductDialogProps> = (props: CreatePr
 
     const [productPhoto, setProductPhoto] = useState<string>(addSvg);
 
-    const [imageFile, setImageFile] = useState<Blob>();
+    const [imageFile, setImageFile] = useState<File>();
     const [category, setCategory] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [price, setPrice] = useState<string>('');

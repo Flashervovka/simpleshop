@@ -11,9 +11,9 @@ interface ProductDialogProps {
     open: boolean
     onOpenProductDialog(isOpen: boolean, product?: IProduct): void
     selectedProduct: IProduct | null
-    onAddNewProduct(product: IProduct, productImgFile: Blob): void
+    onAddNewProduct(product: IProduct, productImgFile: File): void
     dialogStatus: string
-    onUpdateProduct(product: IProduct, productImgFile: Blob): void
+    onUpdateProduct(product: IProduct, productImgFile: File): void
     categories:ICategory[],
     onPutProductToBasket(product:IProduct, count:number, id:string): void
     settings:ISettings
@@ -35,11 +35,11 @@ const ProductDialog: React.FC<ProductDialogProps> = (props: ProductDialogProps) 
         onOpenProductDialog(false);
     }
 
-    const onSave = (product: IProduct, productImgFile: Blob): void => {
+    const onSave = (product: IProduct, productImgFile: File): void => {
         onAddNewProduct(product, productImgFile);
     }
 
-    const onUpdate = (product: IProduct, productImgFile: Blob): void => {
+    const onUpdate = (product: IProduct, productImgFile: File): void => {
         onUpdateProduct(product, productImgFile);
     }
 

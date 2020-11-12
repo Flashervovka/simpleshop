@@ -37,7 +37,7 @@ export function fileStorage(state: IFileStorageState = init, action: FileStorage
 }
 
 const getLastUploadedSelector = (state:RootStateType):IFile | null => {
-    return state.fileStorage.lastUploaded
+    return null//state.fileStorage.lastUploaded
 }
 
 export {

@@ -27,7 +27,7 @@ interface EditAndViewProductDialogProps {
     selectedProduct: IProduct
     dialogStatus: string
 
-    onUpdateProduct(product: IProduct, productImgFile?: Blob | undefined): void
+    onUpdateProduct(product: IProduct, productImgFile?: File | undefined): void
 
     categories: ICategory[],
 
@@ -41,7 +41,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
 
     const [productPhoto, setProductPhoto] = useState<string>();
 
-    const [imageFile, setImageFile] = useState<Blob>();
+    const [imageFile, setImageFile] = useState<File>();
     const [category, setCategory] = useState<string>(selectedProduct.category);
 
     const [name, setName] = useState<string>(selectedProduct.name);

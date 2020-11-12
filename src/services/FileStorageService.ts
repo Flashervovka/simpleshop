@@ -1,4 +1,4 @@
-import {http} from "../helpers";
+import {cyrToLat, http} from "../helpers";
 import {basePath} from "../config";
 import {IFile} from "../store/fileStorage/types";
 import {IAuthRequestResponce} from "../types/types";
@@ -12,9 +12,13 @@ class FileStorageService {
     * @param {Array<Blob>} file - file for uploading
     * */
    // async sendFile(file:Blob):Promise<IFile>{
-    async sendFile(file:Blob, userId:string):Promise<IAuthRequestResponce<IFile>>{
+    async sendFile(file:File, userId:string):Promise<IAuthRequestResponce<IFile>>{
         const attachmentFile: FormData = new FormData();
-        attachmentFile.append('file', file)
+        const newFile:File = new File([file], cyrToLat.transform(file.name,"_"), {
+            type: file.type,
+            lastModified: file.lastModified,
+        })
+        attachmentFile.append('file', newFile);
        // attachmentFile.append('userId', userId);
 
         const responce:IAuthRequestResponce<string> = await http({

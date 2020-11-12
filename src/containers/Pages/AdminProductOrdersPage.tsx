@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment} from "react";
+import React, {useEffect, Fragment, useState} from "react";
 import {connect} from "react-redux";
 import {RootStateType} from "../../store";
 import {ThunkDispatch} from "redux-thunk";
@@ -26,6 +26,8 @@ const mapStateToProps = (state: RootStateType) => ({
     productsList: getProductListSelector(state)
 })
 
+const notificationSnd = new Audio(require("../../static/media/ntf.mp3"));
+
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, OrdersActionTypes>) => {
     return {
         onGetOrdersList: (): void => {
@@ -44,6 +46,8 @@ type AdminTypeOrdersPageProps = ReturnType<typeof mapDispatcherToProps> & Return
 const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: AdminTypeOrdersPageProps) => {
     const {onGetOrdersList, ordersList, onChangeAdminOrderStatus} = props;
 
+    const [prevOrdersCount, setPrevOrdersCount] = useState<number>(ordersList.length);
+
     useEffect(() => {
         onGetOrdersList();
         const interval: number = window.setInterval(onGetOrdersList, 10000);
@@ -53,7 +57,18 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if(prevOrdersCount !== ordersList.length){
+            setPrevOrdersCount(ordersList.length);
+            notificationSnd.play();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ordersList.length])
+
     const onChangeOrderStatus = (order: IOrder, status: string) => () => {
+        if(status === ORDER_STATUS_REJECT || status === ORDER_STATUS_CLOSE){
+            setPrevOrdersCount(ordersList.length - 1);
+        }
         onChangeAdminOrderStatus(order, status);
     }
 
@@ -82,7 +97,7 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
                                 </ButtonGroup>
                                 <div className="order-controlls__date">
                                     {
-                                        `Дата заказа: ${moment(order.orderDate).format("YYYY-MM-DD HH:MM")}`
+                                        `Дата заказа: ${moment(order.orderDate).format("YYYY-MM-DD HH:mm")}`
                                     }
                                 </div>
                                 <OrdersList viewStatus={STATUS_ADMIN_VIEW}

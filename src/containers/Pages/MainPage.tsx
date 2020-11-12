@@ -40,14 +40,13 @@ const mapStateToProps = (state: RootStateType) => ({
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, FileStorageActionTypes | ProductsActionTypes | CategoriesActionTypes | SettingsActionTypes>) => {
     return {
-        onAddNewProduct: (product: IProduct, productImgFile: Blob): void => {
+        onAddNewProduct: (product: IProduct, productImgFile: File): void => {
             dispatch(addNewProductAction(product, productImgFile))
         },
         onSelectProduct: (product: IProduct | null) :void => {
             dispatch(selectProductAction(product))
         },
-        onUpdateProduct: (product: IProduct, productImgFile: Blob): void => {
-            console.log("onUpdateProduct",product)
+        onUpdateProduct: (product: IProduct, productImgFile: File): void => {
             dispatch(updateProductAction(product, productImgFile))
         },
         onGetCategories: (): void => {
