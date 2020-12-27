@@ -16,6 +16,7 @@ import {clearBasketAction} from "../basket/actions";
 import {showAlertAction} from "../errors/actions";
 import {ErrorsActionTypes} from "../errors/types";
 import {LOCAL_STORAGE_BASKET} from "../../config";
+import {getSettingsSelector} from "../settings/reducer";
 
 type TOrdersAction = ThunkAction<void, RootStateType, unknown, OrdersActionTypes | ErrorsActionTypes>;
 
@@ -34,7 +35,7 @@ export const makeOrderAction = (order:IBasketProduct[],adress:string, phone:stri
     const result:IAuthRequestResponce<IOrder> = await ordersService.orderProduct(order, adress, phone, orderDate, comments);
     dispatch({type:ON_ORDER_PRODUCT_REQUEST_COMPLETED});
     if(result.data){
-        dispatch(showInfoMessageAction('Заказ успешно отправлен!'));
+        dispatch(showInfoMessageAction(getSettingsSelector(state()).orderSuccessMessage));
         dispatch(clearBasketAction());
         localStorage.removeItem(LOCAL_STORAGE_BASKET);
     }else {

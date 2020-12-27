@@ -13,11 +13,13 @@ const ControllBarTab: React.FC<ControllBarTabProps> = (props: ControllBarTabProp
     const onTabClick = (event:React.EventHandler<any>) => {
         onSelect(index);
     }
+    const showInfo = showOrdersInfo && ordersCount && ordersCount > 0;
+
     return (
         <Tab onClick={onTabClick} className="menu-item" label={
-            <div className="menu-item__info">
-                <Icon className="menu-item__icon"/>
-                <div className="menu-item__label">{`${label}${showOrdersInfo && ordersCount && ordersCount > 0 ? `(${ordersCount})` : ''}`}</div>
+            <div className={`menu-item__info ${showInfo ? "menu-item__order-anitamation-wrapper" : ""}`}>
+                <Icon className={`menu-item__icon ${showInfo ? "menu-item__order-anitamation" : ""}`}/>
+                <div className={`menu-item__label ${showInfo? "menu-item__order-anitamation" : ""}`}>{`${label}${showInfo ? `(${ordersCount})` : ''}`}</div>
             </div>
         }/>
     );

@@ -37,3 +37,16 @@
     align-items: center;
     margin-top: 20px;
 }
+
+@media only screen
+and (max-device-width: 320px) {
+    .add-dialog__dialog-content{
+        padding-top: 5px!important;
+    }
+    .add-dialog__footer{
+        margin-top: 5px;
+    }
+    .add-dialog__actions-wrapper{
+        padding: 0 8px!important;
+    }
+}

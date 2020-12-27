@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = (props: ProductCardProps) => {
                     title="Contemplative Reptile"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" component="h2" className="product-card__product-name">
                         {productData.name}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">

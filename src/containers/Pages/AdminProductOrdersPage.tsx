@@ -17,16 +17,19 @@ import {
 } from "../../config";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import {getClientOrderTotalPrice} from "../../helpers/dataHelper";
+import {getClientOrderTotalPrice, hasOrdersWithNewStatus} from "../../helpers/dataHelper";
 import moment from 'moment';
+import {getSettingsSelector} from "../../store/settings/reducer";
 //import {getArchiveOrdersListAction} from "../../store/ordersArchive/actions";
 
 const mapStateToProps = (state: RootStateType) => ({
     ordersList: getOrdersListSelector(state),
-    productsList: getProductListSelector(state)
+    productsList: getProductListSelector(state),
+    settings: getSettingsSelector(state)
 })
 
 const notificationSnd = new Audio(require("../../static/media/ntf.mp3"));
+const notificationNewOrderSnd = new Audio(require("../../static/media/hasneworder.mp3"));
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, OrdersActionTypes>) => {
     return {
@@ -44,26 +47,33 @@ const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, Order
 type AdminTypeOrdersPageProps = ReturnType<typeof mapDispatcherToProps> & ReturnType<typeof mapStateToProps>;
 
 const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: AdminTypeOrdersPageProps) => {
-    const {onGetOrdersList, ordersList, onChangeAdminOrderStatus} = props;
+    const {onGetOrdersList, ordersList, onChangeAdminOrderStatus, settings} = props;
 
     const [prevOrdersCount, setPrevOrdersCount] = useState<number>(ordersList.length);
 
     useEffect(() => {
         onGetOrdersList();
-        const interval: number = window.setInterval(onGetOrdersList, 10000);
+        window.onGetOrders = onGetOrdersList;
+       // const interval: number = window.setInterval(onGetOrdersList, 10000);
+       /* const interval: number = window.setInterval(window.onGetOrders, 10000);
         return () => {
             clearInterval(interval);
-        }
+        }*/
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
+        //если изменилось количество заказов(добавился новый)
         if(prevOrdersCount !== ordersList.length){
             setPrevOrdersCount(ordersList.length);
             notificationSnd.play();
+        }else if(hasOrdersWithNewStatus(ordersList) && settings.hasNewOrderNotification){
+            // иначе если есть заказы со статусом NEW
+            notificationNewOrderSnd.play();
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ordersList.length])
+    }, [ordersList])
 
     const onChangeOrderStatus = (order: IOrder, status: string) => () => {
         if(status === ORDER_STATUS_REJECT || status === ORDER_STATUS_CLOSE){

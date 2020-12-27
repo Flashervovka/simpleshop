@@ -7,6 +7,13 @@ import {ConnectedRouter} from 'connected-react-router';
 import {store, history} from "./store";
 
 
+declare global {
+    interface Window {
+        onGetOrders:any;
+    }
+}
+
+
 ReactDOM.render(
   <React.Fragment>
       <Provider store={store}>

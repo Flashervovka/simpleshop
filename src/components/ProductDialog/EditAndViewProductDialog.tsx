@@ -154,8 +154,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
 
     return (
         <div>
-            {/*<DialogTitle id="form-dialog-title">{selectedProduct.name}</DialogTitle>*/}
-            <DialogContent>
+            <DialogContent className="add-dialog__dialog-content">
                 <div className="add-dialog__product-image-wrapper">
                     <label htmlFor="product-photo">
                         <img className="add-dialog__product-image"
@@ -168,6 +167,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                 </div>
                 <FormControl fullWidth error={name === "" && savePressed}>
                     <TextField
+                        multiline={true}
                         error={name === "" && savePressed}
                         InputProps={inputProps}
                         required
@@ -176,6 +176,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                         value={name}
                         onChange={onChange}
                         name="name"
+                        rowsMax={2}
                         disabled={!isEditStatus}/>
                     {name === "" && savePressed && <FormHelperText>Поле является обязательным</FormHelperText>}
                 </FormControl>
@@ -271,7 +272,7 @@ const EditAndViewProductDialog: React.FC<EditAndViewProductDialogProps> = (props
                         null
                 }
             </DialogContent>
-            <DialogActions>
+            <DialogActions className="add-dialog__actions-wrapper">
                 {
                     dialogStatus !== STATUS_ADMIN_VIEW ?
                         <Button onClick={onSave} color="primary">

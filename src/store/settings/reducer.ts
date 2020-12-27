@@ -12,7 +12,9 @@ import {RootStateType} from "../index";
 const init: ISettingsState = {
     settings:{
         minOrderCost:'',
-        id:0
+        orderSuccessMessage:'',
+        id:0,
+        hasNewOrderNotification:true
     },
     isLoaded:true,
     isLoading:false,
@@ -58,6 +60,7 @@ export function settingsState(state: ISettingsState = init, action: SettingsActi
 const getSettingsSelector = (state:RootStateType):ISettings => {
     return state.settingsState.settings;
 }
+
 export {
     getSettingsSelector
 }

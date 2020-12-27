@@ -1,12 +1,11 @@
 .products-list{
     display: flex;
     justify-content: center;
-    margin-top: 60px;
     flex-wrap: wrap;
-    margin-right: 200px;
-    margin-left: 200px;
-    height: 90vh;
+    max-width:1360px;
+    margin:60px auto
 }
+
 .product-list-wrapper{
     padding-top: 48px;
 }
@@ -16,11 +15,11 @@ and (min-device-width: 320px)
 and (max-device-width: 568px)
 and (-webkit-min-device-pixel-ratio: 2) {
     .products-list{
-        height: unset;
         flex-direction: column;
         margin-right: 0px;
         margin-left: 0px;
         align-items: center;
+        flex-wrap: unset;
     }
 }
 

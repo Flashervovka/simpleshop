@@ -106,7 +106,7 @@ const ShoppingPage: React.FC<TypeShoppingPageProps & IAdminProductsPageProps> = 
                                 }}
                                 multiline={true}
                                 fullWidth
-                                value={`Общая стоимость заказа: ${totalPrice >= parseFloat(settings.minOrderCost) ? `${totalPrice} руб. (беспалтная доставка)` : `${totalPrice} руб.`}`}/>
+                                value={`Общая стоимость заказа: ${totalPrice >= parseFloat(settings.minOrderCost) ? `${totalPrice} руб. (бесплатная доставка)` : `${totalPrice} руб.`}`}/>
                         </FormControl>
                         <div className="shopping-page__user-phone">
                             <FormControl fullWidth error={phone.length < 18 && sendPressed}>

@@ -5,7 +5,9 @@ export const ON_SET_SETTINGS_REQUEST = "settings.ON_SET_SETTINGS_REQUEST";
 export const ON_SET_SETTINGS_REQUEST_COMPLETED = "settings.ON_SET_SETTINGS_REQUEST_COMPLETED";
 
 export interface ISettings{
-    minOrderCost: string
+    minOrderCost: string//минимальная сумма заказа для бесплатной доставки
+    orderSuccessMessage:string// текст уведомления после отправки заказа клиентом
+    hasNewOrderNotification:boolean// уведомлять звуковым сигналом если есть новый(непринятый заказ) если приложение не в фокусе
     id:number
 }
 

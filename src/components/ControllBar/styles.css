@@ -12,3 +12,35 @@
 .menu-item__icon{
     color: #fff;
 }
+
+.menu-item__order-anitamation-wrapper {
+    animation: pulsewrapper 1s infinite;
+}
+
+@keyframes pulsewrapper {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.menu-item__order-anitamation {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        color: #fff;
+    }
+    50% {
+        color: #ff6600;
+    }
+    100% {
+        color: #fff;
+    }
+}

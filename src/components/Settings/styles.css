@@ -8,3 +8,7 @@
 .main-settings__settings-item{
     margin-right: 10px;
 }
+
+.main-settings__settings-item-header{
+    border-bottom: solid 2px #039be5
+}
