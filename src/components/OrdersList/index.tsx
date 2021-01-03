@@ -33,7 +33,7 @@ const OrdersList: React.FC<OrdersListProps> = (props: OrdersListProps) => {
         <List className={classes.root}>
             {ordersList.map((basketProductsList, index) => {
                 return (
-                    <ListItem key={index} button>
+                    <ListItem key={index}>
                         <OrdersListItem
                             viewStatus={viewStatus}
                             orderList={basketProductsList}

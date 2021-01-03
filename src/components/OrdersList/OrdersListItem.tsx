@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,11 +6,13 @@ import {IBasketProduct} from "../../store/basket/types";
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+//import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {STATUS_ADMIN_VIEW} from "../../config";
 import {removeProductFromLocalStorage} from "../../helpers/localStorageHelper";
+import {Box} from "@material-ui/core";
+//import Divider from '@material-ui/core/Divider';
 
 interface OrdersListItemProps {
     orderList:IBasketProduct[]
@@ -46,25 +48,36 @@ const OrdersListItem: React.FC<OrdersListItemProps> = (props: OrdersListItemProp
         <List className={classes.root}>
             {orderList.map((basketProduct, index) => {
                 return (
-                    <ListItem key={index} button>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt={basketProduct.product.name}
-                                src={`../images/${basketProduct.product.url}`}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText primary={`${basketProduct.product.name} (${basketProduct.count}) Цена: ${basketProduct.count*parseFloat(basketProduct.product.price)} руб.`} />
-                        <ListItemSecondaryAction>
-                            {
-                                viewStatus !== STATUS_ADMIN_VIEW ?
-                                    <IconButton edge="end" aria-label="delete" onClick={onChangeStatus(basketProduct)}>
-                                        <DeleteIcon/>
-                                    </IconButton> :
-                                    null
-                            }
+                    <Fragment>
+                        <ListItem key={index} alignItems="flex-start" divider>
+                            <Box flexDirection="column">
+                                <Box display="flex">
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={basketProduct.product.name}
+                                            src={`../images/${basketProduct.product.url}`}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={`${basketProduct.product.name} (${basketProduct.count}) Цена: ${basketProduct.count*parseFloat(basketProduct.product.price)} руб.`} />
+                                </Box>
+                                <div>
+                                    {
+                                        viewStatus !== STATUS_ADMIN_VIEW ?
+                                            <Box display="flex">
+                                                <IconButton edge="end" aria-label="delete" onClick={onChangeStatus(basketProduct)}>
+                                                    <DeleteIcon/>
+                                                </IconButton>
+                                            </Box> :
+                                            null
+                                    }
 
-                        </ListItemSecondaryAction>
-                    </ListItem>
+                                </div>
+                            </Box>
+
+                        </ListItem>
+
+                    </Fragment>
+
                 );
             })}
         </List>
