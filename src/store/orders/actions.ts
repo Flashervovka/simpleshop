@@ -20,10 +20,10 @@ import {getSettingsSelector} from "../settings/reducer";
 
 type TOrdersAction = ThunkAction<void, RootStateType, unknown, OrdersActionTypes | ErrorsActionTypes>;
 
-export const getOrdersListAction = (): TOrdersAction => async (dispatch, state) => {
+export const getOrdersListAction = (mobileToken?:string): TOrdersAction => async (dispatch, state) => {
     const userId:string = getUserIdSelector(state());
     dispatch({type:ON_GET_ORDERS_REQUEST});
-    const response:IAuthRequestResponce<IOrder[]> = await ordersService.getOrdersList(userId);
+    const response:IAuthRequestResponce<IOrder[]> = await ordersService.getOrdersList(userId, mobileToken);
     /** access to orders only for administrator*/
     if(response.shopUser?.id!==null && response.data){
         dispatch({type: ON_GET_ORDERS_REQUEST_COMPLETED, ordersList: response.data});

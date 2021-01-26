@@ -72,10 +72,25 @@ const userTabsAndPanels: ITabsPanelsData = {
     ]
 }
 
+const mobileTabsAndPanels: ITabsPanelsData = {
+    panels: [
+        AdminProductOrdersPage
+    ],
+    tabs: [
+        {
+            Icon: FormatListNumberedIcon,
+            label: "заказы",
+            access:true,
+            url:"/dashboard/orders"
+        }
+    ]
+}
+
 export {
     basePath,
     adminTabsAndPanels,
     userTabsAndPanels,
+    mobileTabsAndPanels,
     STATUS_EDIT,
     STATUS_ADD,
     STATUS_ADMIN_VIEW,

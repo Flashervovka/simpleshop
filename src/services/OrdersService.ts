@@ -55,10 +55,10 @@ class OrdersService {
     }
 
 
-    async getOrdersList(userId: string): Promise<IAuthRequestResponce<IOrder[]>> {
+    async getOrdersList(userId: string, mobileToken?: string): Promise<IAuthRequestResponce<IOrder[]>> {
         const response: IAuthRequestResponce<Object[]> = await http(
             {
-                url: `${basePath}/orders`,
+                url: `${basePath}/orders${mobileToken ? `?mobileToken=${mobileToken}` : ""}`,
                 init: {
                     credentials: 'include',
                     method: "GET"

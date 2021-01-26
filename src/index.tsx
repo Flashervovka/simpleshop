@@ -9,10 +9,11 @@ import {store, history} from "./store";
 
 declare global {
     interface Window {
-        onGetOrders:any;
+        onGetOrders:any,
+        isMobileApplication:boolean,
+        setIsMobileApplication:any
     }
 }
-
 
 ReactDOM.render(
   <React.Fragment>

@@ -29,12 +29,15 @@ const mapStateToProps = (state: RootStateType) => ({
 })
 
 const notificationSnd = new Audio(require("../../static/media/ntf.mp3"));
+const dummySnd = new Audio(require("../../static/media/ntf.mp3"));
+dummySnd.volume = 0.0001;
 const notificationNewOrderSnd = new Audio(require("../../static/media/hasneworder.mp3"));
 
 const mapDispatcherToProps = (dispatch: ThunkDispatch<RootStateType, void, OrdersActionTypes>) => {
     return {
-        onGetOrdersList: (): void => {
-            dispatch(getOrdersListAction());
+        onGetOrdersList: (mobileToken?:string): void => {
+           // dispatch(getOrdersListAction(mobileToken));
+            dispatch(getOrdersListAction("aad88778-125b-493b-aabb-75a5973cfd01"));
           //  dispatch(getArchiveOrdersListAction());
         },
         onChangeAdminOrderStatus: (order: IOrder, status: string): void => {
@@ -53,12 +56,14 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
 
     useEffect(() => {
         onGetOrdersList();
-        window.onGetOrders = onGetOrdersList;
-       // const interval: number = window.setInterval(onGetOrdersList, 10000);
-       /* const interval: number = window.setInterval(window.onGetOrders, 10000);
-        return () => {
-            clearInterval(interval);
-        }*/
+        if(window.isMobileApplication){
+            window.onGetOrders = onGetOrdersList;
+        }else{
+            const interval: number = window.setInterval(onGetOrdersList, 10000);
+            return () => {
+                clearInterval(interval);
+            }
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -70,6 +75,8 @@ const AdminProductOrdersPage: React.FC<AdminTypeOrdersPageProps> = (props: Admin
         }else if(hasOrdersWithNewStatus(ordersList) && settings.hasNewOrderNotification){
             // иначе если есть заказы со статусом NEW
             notificationNewOrderSnd.play();
+        }else{
+            dummySnd.play();
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
